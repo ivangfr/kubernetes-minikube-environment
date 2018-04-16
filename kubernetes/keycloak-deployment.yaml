@@ -1,0 +1,37 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: keycloak-service
+  labels:
+    app: keycloak
+spec:
+  selector:
+    app: keycloak
+  ports:
+  - port: 8080
+  type: NodePort
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: keycloak-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - name: keycloak
+        image: jboss/keycloak
+        ports:
+          - containerPort: 8080
+        env:
+        - name: KEYCLOAK_USER
+          value: admin
+        - name: KEYCLOAK_PASSORD
+          value: admin

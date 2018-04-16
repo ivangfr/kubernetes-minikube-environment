@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: bookservice-service
+  labels:
+    app: bookservice
+spec:
+  selector:
+    app: bookservice
+  ports:
+  - port: 8080
+  type: NodePort
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: bookservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookservice
+  template:
+    metadata:
+      labels:
+         app: bookservice
+    spec:
+      containers:
+      - name: bookservice
+        image: docker.mycompany.com/book-service
+        imagePullPolicy : Never
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MONGODB_ADDR
+          value: mongodb-service

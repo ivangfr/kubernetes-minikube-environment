@@ -1,9 +1,7 @@
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: keycloak-service
-  labels:
-    app: keycloak
 spec:
   selector:
     app: keycloak
@@ -11,8 +9,8 @@ spec:
   - port: 8080
   type: NodePort
 ---
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: keycloak-deployment
 spec:
@@ -35,3 +33,9 @@ spec:
           value: admin
         - name: KEYCLOAK_PASSORD
           value: admin
+        - name: MYSQL_ADDR
+          value: mysql-keycloak-service
+        - name: MYSQL_USER
+          value: keycloak_
+        - name: MYSQL_PASSWORD
+          value: keycloak_password

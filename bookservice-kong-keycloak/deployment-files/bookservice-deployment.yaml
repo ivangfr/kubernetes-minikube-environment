@@ -2,12 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: bookservice-service
+  labels:
+    app: bookservice
+    tier: frontend
 spec:
   selector:
     app: bookservice
   ports:
   - port: 8080
-  type: NodePort
+    targetPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -31,4 +34,8 @@ spec:
         - containerPort: 8080
         env:
         - name: MONGODB_ADDR
-          value: mongodb-service
+          value: mongodb-bookservice-service
+        - name: KEYCLOAK_ADDR
+          value: keycloak-service
+        - name: KEYCLOAK_PORT
+          value: "8080"

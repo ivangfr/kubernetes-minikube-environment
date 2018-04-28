@@ -2,6 +2,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kong-proxy-service
+  labels:
+    app: kong
+    tier: frontend
 spec:
   selector:
     app: kong
@@ -13,6 +16,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kong-proxy-ssl-service
+  labels:
+    app: kong
+    tier: frontend
 spec:
   selector:
     app: kong
@@ -24,6 +30,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kong-admin-service
+  labels:
+    app: kong
+    tier: frontend
 spec:
   selector:
     app: kong
@@ -35,6 +44,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kong-admin-ssl-service
+  labels:
+    app: kong
+    tier: frontend
 spec:
   selector:
     app: kong

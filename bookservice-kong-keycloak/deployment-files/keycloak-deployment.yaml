@@ -2,6 +2,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: keycloak-service
+  labels:
+    app: keycloak
+    tier: frontend
 spec:
   selector:
     app: keycloak
@@ -31,11 +34,11 @@ spec:
         env:
         - name: KEYCLOAK_USER
           value: admin
-        - name: KEYCLOAK_PASSORD
+        - name: KEYCLOAK_PASSWORD
           value: admin
         - name: MYSQL_ADDR
           value: mysql-keycloak-service
         - name: MYSQL_USER
-          value: keycloak_
+          value: keycloak
         - name: MYSQL_PASSWORD
           value: keycloak_password

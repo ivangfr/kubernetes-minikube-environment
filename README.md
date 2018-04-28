@@ -1,17 +1,11 @@
-# Kubernetes
+# kubernetes-environment
 
-```
-eval $(minikube docker-env)
+## Goal
 
-gradle build docker
+The goal of this project is have a lot of examples using `Kubernetes` (`Minikube`)
 
-kubectl apply -f kubernetes/mysql-deployment.yaml
-kubectl apply -f kubernetes/keycloak-deployment.yaml
+### `bookservice-kong-keycloak`
 
-kubectl apply -f kubernetes/postgres-kong-deployment.yaml
-kubectl apply -f kubernetes/kong-migration-job.yaml
-kubectl apply -f kubernetes/kong-deployment.yaml
+The goal of this project is to run inside `Kubernetes` (`Minikube`): `book-service` application, `Keycloak` as an authentication and authorization service and `Kong` as a gateway tool.
 
-kubectl apply -f kubernetes/mongodb-deployment.yaml
-kubectl apply -f kubernetes/bookservice-deployment.yaml
-```
+### More soon

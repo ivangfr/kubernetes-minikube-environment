@@ -71,45 +71,7 @@ kubectl create -f kubernetes/<filename>.yaml
 http://$KEYCLOAK_ADDR
 ```
 
-2. **Login with the credentials**
-```
-Username: admin
-Password: admin
-```
-
-3. **Create a new Realm**
-- Go to top-left corner and hover the mouse over `Master` realm. A blue button `Add realm` will appear. Click on it.
-- On `Name` field, write `company-services`. Click on `Create`.
-
-4. **Create a new Client**
-- Click on `Clients` menu on the left.
-- Click `Create` button.
-- On `Client ID` field type `book-service`.
-- Click on `Save`.
-- On `Settings` tab, set the `Access Type` to `confidential`
-- Still on `Settings` tab, set the `Valid Redirect URIs` to `http://localhost:8080/*`
-- Click on `Save`.
-- Go to `Credentials` tab. Copy the value on `Secret` field. It will be used on the next steps.
-- Go to `Roles` tab.
-- Click `Add Role` button.
-- On `Role Name` type `manage_books`.
-- Click on `Save`.
-
-5. **Create a new User**
-- Click on `Users` menu on the left.
-- Click on `Add User` button.
-- On `Username` field set `ivan.franchin`
-- Click on `Save`
-- Go to `Credentials` tab
-- Set to `New Password` and `Password Confirmation` the value `123`
-- Turn off the `Temporary` field
-- Click on `Reset password`
-- Confirm the pop up clicking on `Change Password`
-- Go to `Role Mappings` tab.
-- Select `book-service` on the combo-box `Client Roles`.
-- Add the role `manage_books` to `ivan.franchin`.
-
-**Done!** That is all the configuration needed on `Keycloak`.
+2. Next steps about configuring `Keycloak` can be seen at https://github.com/ivangfr/springboot-testing-mongodb-keycloak#configuring-keycloak
 
 ## Deploy `book-service`
 

@@ -2,7 +2,7 @@
 
 ## Goal
 
-The goal of this project is have a lot of examples using `Kubernetes` (`Minikube`)
+The goal of this project is have some examples using `Kubernetes` (`Minikube`)
 
 ### `bookservice-kong-keycloak`
 

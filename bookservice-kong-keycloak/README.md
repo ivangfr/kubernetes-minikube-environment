@@ -2,7 +2,7 @@
 
 ## Goal
 
-The goal of this project is to run inside `Kubernetes` (`Minikube`): `book-service` application, `Keycloak` as an authentication and authorization service and `Kong` as a gateway tool.
+The goal of this project is to run inside [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube)): `book-service` application, [`Keycloak`](https://www.keycloak.org) as an authentication and authorization service and [`Kong`](https://konghq.com) as a gateway tool.
 
 `book-service` is a REST API application for managing books. Once deployed in `Kubernetes` cluster, it won't be exposed to outside, i.e, it won't be possible to be called from host machine. In order to bypass it, we are going to use `Kong` as a gateway. So, to access `book-service`, you will have to call `Kong` REST API and then, it will redirect the request to `book-service`. Furthermore, the plugin `Rate Limiting` will be installed in `Kong`. It will be configured to just allow 5 calls a minute to `book-service` endpoints.
 
@@ -16,22 +16,23 @@ Besides, `book-service` implements `Keycloak` security configuration. The endpoi
 git clone https://github.com/ivangfr/springboot-testing-mongodb-keycloak.git
 ```
 
-#### 2. Start `Minikube`
+#### 2. Start Minikube
 
 ```
 minikube start
 ```
 
-#### 3. Use `Minikube` Docker Daemon
+#### 3. Use Minikube Docker Daemon
 
-Because this project uses `Minikube`, instead of pushing your Docker image to a registry, you can simply build the image using the same Docker host as the `Minikube` VM, so that the images are automatically present. To do so, make sure you are using the `Minikube` Docker daemon**
+Because this project uses `Minikube`, instead of pushing your Docker image to a registry, you can simply build the image using the same Docker host as the `Minikube` VM, so that the images are automatically present. To do so, make sure you are using the `Minikube` Docker daemon
 ```
 eval $(minikube docker-env)
 ```
 
-> When Minikube host won't be used anymore, you can undo this change by running
->
->```eval $(minikube docker-env -u)```
+> When Minikube host won't be used anymore, you can undo this change by running   
+> ```
+> eval $(minikube docker-env -u)
+> ```
 
 #### 4. Build `springboot-testing-kong`
 
@@ -64,9 +65,9 @@ It will get the exposed `Kong` and `Keycloak` addresses.
 
 **Copy the output and run it on a terminal. It will export `Kong` and `Keycloak` addresses to environment variables. Those environment variables will be used on the next steps.**
 
-## Configure `Keycloak`
+## Configure Keycloak
 
-#### 1. Open `Keycloak UI`
+#### 1. Open Keycloak UI
 
 ```
 http://$KEYCLOAK_ADDR
@@ -80,17 +81,17 @@ minikube service keycloak-service
 
 Please, visit https://github.com/ivangfr/springboot-testing-mongodb-keycloak#manually-using-keycloak-ui
 
-## Deploy `book-service`
+## Deploy book-service
 
-#### Run the following command to deploy `book-service`
+#### Run the following command to deploy book-service
 
 ```
 kubectl create -f deployment-files/bookservice-deployment.yaml
 ```
 
-## Configuring `Kong`
+## Configuring Kong
 
-#### 1. Add service `book-service`
+#### 1. Add service book-service
 
 ```
 curl -i -X POST http://$KONG_ADDR_8001/services/ \
@@ -100,7 +101,7 @@ curl -i -X POST http://$KONG_ADDR_8001/services/ \
   -d 'port=8080'
 ```
 
-#### 2. Add `book-service` route
+#### 2. Add book-service route
 
 ```
 curl -i -X POST http://$KONG_ADDR_8001/services/book-service/routes/ \
@@ -124,7 +125,7 @@ Code: 200
 Response Body: {"status":"UP"}
 ```
 
-#### 4. Add `Rate Limiting` plugin
+#### 4. Add Rate Limiting plugin
 
 - Add plugin to `book-service` service
 
@@ -175,7 +176,7 @@ It should return
 Code: 302
 ```
 
-#### 3. Get access token from `Keycloak`
+#### 3. Get access token from Keycloak
 
 - Find `book-service` POD
 

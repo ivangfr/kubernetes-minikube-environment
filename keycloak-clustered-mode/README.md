@@ -52,13 +52,13 @@ kubectl create -f kubernetes/deployment-files/keycloak-standalone-ha-deployment.
 **Note: I was not able to run a single Master and Slave configuration (connected to MySQL) in Minikube. Maybe, my machine hasn't enough hardware**
 > MacBook Pro, 2.7 GHz Intel Core i5, 16 GB 1867 MHz DDR3
 
-#### Deploy _Keycloak-Domain-Master_
+#### 1. Deploy _Keycloak-Domain-Master_
 
 ```
 kubectl create -f kubernetes/deployment-files/keycloak-domain-master-deployment.yaml
 ```
 
-#### Add _slave_ user
+#### 2. Add _slave_ user
 
 For more information check [Redhat Documentation](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.0/html-single/how_to_configure_server_security/#securing_managed_domain)
 ```
@@ -99,7 +99,7 @@ yes/no? yes
 To represent the user add the following to the server-identities definition <secret value="YWJjLWRlZjE=" />
 ```
 
-#### Deploy _Keycloak-Domain-Slave_
+#### 3. Deploy _Keycloak-Domain-Slave_
 
 ```
 kubectl create -f kubernetes/deployment-files/keycloak-domain-slave-deployment.yaml

@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-slave
+  labels:
+    app: keycloak
+    tier: frontend
+spec:
+  selector:
+    app: keycloak
+  ports:
+  - port: 8080
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-slave
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - name: keycloak
+        image: ivanfranchin/keycloak-clustered:latest
+        ports:
+          - containerPort: 8080
+        env:
+        - name: KEYCLOAK_USER
+          value: admin
+        - name: KEYCLOAK_PASSWORD
+          value: admin
+        - name: DB_ADDR
+          value: keycloak-mysql
+        - name: DB_USER
+          value: keycloak
+        - name: DB_PASSWORD
+          value: password
+        - name: OPER_MODE
+          value: DOMAIN
+        - name: HOST_CONFIG
+          value: SLAVE
+        - name: HOST_SLAVE_USERNAME
+          value: slave
+        - name: HOST_SLAVE_SECRET
+          value: YWJjLWRlZjE=
+        - name: HOST_MASTER_ADDR
+          value: 172.17.0.5

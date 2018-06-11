@@ -11,16 +11,16 @@ The goal of this project is to deploy [`keycloak-clustered`](https://github.com/
 minikube start
 ```
 
-## Deploy MySQL
+## Deploy [MySQL](https://www.mysql.com)
 
 There are two options.
 
-#### Using YAML file
+#### Using _YAML_ file
 ```
 kubectl create -f kubernetes/deployment-files/keycloak-mysql-deployment.yaml
 ```
 
-#### Using `Helm`
+#### Using [Helm](https://helm.sh)
 
 - Init `Helm`
 ```
@@ -40,25 +40,25 @@ stable/mysql
 
 ## Deploy Keycloak
 
-### Standalone Clustered Mode 
+### [Standalone Clustered Mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_standalone-ha-mode)
 
 Run the follwoing command. It will start `Keycloak` in Standalone Clustered Mode with 2 replicas.
 ```
 kubectl create -f kubernetes/deployment-files/keycloak-standalone-ha-deployment.yaml
 ```
 
-### Domain Clustered Mode
+### [Domain Clustered Mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_domain-mode)
 
 **Note: I was not able to run a single Master and Slave configuration (connected to MySQL) in Minikube. Maybe, my machine hasn't enough hardware**
 > MacBook Pro, 2.7 GHz Intel Core i5, 16 GB 1867 MHz DDR3
 
-#### Deploy `Keycloak-Domain-Master`
+#### Deploy _Keycloak-Domain-Master_
 
 ```
 kubectl create -f kubernetes/deployment-files/keycloak-domain-master-deployment.yaml
 ```
 
-#### Add slave user
+#### Add _slave_ user
 
 For more information check [Redhat Documentation](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.0/html-single/how_to_configure_server_security/#securing_managed_domain)
 ```
@@ -99,7 +99,7 @@ yes/no? yes
 To represent the user add the following to the server-identities definition <secret value="YWJjLWRlZjE=" />
 ```
 
-#### Deploy `Keycloak-Domain-Slave`
+#### Deploy _Keycloak-Domain-Slave_
 
 ```
 kubectl create -f kubernetes/deployment-files/keycloak-domain-slave-deployment.yaml

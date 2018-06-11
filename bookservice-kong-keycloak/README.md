@@ -2,7 +2,7 @@
 
 ## Goal
 
-The goal of this project is to run inside [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube)): `book-service` application, [`Keycloak`](https://www.keycloak.org) as an authentication and authorization service and [`Kong`](https://konghq.com) as a gateway tool.
+The goal of this project is to run inside [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube)): [`book-service`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) application, [`Keycloak`](https://www.keycloak.org) as an authentication and authorization service and [`Kong`](https://konghq.com) as a gateway tool.
 
 `book-service` is a REST API application for managing books. Once deployed in `Kubernetes` cluster, it won't be exposed to outside, i.e, it won't be possible to be called from host machine. In order to bypass it, we are going to use `Kong` as a gateway. So, to access `book-service`, you will have to call `Kong` REST API and then, it will redirect the request to `book-service`. Furthermore, the plugin `Rate Limiting` will be installed in `Kong`. It will be configured to just allow 5 calls a minute to `book-service` endpoints.
 
@@ -34,14 +34,14 @@ eval $(minikube docker-env)
 > eval $(minikube docker-env -u)
 > ```
 
-#### 4. Build `springboot-testing-kong`
+#### 4. Build _springboot-testing-mongodb-keycloak_
 
-Inside `sptingboot-testing-kong` root folder type:
+Inside `/springboot-testing-mongodb-keycloak` root folder type:
 ```
 gradle clean build docker
 ```
 
-#### 5. Run `deploy-all.sh` script
+#### 5. Run _deploy-all.sh_ script
 
 ```
 ./deploy-all.sh
@@ -55,7 +55,7 @@ It will deploy to `Kubernetes`: `MySQL-Keycloak`, `Postgres-Kong` and `MongoDB`.
 > kubectl create -f kubernetes/<filename>.yaml
 > ```
 
-#### 6. Run `services-addresses.sh` script
+#### 6. Run _services-addresses.sh_ script
 
 ```
 ./services-addresses.sh
@@ -83,7 +83,7 @@ Please, visit https://github.com/ivangfr/springboot-testing-mongodb-keycloak#man
 
 ## Deploy book-service
 
-#### Run the following command to deploy book-service
+#### Run the following command to deploy _book-service_
 
 ```
 kubectl create -f deployment-files/bookservice-deployment.yaml
@@ -91,7 +91,7 @@ kubectl create -f deployment-files/bookservice-deployment.yaml
 
 ## Configuring Kong
 
-#### 1. Add service book-service
+#### 1. Add service _book-service_
 
 ```
 curl -i -X POST http://$KONG_ADDR_8001/services/ \
@@ -101,7 +101,7 @@ curl -i -X POST http://$KONG_ADDR_8001/services/ \
   -d 'port=8080'
 ```
 
-#### 2. Add book-service route
+#### 2. Add _book-service_ route
 
 ```
 curl -i -X POST http://$KONG_ADDR_8001/services/book-service/routes/ \
@@ -110,7 +110,7 @@ curl -i -X POST http://$KONG_ADDR_8001/services/book-service/routes/ \
   -d "strip_path=false"
 ```
 
-#### 3. Test if the route is working
+#### 3. Test route
 
 **`GET /api/books`**
 
@@ -125,7 +125,7 @@ Code: 200
 Response Body: {"status":"UP"}
 ```
 
-#### 4. Add Rate Limiting plugin
+#### 4. Add _Rate Limiting_ plugin
 
 - Add plugin to `book-service` service
 

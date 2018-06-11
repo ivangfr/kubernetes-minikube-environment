@@ -1,4 +1,4 @@
-# keycloak-clustered
+# keycloak-clustered-mode
 
 ## Goal
 
@@ -15,12 +15,12 @@ minikube start
 
 There are two options.
 
-#### Using _YAML_ file
+#### Using _YAML_ file with [MySQL Docker Image](https://hub.docker.com/_/mysql/)
 ```
 kubectl create -f kubernetes/deployment-files/keycloak-mysql-deployment.yaml
 ```
 
-#### Using [Helm](https://helm.sh)
+#### Using [MySQL Helm Chart](https://github.com/kubernetes/charts/tree/master/stable/mysql)
 
 - Init `Helm`
 ```
@@ -38,7 +38,7 @@ helm install --name keycloak \
 stable/mysql
 ```
 
-## Deploy Keycloak
+## Deploy _keycloak-clustered_
 
 ### [Standalone Clustered Mode](https://www.keycloak.org/docs/latest/server_installation/index.html#_standalone-ha-mode)
 

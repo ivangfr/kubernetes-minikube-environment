@@ -1,2 +1,0 @@
-KEYCLOAK_DOMAIN_MASTER_POD=$(kubectl get pod | grep -oE 'keycloak-domain-master-deployment-[a-zA-Z0-9]{10}-[a-zA-Z0-9]{5}')
-kubectl exec -it $KEYCLOAK_DOMAIN_MASTER_POD /opt/jboss/keycloak/bin/add-user.sh

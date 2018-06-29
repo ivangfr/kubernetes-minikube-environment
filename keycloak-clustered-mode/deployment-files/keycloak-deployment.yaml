@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: keycloak
-        image: ivanfranchin/keycloak-clustered:latest
+        image: ivanfranchin/keycloak-clustered:4.0.0.Final
         ports:
           - containerPort: 8080
         env:

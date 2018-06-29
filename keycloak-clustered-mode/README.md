@@ -51,7 +51,7 @@ stable/mysql
 
 ## Deploy _keycloak-clustered_
 
-Run the follwoing command. It will start `Keycloak` in Standalone Clustered Mode with 2 replicas.
+Run the follwoing command. It will start 2 replicas of `keycloak-clustered` in Standalone Clustered Mode.
 ```
 kubectl create -f deployment-files/keycloak-deployment.yaml
 ```

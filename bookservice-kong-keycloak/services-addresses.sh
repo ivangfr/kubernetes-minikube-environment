@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 MINIKUBE_IP=$(minikube ip)
 
 KONG_8001_PORT=$(kubectl get services/kong-admin-service -o go-template='{{(index .spec.ports 0).nodePort}}')

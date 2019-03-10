@@ -9,7 +9,7 @@ spec:
   selector:
     app: kong
   ports:
-  - port: 8000
+    - port: 8000
   type: NodePort
 ---
 apiVersion: v1
@@ -23,7 +23,7 @@ spec:
   selector:
     app: kong
   ports:
-  - port: 8443
+    - port: 8443
   type: NodePort
 ---
 apiVersion: v1
@@ -37,7 +37,7 @@ spec:
   selector:
     app: kong
   ports:
-  - port: 8001
+    - port: 8001
   type: NodePort
 ---
 apiVersion: v1
@@ -51,7 +51,7 @@ spec:
   selector:
     app: kong
   ports:
-  - port: 8444
+    - port: 8444
   type: NodePort
 ---
 apiVersion: apps/v1
@@ -69,33 +69,33 @@ spec:
         app: kong
     spec:
       containers:
-      - name: kong
-        image: kong:0.13.0
-        ports:
-        - name: admin
-          containerPort: 8001
-          protocol: TCP
-        - name: proxy
-          containerPort: 8000
-          protocol: TCP
-        - name: proxy-ssl
-          containerPort: 8443
-          protocol: TCP
-        - name: admin-ssl
-          containerPort: 8444
-          protocol: TCP
-        env:
-        - name: KONG_ADMIN_LISTEN
-          value: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
-        - name: KONG_PG_PASSWORD
-          value: kong_password
-        - name: KONG_PG_HOST
-          value: postgres-kong-service
-        - name: KONG_PROXY_ACCESS_LOG
-          value: "/dev/stdout"
-        - name: KONG_ADMIN_ACCESS_LOG
-          value: "/dev/stdout"
-        - name: KONG_PROXY_ERROR_LOG
-          value: "/dev/stderr"
-        - name: KONG_ADMIN_ERROR_LOG
-          value: "/dev/stderr"
+        - name: kong
+          image: kong:1.0.3
+          ports:
+            - name: admin
+              containerPort: 8001
+              protocol: TCP
+            - name: proxy
+              containerPort: 8000
+              protocol: TCP
+            - name: proxy-ssl
+              containerPort: 8443
+              protocol: TCP
+            - name: admin-ssl
+              containerPort: 8444
+              protocol: TCP
+          env:
+            - name: KONG_ADMIN_LISTEN
+              value: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
+            - name: KONG_PG_PASSWORD
+              value: kong_password
+            - name: KONG_PG_HOST
+              value: postgres-kong-service
+            - name: KONG_PROXY_ACCESS_LOG
+              value: "/dev/stdout"
+            - name: KONG_ADMIN_ACCESS_LOG
+              value: "/dev/stdout"
+            - name: KONG_PROXY_ERROR_LOG
+              value: "/dev/stderr"
+            - name: KONG_ADMIN_ERROR_LOG
+              value: "/dev/stderr"

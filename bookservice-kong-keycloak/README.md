@@ -1,30 +1,51 @@
-# bookservice-kong-keycloak
+# `bookservice-kong-keycloak`
 
-## Goal
+The goal of this project is to run inside [`Kubernetes`](https://kubernetes.io)
+([`Minikube`](https://github.com/kubernetes/minikube)):
+[`book-service`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) (string-boot application),
+[`Keycloak`](https://www.keycloak.org) (authentication and authorization service) and
+[`Kong`](https://konghq.com) (gateway service).
 
-The goal of this project is to run inside [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube)): [`book-service`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) application, [`Keycloak`](https://www.keycloak.org) as an authentication and authorization service and [`Kong`](https://konghq.com) as a gateway tool.
+`book-service` is a REST API spring-boot application for managing books. Once deployed in `Kubernetes` cluster, it
+won't be exposed to outside, i.e, it won't be possible to be called from host machine. In order to bypass it, we are
+going to use `Kong` as a gateway service. So, to access `book-service`, you will have to call `Kong` REST API and then,
+it will redirect the request to `book-service`. Furthermore, the plugin `Rate Limiting` will be installed in `Kong`.
+It will be configured to just allow 5 calls a minute to `book-service` endpoints.
 
-`book-service` is a REST API application for managing books. Once deployed in `Kubernetes` cluster, it won't be exposed to outside, i.e, it won't be possible to be called from host machine. In order to bypass it, we are going to use `Kong` as a gateway. So, to access `book-service`, you will have to call `Kong` REST API and then, it will redirect the request to `book-service`. Furthermore, the plugin `Rate Limiting` will be installed in `Kong`. It will be configured to just allow 5 calls a minute to `book-service` endpoints.
+Besides, `book-service` implements `Keycloak` security configuration. The endpoints related to "managing books", like
+`POST /api/books`, `PATCH /api/books/{id}` and `DELETE /api/books/{id}` will require a `Bearer JWT access token` to be
+called.
 
-Besides, `book-service` implements `Keycloak` security configuration. The endpoints related to "managing books", like `POST /api/books`, `PATCH /api/books/{id}` and `DELETE /api/books/{id}` will require a `Bearer` JWT access token to be accessed.
+# Start environment
 
-## Start environment
-
-#### 1. Clone `springboot-testing-mongodb-keycloak`
-
+### Start Minikube
 ```
-git clone https://github.com/ivangfr/springboot-testing-mongodb-keycloak.git
+minikube start
 ```
 
-#### 2. Start Minikube
+> The command `minikube stop` can be used to stop your cluster. This command shuts down the Minikube Virtual Machine,
+but preserves all cluster state and data. Starting the cluster again will restore it to it’s previous state.
+
+> The command `minikube delete` can be used to delete your cluster. This command shuts down and deletes the Minikube
+Virtual Machine. No data or state is preserved.
+
+### Start Minikube as explained in the main README
 
 ```
 minikube start
 ```
 
-#### 3. Use Minikube Docker Daemon
+### Clone `springboot-testing-mongodb-keycloak`
 
-Because this project uses `Minikube`, instead of pushing your Docker image to a registry, you can simply build the image using the same Docker host as the `Minikube` VM, so that the images are automatically present. To do so, make sure you are using the `Minikube` Docker daemon
+```
+git clone https://github.com/ivangfr/springboot-testing-mongodb-keycloak.git
+```
+
+### Use Minikube Docker Daemon
+
+Because this project uses `Minikube`, instead of pushing your Docker image to a registry, you can simply build the
+image using the same Docker host as the `Minikube` VM, so that the images are automatically present. To do so, make
+sure you are using the `Minikube` Docker daemon
 ```
 eval $(minikube docker-env)
 ```
@@ -34,28 +55,39 @@ eval $(minikube docker-env)
 > eval $(minikube docker-env -u)
 > ```
 
-#### 4. Build _springboot-testing-mongodb-keycloak_
+### Build _springboot-testing-mongodb-keycloak_
 
-Inside `/springboot-testing-mongodb-keycloak` root folder type:
+Run the following command inside `springboot-testing-mongodb-keycloak` root folder
 ```
-gradle clean build docker
+./gradlew clean build docker -x test -x integrationTest
 ```
 
-#### 5. Run _deploy-all.sh_ script
+You can check that the `docker.mycompany.com/book-service` docker image was created and is present among other `k8s`
+docker images by typing
+```
+docker images
+```
 
+### Run _deploy-all.sh_ script
+
+Inside `kubernetes-environment/bookservice-kong-keycloak` root folder, run
 ```
 ./deploy-all.sh
 ```
 
-It will deploy to `Kubernetes`: `MySQL-Keycloak`, `Postgres-Kong` and `MongoDB`. It will take some time so be patient. You can check running `minukube dashboard`.
+It will deploy to `Kubernetes`: `MySQL-Keycloak`, `Postgres-Kong` and `MongoDB`. It will take some time (pulling docker
+images, starting services, etc). So be patient. You can check the progress by running
+```
+kubectl get pods
+```
 
-> If one of the above deployment didn't work, you can delete it using the command bellow and try again
+> If one of the above deployment did not work, you can delete it using the command below and trying again
 > ```
 > kubectl delete -f kubernetes/<filename>.yaml
 > kubectl create -f kubernetes/<filename>.yaml
 > ```
 
-#### 6. Run _services-addresses.sh_ script
+### Run _services-addresses.sh_ script
 
 ```
 ./services-addresses.sh
@@ -63,35 +95,32 @@ It will deploy to `Kubernetes`: `MySQL-Keycloak`, `Postgres-Kong` and `MongoDB`.
 
 It will get the exposed `Kong` and `Keycloak` addresses. 
 
-**Copy the output and run it on a terminal. It will export `Kong` and `Keycloak` addresses to environment variables. Those environment variables will be used on the next steps.**
+**Copy the output and run it on a terminal. It will export `Kong` and `Keycloak` addresses to environment variables.
+Those environment variables will be used on the next steps.**
 
-## Configure Keycloak
+# Configure Keycloak
 
-#### 1. Open Keycloak UI
+### Open Keycloak UI
 
-```
-http://$KEYCLOAK_ADDR
-```
-OR
 ```
 minikube service keycloak-service
 ```
 
-#### 2. Add realm, client, client-roles and user
+### Add realm, client, client-roles and user
 
 Please, visit https://github.com/ivangfr/springboot-testing-mongodb-keycloak#manually-using-keycloak-ui
 
-## Deploy book-service
+# Deploy book-service
 
-#### Run the following command to deploy _book-service_
+### Run the following command to deploy _book-service_
 
 ```
 kubectl create -f deployment-files/bookservice-deployment.yaml
 ```
 
-## Configuring Kong
+# Configuring Kong
 
-#### 1. Add service _book-service_
+### Add service _book-service_
 
 ```
 curl -i -X POST http://$KONG_ADDR_8001/services/ \
@@ -101,7 +130,7 @@ curl -i -X POST http://$KONG_ADDR_8001/services/ \
   -d 'port=8080'
 ```
 
-#### 2. Add _book-service_ route
+### Add _book-service_ route
 
 ```
 curl -i -X POST http://$KONG_ADDR_8001/services/book-service/routes/ \
@@ -110,22 +139,38 @@ curl -i -X POST http://$KONG_ADDR_8001/services/book-service/routes/ \
   -d "strip_path=false"
 ```
 
-#### 3. Test route
+### Test route
 
-**`GET /api/books`**
+**`GET /actuator/health`**
 
 ```
-curl -i http://$KONG_ADDR_8000/health -H 'Host: book-service'
+curl -i http://$KONG_ADDR_8000/actuator/health -H 'Host: book-service'
 ```
 
 It should return
 
 ```
-Code: 200
-Response Body: {"status":"UP"}
+HTTP/1.1 200
+{
+  "status": "UP",
+  "details": {
+    "diskSpace": {
+      "status": "UP",
+      "details": {
+      	...
+      }
+    },
+    "mongo": {
+      "status": "UP",
+      "details": {
+        ...
+      }
+    }
+  }
+}
 ```
 
-#### 4. Add _Rate Limiting_ plugin
+### Add _Rate Limiting_ plugin
 
 - Add plugin to `book-service` service
 
@@ -138,19 +183,19 @@ curl -X POST http://$KONG_ADDR_8001/services/book-service/plugins \
 - Make some calls to
 
 ```
-curl -i http://$KONG_ADDR_8000/health -H 'Host: book-service'
+curl -i http://$KONG_ADDR_8000/actuator/health -H 'Host: book-service'
 ```
 
 - After exceeding 5 calls in a minute, you should see
 
 ```
-Code: 429 Too Many Requests
-Response Body: {"message":"API rate limit exceeded"}
+HTTP/1.1 429 Too Many Requests
+{"message":"API rate limit exceeded"}
 ```
 
-## Final test
+# Final test
 
-#### 1. Try to call `GET /api/books` endpoint
+### Try to call `GET /api/books` endpoint
 ```
 curl -i http://$KONG_ADDR_8000/api/books -H 'Host: book-service'
 ```
@@ -158,11 +203,11 @@ curl -i http://$KONG_ADDR_8000/api/books -H 'Host: book-service'
 It should return
 
 ```
-Code: 200
-Response Body: []
+HTTP/1.1 200
+[]
 ```
 
-#### 2. Try to call `POST /api/books` endpoint without access token
+### Try to call `POST /api/books` endpoint without access token
 
 ```
 curl -i -X POST http://$KONG_ADDR_8000/api/books -H 'Host: book-service' \
@@ -173,30 +218,34 @@ curl -i -X POST http://$KONG_ADDR_8000/api/books -H 'Host: book-service' \
 It should return
 
 ```
-Code: 302
+HTTP/1.1 302
 ```
 
-#### 3. Get access token from Keycloak
+### Get access token from Keycloak
 
-- Find `book-service` POD
+- Find `book-service` Pod
 
 ```
 kubectl get pods -l app=bookservice
 ```
 
-- Get a shell to `book-service` POD running container
+- `kubectl exec` into `book-service` running Pod
 
 ```
 kubectl exec -it bookservice-deployment-... sh
 ```
 
-- Inside it, run the follow `cURL` command to get the access token
+- Inside the container, export to `BOOKSERVICE_CLIENT_SECRET` environment variable the Client Secret generated by
+`Keycloak` for `book-service` (Configuring Keycloak > Create a new Client).
+```
+export BOOKSERVICE_CLIENT_SECRET=...
+```
 
-*Update the `BOOKSERVICE_CLIENT_SECRET` value with the secret generated by Keycloak (Configure Keycloak)*
+- Still inside the container, run the follow `curl` command to get the access token
 
 ```
 curl -s -X POST \
-  "http://keycloak-service:8080/auth/realms/company-services/protocol/openid-connect/token" \
+  http://keycloak-service:8080/auth/realms/company-services/protocol/openid-connect/token \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "username=ivan.franchin" \
   -d "password=123" \
@@ -205,15 +254,16 @@ curl -s -X POST \
   -d "client_id=book-service" | jq -r .access_token
 ```
 
-#### 4. Export the access token to `MY_ACCESS_TOKEN`
+- Copy the access token generated and `exit` the container.
 
-In the host machine, export the access token generated previously to `MY_ACCESS_TOKEN` environment variable
+### Export the access token to `MY_ACCESS_TOKEN`
 
+In the host machine, export to `MY_ACCESS_TOKEN` environment variable the access token generated previously
 ```
-export MY_ACCESS_TOKEN=<access-token-generated-inside-book-service-pod>
+export MY_ACCESS_TOKEN=...
 ```
 
-#### 5. Call `POST /api/books` endpoint informing the access token
+### Call `POST /api/books` endpoint informing the access token
 
 ```
 curl -i -X POST http://$KONG_ADDR_8000/api/books -H 'Host: book-service' \
@@ -225,8 +275,8 @@ curl -i -X POST http://$KONG_ADDR_8000/api/books -H 'Host: book-service' \
 It should return
 
 ```
-Code: 201
-Response Body: {
+HTTP/1.1 201 
+{
   "id":"6d1270d5-716f-46b1-9a9d-e152f62464aa",
   "title":"java 8",
   "authorName":"ivan",

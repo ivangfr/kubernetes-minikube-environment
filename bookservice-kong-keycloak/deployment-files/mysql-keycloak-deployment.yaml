@@ -41,7 +41,7 @@ spec:
     spec:
       containers:
       - name: mysql-keycloak
-        image: mysql:5.7.21
+        image: mysql:5.7.25
         env:
         - name: MYSQL_DATABASE
           value: keycloak
@@ -50,7 +50,7 @@ spec:
         - name: MYSQL_USER
           value: keycloak
         - name: MYSQL_PASSWORD
-          value: keycloak_password
+          value: password
         ports:
         - containerPort: 3306
         volumeMounts:

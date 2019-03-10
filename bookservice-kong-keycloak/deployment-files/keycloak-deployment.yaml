@@ -9,7 +9,7 @@ spec:
   selector:
     app: keycloak
   ports:
-  - port: 8080
+    - port: 8080
   type: NodePort
 ---
 apiVersion: apps/v1
@@ -27,18 +27,18 @@ spec:
         app: keycloak
     spec:
       containers:
-      - name: keycloak
-        image: jboss/keycloak
-        ports:
-          - containerPort: 8080
-        env:
-        - name: KEYCLOAK_USER
-          value: admin
-        - name: KEYCLOAK_PASSWORD
-          value: admin
-        - name: MYSQL_ADDR
-          value: mysql-keycloak-service
-        - name: MYSQL_USER
-          value: keycloak
-        - name: MYSQL_PASSWORD
-          value: keycloak_password
+        - name: keycloak
+          image: jboss/keycloak:4.8.3.Final
+          ports:
+            - containerPort: 8080
+          env:
+            - name: KEYCLOAK_USER
+              value: admin
+            - name: KEYCLOAK_PASSWORD
+              value: admin
+            - name: DB_VENDOR
+              value: mysql
+            - name: DB_ADDR
+              value: mysql-keycloak-service
+            - name: JDBC_PARAMS
+              value: useSSL=false

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 kubectl create -f deployment-files/mysql-keycloak-deployment.yaml
 kubectl create -f deployment-files/postgres-kong-deployment.yaml
 kubectl create -f deployment-files/mongodb-bookservice-deployment.yaml

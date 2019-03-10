@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 kubectl delete -f deployment-files/mysql-keycloak-deployment.yaml
 kubectl delete -f deployment-files/postgres-kong-deployment.yaml
 kubectl delete -f deployment-files/mongodb-bookservice-deployment.yaml

@@ -29,13 +29,7 @@ but preserves all cluster state and data. Starting the cluster again will restor
 > The command `minikube delete` can be used to delete your cluster. This command shuts down and deletes the Minikube
 Virtual Machine. No data or state is preserved.
 
-### Start Minikube as explained in the main README
-
-```
-minikube start
-```
-
-### Clone `springboot-testing-mongodb-keycloak`
+### Clone springboot-testing-mongodb-keycloak
 
 ```
 git clone https://github.com/ivangfr/springboot-testing-mongodb-keycloak.git
@@ -55,7 +49,7 @@ eval $(minikube docker-env)
 > eval $(minikube docker-env -u)
 > ```
 
-### Build _springboot-testing-mongodb-keycloak_
+### Build springboot-testing-mongodb-keycloak
 
 Run the following command inside `springboot-testing-mongodb-keycloak` root folder
 ```
@@ -81,7 +75,7 @@ images, starting services, etc). So be patient. You can check the progress by ru
 kubectl get pods
 ```
 
-> If one of the above deployment did not work, you can delete it using the command below and trying again
+> If one of the above deployment did not work, you can delete and re-create it using the commands below
 > ```
 > kubectl delete -f kubernetes/<filename>.yaml
 > kubectl create -f kubernetes/<filename>.yaml
@@ -93,7 +87,7 @@ kubectl get pods
 ./services-addresses.sh
 ```
 
-It will get the exposed `Kong` and `Keycloak` addresses. 
+It will get the exposed addresses of `Kong` and `Keycloak`. 
 
 **Copy the output and run it on a terminal. It will export `Kong` and `Keycloak` addresses to environment variables.
 Those environment variables will be used on the next steps.**
@@ -170,7 +164,7 @@ HTTP/1.1 200
 }
 ```
 
-### Add _Rate Limiting_ plugin
+### Add Rate Limiting plugin
 
 - Add plugin to `book-service` service
 
@@ -256,7 +250,7 @@ curl -s -X POST \
 
 - Copy the access token generated and `exit` the container.
 
-### Export the access token to `MY_ACCESS_TOKEN`
+### Export the access token to MY_ACCESS_TOKEN
 
 In the host machine, export to `MY_ACCESS_TOKEN` environment variable the access token generated previously
 ```

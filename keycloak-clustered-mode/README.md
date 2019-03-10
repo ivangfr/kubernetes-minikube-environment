@@ -16,7 +16,7 @@ but preserves all cluster state and data. Starting the cluster again will restor
 > The command `minikube delete` can be used to delete your cluster. This command shuts down and deletes the Minikube
 Virtual Machine. No data or state is preserved.
 
-### (Optional) Use _Minikube_ Docker Daemon
+### (Optional) Use Minikube Docker Daemon
 
 Because this project uses `Minikube`, instead of pushing your Docker image to a registry, you can simply build the
 image using the same Docker host as the `Minikube` VM, so that the images are automatically present. To do so, make
@@ -56,7 +56,7 @@ helm install --name keycloak \
 stable/mysql
 ```
 
-# Deploy _keycloak-clustered_
+# Deploy keycloak-clustered
 
 Run the following command. It will start 2 replicas of `keycloak-clustered` in Standalone Clustered Mode.
 ```

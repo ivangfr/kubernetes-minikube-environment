@@ -4,8 +4,9 @@ The goal of this project is have some examples using [`Kubernetes`](https://kube
 
 # Pre-requisites
 
-**You must have [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and
-[Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/#install-minikube) installed.**
+**You must have [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/),
+[Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/#install-minikube) and 
+[Helm](https://helm.sh/docs/using_helm/#installing-the-helm-client) installed.**
 
 # Examples
 

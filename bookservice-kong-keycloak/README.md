@@ -6,6 +6,15 @@ The goal of this project is to run inside [`Kubernetes`](https://kubernetes.io)
 [`Keycloak`](https://www.keycloak.org) (authentication and authorization service) and
 [`Kong`](https://konghq.com) (gateway service).
 
+## Prerequisites
+
+Clone `springboot-testing-mongodb-keycloak` project
+```
+git clone https://github.com/ivangfr/springboot-testing-mongodb-keycloak.git
+```
+
+### book-service
+
 `book-service` is a REST API spring-boot application for managing books. Once deployed in `Kubernetes` cluster, it
 won't be exposed to outside, i.e, it won't be possible to be called from host machine. In order to bypass it, we are
 going to use `Kong` as a gateway service. So, to access `book-service`, you will have to call `Kong` REST API and then,
@@ -16,40 +25,24 @@ Besides, `book-service` implements `Keycloak` security configuration. The endpoi
 `POST /api/books`, `PATCH /api/books/{id}` and `DELETE /api/books/{id}` will require a `Bearer JWT access token` to be
 called.
 
-# Start environment
-
-### Start Minikube
+## Start Minikube
 ```
 minikube start
 ```
 
-> The command `minikube stop` can be used to stop your cluster. This command shuts down the Minikube Virtual Machine,
-but preserves all cluster state and data. Starting the cluster again will restore it to it’s previous state.
+## Use Minikube Docker Daemon
 
-> The command `minikube delete` can be used to delete your cluster. This command shuts down and deletes the Minikube
-Virtual Machine. No data or state is preserved.
-
-### Clone springboot-testing-mongodb-keycloak
-
-```
-git clone https://github.com/ivangfr/springboot-testing-mongodb-keycloak.git
-```
-
-### Use Minikube Docker Daemon
-
-Because this project uses `Minikube`, instead of pushing your Docker image to a registry, you can simply build the
-image using the same Docker host as the `Minikube` VM, so that the images are automatically present. To do so, make
-sure you are using the `Minikube` Docker daemon
+Instead of pushing the docker image to Docker Registry, we will simply build the image using the `Minikube` Docker daemon.
+For it, run the command below to set `Minikube` host.
 ```
 eval $(minikube docker-env)
 ```
-
 > When Minikube host won't be used anymore, you can undo this change by running   
 > ```
 > eval $(minikube docker-env -u)
 > ```
 
-### Build springboot-testing-mongodb-keycloak
+## Build springboot-testing-mongodb-keycloak
 
 Run the following command inside `springboot-testing-mongodb-keycloak` root folder
 ```
@@ -62,9 +55,9 @@ docker images by typing
 docker images
 ```
 
-### Run _deploy-all.sh_ script
+## Deployments
 
-Inside `kubernetes-environment/bookservice-kong-keycloak` root folder, run
+Inside `kubernetes-environment/bookservice-kong-keycloak` root folder, run the following script
 ```
 ./deploy-all.sh
 ```
@@ -74,25 +67,25 @@ images, starting services, etc). So be patient. You can check the progress by ru
 ```
 kubectl get pods
 ```
-
 > If one of the above deployment did not work, you can delete and re-create it using the commands below
 > ```
-> kubectl delete -f kubernetes/<filename>.yaml
-> kubectl create -f kubernetes/<filename>.yaml
+> kubectl delete -f yaml-files/<filename>.yaml
+> kubectl apply -f yaml-files/<filename>.yaml
 > ```
 
-### Run _services-addresses.sh_ script
+## Services addresses
 
+Run the following script
 ```
 ./services-addresses.sh
 ```
 
 It will get the exposed addresses of `Kong` and `Keycloak`. 
 
-**Copy the output and run it on a terminal. It will export `Kong` and `Keycloak` addresses to environment variables.
+**Copy the output and run it in a terminal. It will export `Kong` and `Keycloak` addresses to environment variables.
 Those environment variables will be used on the next steps.**
 
-# Configure Keycloak
+## Configure Keycloak
 
 ### Open Keycloak UI
 
@@ -104,30 +97,29 @@ minikube service keycloak-service
 
 Please, visit https://github.com/ivangfr/springboot-testing-mongodb-keycloak#manually-using-keycloak-ui
 
-# Deploy book-service
+## Deploy book-service
 
-### Run the following command to deploy _book-service_
+Run the following command to deploy `book-service`
+```
+kubectl apply -f yaml-files/bookservice-deployment.yaml
+```
+
+## Configuring Kong
+
+### Add service book-service
 
 ```
-kubectl create -f deployment-files/bookservice-deployment.yaml
-```
-
-# Configuring Kong
-
-### Add service _book-service_
-
-```
-curl -i -X POST http://$KONG_ADDR_8001/services/ \
+curl -i -X POST $KONG_8001_URL/services/ \
   -d 'name=book-service' \
   -d 'protocol=http' \
   -d 'host=bookservice-service' \
   -d 'port=8080'
 ```
 
-### Add _book-service_ route
+### Add book-service route
 
 ```
-curl -i -X POST http://$KONG_ADDR_8001/services/book-service/routes/ \
+curl -i -X POST $KONG_8001_URL/services/book-service/routes/ \
   -d "protocols[]=http" \
   -d "hosts[]=book-service" \
   -d "strip_path=false"
@@ -135,10 +127,9 @@ curl -i -X POST http://$KONG_ADDR_8001/services/book-service/routes/ \
 
 ### Test route
 
-**`GET /actuator/health`**
-
+In order to test the route, we will use `GET /actuator/health`
 ```
-curl -i http://$KONG_ADDR_8000/actuator/health -H 'Host: book-service'
+curl -i $KONG_8000_URL/actuator/health -H 'Host: book-service'
 ```
 
 It should return
@@ -167,31 +158,28 @@ HTTP/1.1 200
 ### Add Rate Limiting plugin
 
 - Add plugin to `book-service` service
-
 ```
-curl -X POST http://$KONG_ADDR_8001/services/book-service/plugins \
+curl -X POST $KONG_8001_URL/services/book-service/plugins \
   -d "name=rate-limiting"  \
   -d "config.minute=5"
 ```
 
 - Make some calls to
-
 ```
-curl -i http://$KONG_ADDR_8000/actuator/health -H 'Host: book-service'
+curl -i $KONG_8000_URL/actuator/health -H 'Host: book-service'
 ```
 
 - After exceeding 5 calls in a minute, you should see
-
 ```
 HTTP/1.1 429 Too Many Requests
 {"message":"API rate limit exceeded"}
 ```
 
-# Final test
+## Final test
 
 ### Try to call `GET /api/books` endpoint
 ```
-curl -i http://$KONG_ADDR_8000/api/books -H 'Host: book-service'
+curl -i $KONG_8000_URL/api/books -H 'Host: book-service'
 ```
 
 It should return
@@ -204,7 +192,7 @@ HTTP/1.1 200
 ### Try to call `POST /api/books` endpoint without access token
 
 ```
-curl -i -X POST http://$KONG_ADDR_8000/api/books -H 'Host: book-service' \
+curl -i -X POST $KONG_8000_URL/api/books -H 'Host: book-service' \
   -H "Content-Type: application/json" \
   -d '{ "authorName": "ivan", "title": "java 8", "price": 10.5 }'
 ```
@@ -218,13 +206,11 @@ HTTP/1.1 302
 ### Get access token from Keycloak
 
 - Find `book-service` Pod
-
 ```
 kubectl get pods -l app=bookservice
 ```
 
 - `kubectl exec` into `book-service` running Pod
-
 ```
 kubectl exec -it bookservice-deployment-... sh
 ```
@@ -236,7 +222,6 @@ export BOOKSERVICE_CLIENT_SECRET=...
 ```
 
 - Still inside the container, run the follow `curl` command to get the access token
-
 ```
 curl -s -X POST \
   http://keycloak-service:8080/auth/realms/company-services/protocol/openid-connect/token \
@@ -250,7 +235,7 @@ curl -s -X POST \
 
 - Copy the access token generated and `exit` the container.
 
-### Export the access token to MY_ACCESS_TOKEN
+### Export the access token
 
 In the host machine, export to `MY_ACCESS_TOKEN` environment variable the access token generated previously
 ```
@@ -260,7 +245,7 @@ export MY_ACCESS_TOKEN=...
 ### Call `POST /api/books` endpoint informing the access token
 
 ```
-curl -i -X POST http://$KONG_ADDR_8000/api/books -H 'Host: book-service' \
+curl -i -X POST $KONG_8000_URL/api/books -H 'Host: book-service' \
   -H "Authorization: Bearer $MY_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{ "authorName": "ivan", "title": "java 8", "price": 10.5 }'
@@ -277,3 +262,25 @@ HTTP/1.1 201
   "price":10.5
 }
 ```
+
+## Shutdown
+
+- The script below will delete all deployments
+```
+./cleaning-up.sh
+```
+
+- The following command shuts down the Minikube Virtual Machine, but preserves all cluster state and data. Starting the
+cluster again will restore it to it’s previous state.
+```
+minikube stop
+```
+
+- The command shuts down and deletes the Minikube Virtual Machine. No data or state is preserved.
+```
+minikube delete
+```
+
+## TODO
+
+- replace `keycloak`, `kong`, `mysql` and `postgres` deployments by Helm charts.

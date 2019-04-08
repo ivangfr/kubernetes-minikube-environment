@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: authorbookapi-service
+  labels:
+    app: authorbookapi
+    tier: backend
+spec:
+  selector:
+    app: authorbookapi
+  ports:
+    - port: 8080
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authorbookapi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authorbookapi
+  template:
+    metadata:
+      labels:
+        app: authorbookapi
+    spec:
+      containers:
+        - name: authorbookapi
+          image: docker.mycompany.com/author-book-api:1.0.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_HOST
+              value: mysql
+            - name: ZIPKIN_HOST
+              value: zipkin-service
+            - name: BOOK_REVIEW_API_HOST
+              value: bookreviewapi-service
+            - name: BOOK_REVIEW_API_PORT
+              value: "8080"

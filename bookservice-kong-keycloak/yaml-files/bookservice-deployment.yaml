@@ -10,7 +10,6 @@ spec:
     app: bookservice
   ports:
     - port: 8080
-      targetPort: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -33,9 +32,9 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: MONGODB_ADDR
-              value: mongodb-bookservice-service
-            - name: KEYCLOAK_ADDR
-              value: keycloak-service
+            - name: MONGODB_HOST
+              value: my-mongodb
+            - name: KEYCLOAK_HOST
+              value: my-keycloak-http
             - name: KEYCLOAK_PORT
-              value: "8080"
+              value: "80"

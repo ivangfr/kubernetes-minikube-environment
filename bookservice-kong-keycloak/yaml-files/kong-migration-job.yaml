@@ -11,13 +11,17 @@ spec:
     spec:
       containers:
         - name: kong-migration
-          image: kong:1.0.3
+          image: kong:1.1.1
           env:
             - name: KONG_NGINX_DAEMON
               value: 'off'
+            - name: KONG_PG_DATABASE
+              value: kong
+            - name: KONG_PG_USER
+              value: kong
             - name: KONG_PG_PASSWORD
-              value: kong_password
+              value: kong
             - name: KONG_PG_HOST
-              value: postgres-kong-service
+              value: my-postgres-postgresql
           command: [ "/bin/sh", "-c", "kong migrations bootstrap" ]
       restartPolicy: Never

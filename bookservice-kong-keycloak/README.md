@@ -42,14 +42,14 @@ eval $(minikube docker-env)
 > eval $(minikube docker-env -u)
 > ```
 
-## Build springboot-testing-mongodb-keycloak
+## Build Docker Image
 
-Run the following command inside `springboot-testing-mongodb-keycloak` root folder
+- Run the following command inside `springboot-testing-mongodb-keycloak` root folder
 ```
 ./gradlew clean build docker -x test -x integrationTest
-```
+``` 
 
-You can check that the `docker.mycompany.com/book-service` docker image was created and is present among other `k8s`
+- You can check that the `docker.mycompany.com/book-service` docker image was created and is present among other `k8s`
 docker images by typing
 ```
 docker images
@@ -62,16 +62,11 @@ Inside `kubernetes-environment/bookservice-kong-keycloak` root folder, run the f
 ./deploy-all.sh
 ```
 
-It will deploy to `Kubernetes`: `MySQL-Keycloak`, `Postgres-Kong` and `MongoDB`. It will take some time (pulling docker
-images, starting services, etc). So be patient. You can check the progress by running
+It will install to `Kubernetes`: `MySQL`, `Postgres`, `MongoDB` `Kong` and Keycloak. It can take some time
+(pulling docker images, starting services, etc). You can check the status progress by running
 ```
-kubectl get pods
+kubectl get pods --watch
 ```
-> If one of the above deployment did not work, you can delete and re-create it using the commands below
-> ```
-> kubectl delete -f yaml-files/<filename>.yaml
-> kubectl apply -f yaml-files/<filename>.yaml
-> ```
 
 ## Services addresses
 
@@ -87,19 +82,30 @@ Those environment variables will be used on the next steps.**
 
 ## Configure Keycloak
 
-### Open Keycloak UI
+Before start, check if Keycloak is ready by running `kubectl get pods`. The column `READY` must show `1/1`. If it is
+showing 0/1, wait a little bit.
 
+### Automatically running script
+ 
+- Inside `springboot-testing-mongodb-keycloak` root folder, run the following script
 ```
-minikube service keycloak-service
+./init-keycloak.sh $KEYCLOAK_URL
 ```
 
-### Add realm, client, client-roles and user
+- In the end, the script prints the `BOOKSERVICE_CLIENT_SECRET`. It will be used on the next steps.
 
-Please, visit https://github.com/ivangfr/springboot-testing-mongodb-keycloak#manually-using-keycloak-ui
+### Manually using Keycloak UI
+
+- Open Keyloak UI
+```
+minikube service keycloak-http
+```
+
+- Add realm, client, client-roles and user as explained in https://github.com/ivangfr/springboot-testing-mongodb-keycloak#manually-using-keycloak-ui
 
 ## Deploy book-service
 
-Run the following command to deploy `book-service`
+In `kubernetes-environment/bookservice-kong-keycloak` root folder, run the following command to deploy `book-service`
 ```
 kubectl apply -f yaml-files/bookservice-deployment.yaml
 ```
@@ -109,7 +115,7 @@ kubectl apply -f yaml-files/bookservice-deployment.yaml
 ### Add service book-service
 
 ```
-curl -i -X POST $KONG_8001_URL/services/ \
+curl -i -X POST $KONG_ADMIN_URL/services/ \
   -d 'name=book-service' \
   -d 'protocol=http' \
   -d 'host=bookservice-service' \
@@ -119,7 +125,7 @@ curl -i -X POST $KONG_8001_URL/services/ \
 ### Add book-service route
 
 ```
-curl -i -X POST $KONG_8001_URL/services/book-service/routes/ \
+curl -i -X POST $KONG_ADMIN_URL/services/book-service/routes/ \
   -d "protocols[]=http" \
   -d "hosts[]=book-service" \
   -d "strip_path=false"
@@ -129,7 +135,7 @@ curl -i -X POST $KONG_8001_URL/services/book-service/routes/ \
 
 In order to test the route, we will use `GET /actuator/health`
 ```
-curl -i $KONG_8000_URL/actuator/health -H 'Host: book-service'
+curl -i $KONG_PROXY_URL/actuator/health -H 'Host: book-service'
 ```
 
 It should return
@@ -159,17 +165,17 @@ HTTP/1.1 200
 
 - Add plugin to `book-service` service
 ```
-curl -X POST $KONG_8001_URL/services/book-service/plugins \
+curl -X POST $KONG_ADMIN_URL/services/book-service/plugins \
   -d "name=rate-limiting"  \
-  -d "config.minute=5"
+  -d "config.minute=10"
 ```
 
 - Make some calls to
 ```
-curl -i $KONG_8000_URL/actuator/health -H 'Host: book-service'
+curl -i $KONG_PROXY_URL/actuator/health -H 'Host: book-service'
 ```
 
-- After exceeding 5 calls in a minute, you should see
+- After exceeding 10 calls in a minute, you should see
 ```
 HTTP/1.1 429 Too Many Requests
 {"message":"API rate limit exceeded"}
@@ -179,7 +185,7 @@ HTTP/1.1 429 Too Many Requests
 
 ### Try to call `GET /api/books` endpoint
 ```
-curl -i $KONG_8000_URL/api/books -H 'Host: book-service'
+curl -i $KONG_PROXY_URL/api/books -H 'Host: book-service'
 ```
 
 It should return
@@ -192,7 +198,7 @@ HTTP/1.1 200
 ### Try to call `POST /api/books` endpoint without access token
 
 ```
-curl -i -X POST $KONG_8000_URL/api/books -H 'Host: book-service' \
+curl -i -X POST $KONG_PROXY_URL/api/books -H 'Host: book-service' \
   -H "Content-Type: application/json" \
   -d '{ "authorName": "ivan", "title": "java 8", "price": 10.5 }'
 ```
@@ -205,48 +211,21 @@ HTTP/1.1 302
 
 ### Get access token from Keycloak
 
-- Find `book-service` Pod
+- Run the script below to get the access token
 ```
-kubectl get pods -l app=bookservice
-```
-
-- `kubectl exec` into `book-service` running Pod
-```
-kubectl exec -it bookservice-deployment-... sh
+BEARER_MY_ACCESS_TOKEN=$(./get-access-token.sh $BOOKSERVICE_CLIENT_SECRET)
 ```
 
-- Inside the container, export to `BOOKSERVICE_CLIENT_SECRET` environment variable the Client Secret generated by
-`Keycloak` for `book-service` (Configuring Keycloak > Create a new Client).
+- To see the access token returned run
 ```
-export BOOKSERVICE_CLIENT_SECRET=...
-```
-
-- Still inside the container, run the follow `curl` command to get the access token
-```
-curl -s -X POST \
-  http://keycloak-service:8080/auth/realms/company-services/protocol/openid-connect/token \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=ivan.franchin" \
-  -d "password=123" \
-  -d "grant_type=password" \
-  -d "client_secret=$BOOKSERVICE_CLIENT_SECRET" \
-  -d "client_id=book-service" | jq -r .access_token
-```
-
-- Copy the access token generated and `exit` the container.
-
-### Export the access token
-
-In the host machine, export to `MY_ACCESS_TOKEN` environment variable the access token generated previously
-```
-export MY_ACCESS_TOKEN=...
+echo $BEARER_MY_ACCESS_TOKEN
 ```
 
 ### Call `POST /api/books` endpoint informing the access token
 
 ```
-curl -i -X POST $KONG_8000_URL/api/books -H 'Host: book-service' \
-  -H "Authorization: Bearer $MY_ACCESS_TOKEN" \
+curl -i -X POST $KONG_PROXY_URL/api/books -H 'Host: book-service' \
+  -H "Authorization: $BEARER_MY_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{ "authorName": "ivan", "title": "java 8", "price": 10.5 }'
 ```
@@ -281,6 +260,6 @@ minikube stop
 minikube delete
 ```
 
-## TODO
+## Issue
 
-- replace `keycloak`, `kong`, `mysql` and `postgres` deployments by Helm charts.
+- **Unable to start Kong using helm chart in Minikube** (https://github.com/helm/charts/issues/13126)

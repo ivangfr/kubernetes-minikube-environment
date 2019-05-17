@@ -2,8 +2,8 @@
 
 MINIKUBE_IP=$(minikube ip)
 
-KONG_ADMIN_PORT=$(kubectl get services kong-admin-service -o go-template='{{(index .spec.ports 0).nodePort}}')
-KONG_PROXY_PORT=$(kubectl get services kong-proxy-service -o go-template='{{(index .spec.ports 0).nodePort}}')
+KONG_ADMIN_PORT=$(kubectl get services my-kong-kong-admin -o go-template='{{(index .spec.ports 0).nodePort}}')
+KONG_PROXY_PORT=$(kubectl get services my-kong-kong-proxy -o go-template='{{(index .spec.ports 0).nodePort}}')
 KEYCLOAK_PORT=$(kubectl get services my-keycloak-http -o go-template='{{(index .spec.ports 0).nodePort}}')
 
 KONG_ADMIN_URL="$MINIKUBE_IP:$KONG_ADMIN_PORT"

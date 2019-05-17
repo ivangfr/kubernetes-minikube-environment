@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+helm delete --purge my-mysql
+helm delete --purge my-keycloak
+
 helm install \
 --name my-mysql \
 --set imageTag=5.7.25 \
@@ -10,15 +13,7 @@ helm install \
 --set persistence.enabled=false \
 stable/mysql
 
-helm install \
---name my-mongodb \
---set image.tag=4.0.9 \
---set image.pullPolicy=IfNotPresent \
---set usePassword=false \
---set persistence.enabled=false \
-stable/mongodb
-
-sleep 20
+sleep 10
 
 helm install \
 --name my-keycloak \
@@ -33,11 +28,3 @@ helm install \
 --set keycloak.persistence.dbUser=keycloak \
 --set keycloak.persistence.dbPassword=keycloak \
 stable/keycloak
-
-helm install \
---name my-kong \
---set image.tag=1.1.1 \
---set admin.useTLS=false \
---set readinessProbe.httpGet.scheme=HTTP \
---set livenessProbe.httpGet.scheme=HTTP \
-stable/kong

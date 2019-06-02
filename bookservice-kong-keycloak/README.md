@@ -26,6 +26,8 @@ create book (`POST /api/books`), update book (`PATCH /api/books/{id}`) and delet
 require a `Bearer JWT access token`.
 
 ## Start Minikube
+
+First of all, let's start Minikube
 ```
 minikube start
 ```
@@ -42,6 +44,17 @@ eval $(minikube docker-env)
 > eval $(minikube docker-env -u)
 > ```
 
+## Helm
+
+To initialize `Helm` run the command below
+```
+helm init --service-account default
+```
+> Note. Wait a few seconds so that `tiller` get ready. The following error will be throw if `tiller` is not ready yet.
+> ```
+> Error: could not find a ready tiller pod
+> ```
+
 ## Build Docker Image
 
 - Inside `springboot-testing-mongodb-keycloak` root folder, run the following command
@@ -56,15 +69,6 @@ docker images
 ```
 
 ## Deployments
-
-- Init `Helm`
-```
-helm init --service-account default
-```
-> Note. Wait a few seconds so that `tiller` get ready. The following error will be throw if `tiller` is not ready yet.
-> ```
-> Error: could not find a ready tiller pod
-> ```
 
 Inside `kubernetes-environment/bookservice-kong-keycloak` root folder, run the following script
 ```

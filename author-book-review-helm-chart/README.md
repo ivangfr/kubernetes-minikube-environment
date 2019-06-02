@@ -2,7 +2,7 @@
 
 The goal of this project is create Helm Charts for the spring-boot applications
 [`author-book-api` and `book-review-api`](https://github.com/ivangfr/springboot-graphql-databases). Then, we will use
-the charts to install the applications in [`Kubernetes`](https://kubernetes.io)
+the charts to install those applications in [`Kubernetes`](https://kubernetes.io)
 ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)). As `author-book-api` uses `MySQL` as storage
 and `book-review-api` uses `MongoDB`, those databases will also be installed using their Helm Charts available at
 https://github.com/helm/charts/tree/master/stable.
@@ -15,11 +15,13 @@ git clone https://github.com/ivangfr/springboot-graphql-databases.git
 ```
 
 ## Start Minikube
+
+First of all, let's start Minikube
 ```
 minikube start
 ```
 
-### Use Minikube Docker Daemon
+## Use Minikube Docker Daemon
 
 Instead of pushing the docker image to Docker Registry, we will simply build the image using the `Minikube` Docker Daemon.
 For it, run the command below to set `Minikube` host.
@@ -29,6 +31,17 @@ eval $(minikube docker-env)
 > When Minikube host won't be used anymore, you can undo this change by running   
 > ```
 > eval $(minikube docker-env -u)
+> ```
+
+## Helm
+
+To initialize `Helm` run the command below
+```
+helm init --service-account default
+```
+> Note. Wait a few seconds so that `tiller` get ready. The following error will be throw if `tiller` is not ready yet.
+> ```
+> Error: could not find a ready tiller pod
 > ```
 
 ## Build Docker Images
@@ -65,15 +78,6 @@ kubectl apply -f yaml-files/dev-namespace.yaml
 ## Deployments
 
 - Go to `kubernetes-environment/author-book-review-helm-chart` folder
-
-- Init `Helm`
-```
-helm init --service-account default
-```
-> Note. Wait a few seconds so that `tiller` get ready. The following error will be throw if `tiller` is not ready yet.
-> ```
-> Error: could not find a ready tiller pod
-> ```
 
 - Install `MySQL` using its [Helm Chart](https://github.com/kubernetes/charts/tree/master/stable/mysql)
 ```

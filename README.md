@@ -21,6 +21,6 @@ as a gateway tool.
 
 The goal of this project is create Helm Charts for the spring-boot applications
 [`author-book-api` and `book-review-api`](https://github.com/ivangfr/springboot-graphql-databases). Then, we will use
-the charts to install the applications in `Kubernetes` (`Minikube`).
+the charts to install those applications in `Kubernetes` (`Minikube`).
 
 ### More soon

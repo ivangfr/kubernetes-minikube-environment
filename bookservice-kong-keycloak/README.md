@@ -2,7 +2,7 @@
 
 The goal of this project is to run inside [`Kubernetes`](https://kubernetes.io)
 ([`Minikube`](https://github.com/kubernetes/minikube)):
-[`book-service`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) (string-boot application),
+[`book-service`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) (String-Boot application),
 [`Keycloak`](https://www.keycloak.org) (authentication and authorization service) and
 [`Kong`](https://konghq.com) (gateway service).
 
@@ -15,19 +15,20 @@ git clone https://github.com/ivangfr/springboot-testing-mongodb-keycloak.git
 
 ### book-service
 
-`book-service` is a REST API spring-boot web java application for managing books. Once deployed in `Kubernetes` cluster,
-it won't be exposed to outside, i.e, it won't be possible to be accessed directly from the host machine. In order to
-bypass it, we are going to use `Kong` as a gateway service. So, to access `book-service`, you will have to call `Kong`
-REST API and then, `Kong` will redirect the request to `book-service`. Furthermore, the plugin `Rate Limiting` will be
-installed in `Kong`. It will be configured to just allow 5 requests a minute to any `book-service` endpoints.
+`book-service` is a Spring-Boot Web Java application that exposes some endpoints to manage books. Once deployed in
+`Kubernetes` cluster, it won't be exposed to outside, i.e, it won't be possible to be accessed directly from the host
+machine. In order to bypass it, we are going to use `Kong` as a gateway service. So, to access `book-service`, you will
+have to call `Kong` REST API and then, `Kong` will redirect the request to `book-service`. Furthermore, the plugin
+`Rate Limiting` will be installed in `Kong`. It will be configured to just allow 5 requests a minute to any
+`book-service` endpoints.
 
 Besides, `book-service` implements `Keycloak` security configuration. The endpoints related to _"managing books"_, like
 create book (`POST /api/books`), update book (`PATCH /api/books/{id}`) and delete book (`DELETE /api/books/{id}`) will
-require a `Bearer JWT access token`.
+require a `Bearer JWT Access Token`.
 
 ## Start Minikube
 
-First of all, let's start Minikube
+First of all, let's start `Minikube`
 ```
 minikube start
 ```
@@ -57,12 +58,12 @@ helm init --service-account default
 
 ## Build Docker Image
 
-- Inside `springboot-testing-mongodb-keycloak` root folder, run the following command
+Inside `springboot-testing-mongodb-keycloak` root folder, run the following command
 ```
-./gradlew clean build docker -x test -x integrationTest
+./gradlew book-service:clean build docker -x test -x integrationTest
 ``` 
 
-- You can check that the `docker.mycompany.com/book-service` docker image was created and is present among other `k8s`
+You can check that the `docker.mycompany.com/book-service` docker image was created and is present among other `k8s`
 docker images by typing
 ```
 docker images
@@ -107,21 +108,21 @@ showing 0/1, wait a little bit.
 
 ### Automatically running script
  
-- Inside `springboot-testing-mongodb-keycloak` root folder, run the following script
+Inside `springboot-testing-mongodb-keycloak` root folder, run the following script
 ```
 ./init-keycloak.sh $KEYCLOAK_URL
 ```
 
-- In the end, the script prints the `BOOKSERVICE_CLIENT_SECRET`. It will be used on the next steps.
+In the end, the script prints the `BOOKSERVICE_CLIENT_SECRET`. It will be used on the next steps.
 
 ### Manually using Keycloak UI
 
-- Open Keyloak UI
+Open `Keyloak UI`
 ```
 minikube service keycloak-http
 ```
 
-- Add realm, client, client-roles and user as explained in https://github.com/ivangfr/springboot-testing-mongodb-keycloak#manually-using-keycloak-ui
+Add realm, client, client-roles and user as explained in https://github.com/ivangfr/springboot-testing-mongodb-keycloak#manually-using-keycloak-ui
 
 ## Deploy book-service
 

@@ -29,7 +29,7 @@ require a `Bearer JWT Access Token`.
 
 ## Start Minikube and Helm
 
-First of all, start `Minikube` and `Helm` as explained [here](https://github.com/ivangfr/kubernetes-environment#start-minikube-and-configure-helm)
+First of all, start `Minikube` and `Helm` as explained at [Start Minikube and Helm](https://github.com/ivangfr/kubernetes-environment#start-minikube-and-helm)
 
 ## Build Docker Image
 

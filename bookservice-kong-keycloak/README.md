@@ -2,7 +2,8 @@
 
 The goal of this project is to run inside [`Kubernetes`](https://kubernetes.io)
 ([`Minikube`](https://github.com/kubernetes/minikube)):
-[`book-service`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) (String-Boot application),
+[`book-service`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak)
+([`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application),
 [`Keycloak`](https://www.keycloak.org) (authentication and authorization service) and
 [`Kong`](https://konghq.com) (gateway service).
 
@@ -15,7 +16,7 @@ git clone https://github.com/ivangfr/springboot-testing-mongodb-keycloak.git
 
 ### book-service
 
-`book-service` is a Spring-Boot Web Java application that exposes some endpoints to manage books. Once deployed in
+`book-service` is a `Spring Boot` Web Java application that exposes some endpoints to manage books. Once deployed in
 `Kubernetes` cluster, it won't be exposed to outside, i.e, it won't be possible to be accessed directly from the host
 machine. In order to bypass it, we are going to use `Kong` as a gateway service. So, to access `book-service`, you will
 have to call `Kong` REST API and then, `Kong` will redirect the request to `book-service`. Furthermore, the plugin
@@ -26,84 +27,68 @@ Besides, `book-service` implements `Keycloak` security configuration. The endpoi
 create book (`POST /api/books`), update book (`PATCH /api/books/{id}`) and delete book (`DELETE /api/books/{id}`) will
 require a `Bearer JWT Access Token`.
 
-## Start Minikube
+## Start Minikube and Helm
 
-First of all, let's start `Minikube`
-```
-minikube start
-```
-
-## Use Minikube Docker Daemon
-
-Instead of pushing the docker image to Docker Registry, we will simply build the image using the `Minikube` Docker daemon.
-For it, run the command below to set `Minikube` host.
-```
-eval $(minikube docker-env)
-```
-> When Minikube host won't be used anymore, you can undo this change by running   
-> ```
-> eval $(minikube docker-env -u)
-> ```
-
-## Helm
-
-To initialize `Helm` run the command below
-```
-helm init --service-account default
-```
-> Note. Wait a few seconds so that `tiller` get ready. The following error will be throw if `tiller` is not ready yet.
-> ```
-> Error: could not find a ready tiller pod
-> ```
+First of all, start `Minikube` and `Helm` as explained [here](https://github.com/ivangfr/kubernetes-environment#start-minikube-and-configure-helm)
 
 ## Build Docker Image
 
-Inside `springboot-testing-mongodb-keycloak` root folder, run the following command
+Instead of pushing the docker image to Docker Registry, we will simply build the image using the `Minikube` Docker daemon.
+
+For it, open a terminal and run the command below to set `Minikube` host.
 ```
-./gradlew book-service:clean build docker -x test -x integrationTest
+eval $(minikube docker-env)
+```
+
+Then, inside `springboot-testing-mongodb-keycloak` root folder, run the following command
+```
+./gradlew book-service:clean book-service:build docker -x test -x integrationTest
 ``` 
 
-You can check that the `docker.mycompany.com/book-service` docker image was created and is present among other `k8s`
-docker images by typing
+Once it is finished, run the command below to check that the `book-service` docker image was created and is present
+among other `k8s` docker images by running
 ```
 docker images
 ```
 
+As `Minikube` host won't be used anymore, you can undo this change by running   
+```
+eval $(minikube docker-env -u)
+```
+
 ## Deployments
 
-Inside `kubernetes-environment/bookservice-kong-keycloak` root folder, run the following script
+Inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following script
 ```
 ./deploy-all.sh
 ```
 
-It will install to `Kubernetes`: `MySQL`, `Postgres`, `MongoDB` `Kong` and Keycloak. It can take some time
+It will install to `Kubernetes`: `MySQL`, `Postgres`, `MongoDB` `Kong` and `Keycloak`. It can take some time
 (pulling docker images, starting services, etc). You can check the status progress by running
 ```
 kubectl get pods --watch
 ```
 
-> Note. I have experienced some exceptions on Keycloak startup. It seems some problem while trying to update MySQL table
+> Note. I have experienced some exceptions on `Keycloak` startup. It seems some problem while trying to update `MySQL` table
 > ```
 > Error: Duplicate column name 'SERVICE_ACCOUNTS_ENABLED' [Failed SQL: ALTER TABLE keycloak.CLIENT ADD SERVICE_ACCOUNTS_ENABLED BIT(1) DEFAULT 0 NOT NULL]
 > ```
 > The complete log and a naive solution for this problem can be found at
-> [Troubleshooting](https://github.com/ivangfr/kubernetes-environment/tree/master/bookservice-kong-keycloak#troubleshooting) section 
+> [Troubleshooting](https://github.com/ivangfr/kubernetes-environment/tree/master/bookservice-kong-keycloak#troubleshooting) 
 
 ## Services addresses
 
-Run the following script
+Run the following script. It will get the exposed addresses of `Kong` and `Keycloak`.
 ```
 ./services-addresses.sh
-```
-
-It will get the exposed addresses of `Kong` and `Keycloak`. 
+``` 
 
 **Copy the output and run it in a terminal. It will export `Kong` and `Keycloak` addresses to environment variables.
 Those environment variables will be used on the next steps.**
 
 ## Configure Keycloak
 
-Before start, check if Keycloak is ready by running `kubectl get pods`. The column `READY` must show `1/1`. If it is
+Before start, check if `Keycloak` is ready by running `kubectl get pods`. The column `READY` must show `1/1`. If it is
 showing 0/1, wait a little bit.
 
 ### Automatically running script
@@ -119,14 +104,14 @@ In the end, the script prints the `BOOKSERVICE_CLIENT_SECRET`. It will be used o
 
 Open `Keyloak UI`
 ```
-minikube service keycloak-http
+minikube service my-keycloak-http
 ```
 
-Add realm, client, client-roles and user as explained in https://github.com/ivangfr/springboot-testing-mongodb-keycloak#manually-using-keycloak-ui
+Add `realm`, `client`, `client-roles` and `user` as explained [`here`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak#manually-using-keycloak-ui)
 
 ## Deploy book-service
 
-In `kubernetes-environment/bookservice-kong-keycloak` root folder, run the following command to deploy `book-service`
+In `kubernetes-environment/bookservice-kong-keycloak` folder, run the following command to deploy `book-service`
 ```
 kubectl apply -f yaml-files/bookservice-deployment.yaml
 ```
@@ -232,6 +217,9 @@ HTTP/1.1 302
 
 ### Get access token from Keycloak
 
+- In a terminal, export to an environment variable the `Secret` generated by `Keycloak` to `book-service`. See
+[Configure Keycloak](https://github.com/ivangfr/kubernetes-environment/tree/master/bookservice-kong-keycloak#configure-keycloak)
+
 - Run the script below to get the access token
 ```
 BEARER_MY_ACCESS_TOKEN=$(./get-access-token.sh $BOOKSERVICE_CLIENT_SECRET)
@@ -263,22 +251,11 @@ HTTP/1.1 201
 }
 ```
 
-## Shutdown
+## Cleanup
 
-- The script below will delete all deployments
+The script below will delete all deployments
 ```
-./cleaning-up.sh
-```
-
-- The following command shuts down the Minikube Virtual Machine, but preserves all cluster state and data. Starting the
-cluster again will restore it to it’s previous state.
-```
-minikube stop
-```
-
-- The command shuts down and deletes the Minikube Virtual Machine. No data or state is preserved.
-```
-minikube delete
+./cleanup.sh
 ```
 
 # Troubleshooting

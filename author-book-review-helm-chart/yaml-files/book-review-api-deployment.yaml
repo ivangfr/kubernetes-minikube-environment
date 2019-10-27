@@ -34,6 +34,6 @@ spec:
             - containerPort: 8080
           env:
             - name: MONGODB_HOST
-              value: mongodb
+              value: my-mongodb
             - name: ZIPKIN_HOST
               value: zipkin-service

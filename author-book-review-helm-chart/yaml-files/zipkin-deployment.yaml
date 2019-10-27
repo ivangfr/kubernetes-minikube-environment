@@ -4,7 +4,7 @@ metadata:
   name: zipkin-service
   labels:
     app: zipkin
-    tier: backenf
+    tier: backend
 spec:
   selector:
     app: zipkin
@@ -28,6 +28,6 @@ spec:
     spec:
       containers:
         - name: zipkin
-          image: openzipkin/zipkin:2.12.6
+          image: openzipkin/zipkin:2.18.0
           ports:
             - containerPort: 9411

@@ -5,7 +5,7 @@ helm delete --purge my-keycloak
 
 helm install \
 --name my-mysql \
---set imageTag=5.7.25 \
+--set imageTag=5.7.28 \
 --set mysqlDatabase=keycloak \
 --set mysqlRootPassword=root-password \
 --set mysqlUser=keycloak \
@@ -17,7 +17,7 @@ sleep 10
 
 helm install \
 --name my-keycloak \
---set keycloak.image.tag=5.0.0 \
+--set keycloak.image.tag=6.0.1 \
 --set keycloak.username=admin \
 --set keycloak.password=admin \
 --set keycloak.service.type=NodePort \

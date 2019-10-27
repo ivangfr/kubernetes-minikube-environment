@@ -9,7 +9,7 @@ BOOKSERVICE_CLIENT_SECRET=$1
 
 BOOKSERVICE_POD=$(kubectl get pods -l app=bookservice -o go-template='{{(index .items 0).metadata.name}}')
 
-ACCESS_TOKEN=$(kubectl exec ${BOOKSERVICE_POD} -- sh -c '
+ACCESS_TOKEN_FULL=$(kubectl exec ${BOOKSERVICE_POD} -- sh -c '
   curl -s -X POST \
     http://my-keycloak-http/auth/realms/company-services/protocol/openid-connect/token \
     -H "Content-Type: application/x-www-form-urlencoded" \
@@ -17,6 +17,8 @@ ACCESS_TOKEN=$(kubectl exec ${BOOKSERVICE_POD} -- sh -c '
     -d "password=123" \
     -d "grant_type=password" \
     -d "client_secret='${BOOKSERVICE_CLIENT_SECRET}'" \
-    -d "client_id=book-service" | jq -r .access_token
+    -d "client_id=book-service"
   ')
+
+ACCESS_TOKEN=$(echo $ACCESS_TOKEN_FULL | jq -r .access_token)
 echo "Bearer $ACCESS_TOKEN"

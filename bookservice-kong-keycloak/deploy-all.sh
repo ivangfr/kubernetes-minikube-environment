@@ -2,7 +2,7 @@
 
 helm install \
 --name my-mysql \
---set imageTag=5.7.25 \
+--set imageTag=5.7.28 \
 --set mysqlDatabase=keycloak \
 --set mysqlRootPassword=root-password \
 --set mysqlUser=keycloak \
@@ -12,7 +12,7 @@ stable/mysql
 
 helm install \
 --name my-mongodb \
---set image.tag=4.0.9 \
+--set image.tag=4.2.1 \
 --set image.pullPolicy=IfNotPresent \
 --set usePassword=false \
 --set persistence.enabled=false \
@@ -22,7 +22,7 @@ sleep 20
 
 helm install \
 --name my-keycloak \
---set keycloak.image.tag=5.0.0 \
+--set keycloak.image.tag=6.0.1 \
 --set keycloak.username=admin \
 --set keycloak.password=admin \
 --set keycloak.service.type=NodePort \
@@ -36,7 +36,7 @@ stable/keycloak
 
 helm install \
 --name my-kong \
---set image.tag=1.1.1 \
+--set image.tag=1.4.0 \
 --set admin.useTLS=false \
 --set readinessProbe.httpGet.scheme=HTTP \
 --set livenessProbe.httpGet.scheme=HTTP \

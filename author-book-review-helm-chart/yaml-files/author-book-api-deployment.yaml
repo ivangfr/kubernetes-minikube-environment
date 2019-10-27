@@ -34,7 +34,7 @@ spec:
             - containerPort: 8080
           env:
             - name: MYSQL_HOST
-              value: mysql
+              value: my-mysql
             - name: ZIPKIN_HOST
               value: zipkin-service
             - name: BOOK_REVIEW_API_HOST

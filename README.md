@@ -24,11 +24,11 @@ minikube start --memory='8000mb' --vm-driver='virtualbox'
 
 Initialize `Helm` by running the command below
 ```
-helm init --service-account default
+helm init
 ```
-> Note. Wait a few seconds so that `tiller` get ready. The following error will be throw if `tiller` is not ready yet.
+> Wait a few seconds so that `tiller` get ready. You can check the status of `tiller` by running
 > ```
-> Error: could not find a ready tiller pod
+> kubectl get pods --all-namespaces
 > ```
 
 \[Optional\] Update information of available `Helm` charts locally from chart repositories
@@ -48,9 +48,3 @@ The command shuts down and deletes the `Minikube Virtual Machine`. No data or st
 ```
 minikube delete
 ```
-
-## Issues
-
-- `MySQL` Helm Chart is not starting when using `Minikube` (https://github.com/kubernetes/minikube/issues/5751). On the
-other hand, if I use `Kubernetes` in `Docker Desktop` or simply run `MySQL` with `docker run` or `docker-compose`, I
-don't have any problem.

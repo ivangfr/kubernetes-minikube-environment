@@ -68,13 +68,13 @@ kubectl apply -f yaml-files/dev-namespace.yaml
 
 Inside `kubernetes-environment/author-book-review-helm-chart` folder, run the following script
 ```
-./deploy-all.sh
+./install-services.sh
 ```
 
-It will install to `Kubernetes`: `MySQL`, `MongoDB` and `Zipkin`. It can take some time (pulling docker images,
-starting services, etc). You can check the status progress by running
+It will install `MySQL`, `MongoDB` and `Zipkin`. This process can take some time (pulling docker images, starting
+services, etc). You can check the status progress by running
 ```
-kubectl get pods --watch
+kubectl get pods --namespace dev
 ```
 
 ## Deploy book-review-api and author-book-api
@@ -83,24 +83,32 @@ In `kubernetes-environment/author-book-review-helm-chart` folder, run the follow
 
 - Deploy `book-review-api` using `YAML` file
 ```
-kubectl apply -f yaml-files/book-review-api-deployment.yaml --namespace=dev
+kubectl apply -f yaml-files/book-review-api-deployment.yaml --namespace dev
 ```
 
 - Deploy `author-book-api` using `YAML` file
 ```
-kubectl apply -f yaml-files/author-book-api-deployment.yaml --namespace=dev
+kubectl apply -f yaml-files/author-book-api-deployment.yaml --namespace dev
 ```
 
-## Applications Link
+## Applications Urls
 
-| Application     | API Type | URL |
-| --------------- | -------- | --- |
-| author-book-api | Swagger  | http://$MINIKUBE_IP:$AUTHOR_BOOK_API_PORT/swagger-ui.html |
-| author-book-api | GraphiQL | http://$MINIKUBE_IP:$AUTHOR_BOOK_API_PORT/graphiql |
-| book-review-api | GraphiQL | http://$MINIKUBE_IP:$BOOK_REVIEW_API_PORT/graphiql |
+To get `author-book-api` and `book-review-api` urls, run the script below
+```
+./get-applications-urls.sh
+```
+
+You should see something similar to
+```
+     Application | API Type |                                         URL |
+---------------- | -------- |  ------------------------------------------ |
+ author-book-api |  Swagger | http://192.168.99.105:31319/swagger-ui.html |
+ author-book-api | GraphiQL |        http://192.168.99.105:31319/graphiql |
+ book-review-api | GraphiQL |        http://192.168.99.105:31781/graphiql |
+```
 
 For more information about how to use the application's endpoints please refer to
-https://github.com/ivangfr/springboot-graphql-databases 
+https://github.com/ivangfr/springboot-graphql-databases#how-to-use-graphiql
 
 ## Cleanup
 
@@ -111,5 +119,6 @@ The script below will delete all deployments
 
 ## TODO
 
-- understand how namespace in Helm works;
-- helmfy zipkin, author-book-api and book-review-api;
+- Helmfy `Zipkin`, `author-book-api` and `book-review-api`;
+- [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) for `author-book-api` and `book-review-api` ();
+- Understand how namespace in Helm works;

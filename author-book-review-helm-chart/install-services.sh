@@ -18,4 +18,4 @@ helm install \
 --set persistence.enabled=false \
 stable/mongodb
 
-kubectl apply -f yaml-files/zipkin-deployment.yaml --namespace=dev
+kubectl apply --namespace dev -f yaml-files/zipkin-deployment.yaml

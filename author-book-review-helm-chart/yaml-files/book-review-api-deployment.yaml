@@ -9,7 +9,7 @@ spec:
   selector:
     app: bookreviewapi
   ports:
-    - port: 8080
+    - port: 9080
   type: NodePort
 ---
 apiVersion: apps/v1
@@ -31,7 +31,7 @@ spec:
           image: docker.mycompany.com/book-review-api:1.0.0
           imagePullPolicy: Never
           ports:
-            - containerPort: 8080
+            - containerPort: 9080
           env:
             - name: MONGODB_HOST
               value: my-mongodb

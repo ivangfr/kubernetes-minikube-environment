@@ -37,3 +37,15 @@ spec:
               value: my-mongodb
             - name: ZIPKIN_HOST
               value: zipkin-service
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 9080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 9080
+            initialDelaySeconds: 60
+            periodSeconds: 10

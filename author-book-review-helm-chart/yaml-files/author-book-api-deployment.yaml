@@ -41,3 +41,15 @@ spec:
               value: bookreviewapi-service
             - name: BOOK_REVIEW_API_PORT
               value: "8080"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10

@@ -100,11 +100,11 @@ To get `author-book-api` and `book-review-api` urls, run the script below
 
 You should see something similar to
 ```
-     Application | API Type |                                         URL |
----------------- | -------- |  ------------------------------------------ |
- author-book-api |  Swagger | http://192.168.99.105:31319/swagger-ui.html |
- author-book-api | GraphiQL |        http://192.168.99.105:31319/graphiql |
- book-review-api | GraphiQL |        http://192.168.99.105:31781/graphiql |
+     Application |  API Type |                                           URL |
+---------------- + --------- + --------------------------------------------- |
+ author-book-api |   Swagger |   http://192.168.99.106:30283/swagger-ui.html |
+ author-book-api |  GraphiQL |          http://192.168.99.106:30283/graphiql |
+ book-review-api |  GraphiQL |          http://192.168.99.106:31821/graphiql |
 ```
 
 For more information about how to use the application's endpoints please refer to
@@ -120,5 +120,4 @@ The script below will delete all deployments
 ## TODO
 
 - Helmfy `Zipkin`, `author-book-api` and `book-review-api`;
-- [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/) for `author-book-api` and `book-review-api` ();
 - Understand how namespace in Helm works;

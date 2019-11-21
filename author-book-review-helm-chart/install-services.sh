@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 
-helm install \
+helm install my-mysql \
 --namespace dev \
---name my-mysql \
 --set imageTag=5.7.28 \
 --set mysqlDatabase=authorbookdb \
 --set mysqlRootPassword=secret \
 --set persistence.enabled=false \
 stable/mysql
 
-helm install \
+helm install my-mongodb \
 --namespace dev \
---name my-mongodb \
 --set image.tag=4.2.1 \
 --set image.pullPolicy=IfNotPresent \
 --set usePassword=false \

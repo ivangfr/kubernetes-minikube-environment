@@ -9,14 +9,14 @@ https://github.com/helm/charts/tree/master/stable.
 
 ## Prerequisites
 
-Clone `springboot-graphql-databases` project
+Clone [`springboot-graphql-databases`](https://github.com/ivangfr/springboot-graphql-databases) project
 ```
 git clone https://github.com/ivangfr/springboot-graphql-databases.git
 ```
 
-## Start Minikube and Helm
+## Start Minikube
 
-First of all, start `Minikube` and `Helm` as explained at [Start Minikube and Helm](https://github.com/ivangfr/kubernetes-environment#start-minikube-and-helm)
+First of all, start `Minikube` as explained at [Start Minikube](https://github.com/ivangfr/kubernetes-environment#start-minikube)
 
 ## Build Docker Images
 

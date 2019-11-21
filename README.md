@@ -15,21 +15,12 @@ You must have [`Kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl
 
 ### [author-book-review-helm-chart](https://github.com/ivangfr/kubernetes-environment/tree/master/author-book-review-helm-chart)
 
-## Start Minikube and Helm
+## Start Minikube
 
-First of all, open a terminal and start `Minikube`
+Open a terminal and start `Minikube` by running the following command
 ```
 minikube start --memory='8000mb' --vm-driver='virtualbox'
 ```
-
-Initialize `Helm` by running the command below
-```
-helm init
-```
-> Wait a few seconds so that `tiller` get ready. You can check the status of `tiller` by running
-> ```
-> kubectl get pods --all-namespaces
-> ```
 
 \[Optional\] Update information of available `Helm` charts locally from chart repositories
 ```

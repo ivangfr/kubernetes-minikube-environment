@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-helm install \
---name my-mysql \
+helm install my-mysql \
 --set imageTag=5.7.28 \
 --set mysqlDatabase=keycloak \
 --set mysqlRootPassword=root-password \
@@ -10,18 +9,25 @@ helm install \
 --set persistence.enabled=false \
 stable/mysql
 
-helm install \
---name my-mongodb \
+helm install my-mongodb \
 --set image.tag=4.2.1 \
 --set image.pullPolicy=IfNotPresent \
 --set usePassword=false \
 --set persistence.enabled=false \
 stable/mongodb
 
+helm install my-postgres \
+--set image.tag=12.1.0 \
+--set image.pullPolicy=IfNotPresent \
+--set postgresqlDatabase=kong \
+--set postgresqlUsername=kong \
+--set postgresqlPassword=kong \
+--set persistence.enabled=false \
+stable/postgresql
+
 sleep 20
 
-helm install \
---name my-keycloak \
+helm install my-keycloak \
 --set keycloak.image.tag=6.0.1 \
 --set keycloak.username=admin \
 --set keycloak.password=admin \
@@ -34,9 +40,13 @@ helm install \
 --set keycloak.persistence.dbPassword=keycloak \
 stable/keycloak
 
-helm install \
---name my-kong \
+helm install my-kong \
 --set image.tag=1.4.0 \
+--set env.database=postgres \
+--set env.pg_host=my-postgres-postgresql \
+--set env.pg_database=kong \
+--set env.pg_user=kong \
+--set env.pg_password=kong \
 --set admin.useTLS=false \
 --set readinessProbe.httpGet.scheme=HTTP \
 --set livenessProbe.httpGet.scheme=HTTP \

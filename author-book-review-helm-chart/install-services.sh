@@ -16,4 +16,4 @@ helm install my-mongodb \
 --set persistence.enabled=false \
 stable/mongodb
 
-kubectl apply --namespace dev -f yaml-files/zipkin-deployment.yaml
+helm install my-zipkin --namespace dev ./my-charts/zipkin

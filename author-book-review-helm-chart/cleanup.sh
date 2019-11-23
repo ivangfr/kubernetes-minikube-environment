@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-kubectl apply -f yaml-files/book-review-api-deployment.yaml --namespace dev
-kubectl apply -f yaml-files/author-book-api-deployment.yaml --namespace dev
+helm delete book-review-api --namespace dev
+helm delete author-book-api --namespace dev
 
 helm delete my-mysql --namespace dev
 helm delete my-mongodb --namespace dev

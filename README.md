@@ -17,9 +17,9 @@ You must have [`Kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl
 
 ## Start Minikube
 
-Open a terminal and start `Minikube` by running the following command
+Open a terminal and start `Minikube` by running the following command. The properties inside `[]` are optional. 
 ```
-minikube start --memory='8000mb' --vm-driver='virtualbox'
+minikube start [--memory='8000mb' --vm-driver='virtualbox']
 ```
 
 \[Optional\] Update information of available `Helm` charts locally from chart repositories

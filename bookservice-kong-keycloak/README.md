@@ -9,7 +9,8 @@ The goal of this project is to run inside [`Kubernetes`](https://kubernetes.io)
 
 ## Prerequisites
 
-Clone [`springboot-testing-mongodb-keycloak`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) project
+Clone [`springboot-testing-mongodb-keycloak`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) project.
+For it, open a terminal and run
 ```
 git clone https://github.com/ivangfr/springboot-testing-mongodb-keycloak.git
 ```
@@ -56,9 +57,9 @@ As `Minikube` host won't be used anymore, you can undo this change by running
 eval $(minikube docker-env -u)
 ```
 
-## Deployments
+## Install services
 
-Inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following script
+In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following script
 ```
 ./install-services.sh
 ```
@@ -76,13 +77,14 @@ kubectl get pods
 
 ## Services Urls
 
-Run the following script. It will get the exposed `Kong` and `Keycloak` urls.
+In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following script. It will
+get the exposed `Kong` and `Keycloak` URLs.
 ```
 ./get-services-urls.sh
 ``` 
 
-**Copy the output and run it in a terminal. It will export `Kong` and `Keycloak` urls to environment variables.
-Those environment variables will be used on the next steps.**
+**IMPORTANT**: Copy the output and run it in a terminal. It will export `Kong` and `Keycloak` urls to environment variables.
+Those environment variables will be used on the next steps.
 
 ## Configure Keycloak
 
@@ -91,12 +93,12 @@ showing `0/1`, wait a little bit.
 
 ### Automatically running script
  
-In a terminal, go to `springboot-testing-mongodb-keycloak` root folder and run the following script
+In a terminal and inside `springboot-testing-mongodb-keycloak` root folder, run the following script
 ```
 ./init-keycloak.sh $KEYCLOAK_URL
 ```
 
-In the end, the script prints the `BOOKSERVICE_CLIENT_SECRET`. It will be used on the next steps.
+In the end, `BOOKSERVICE_CLIENT_SECRET` will be printed. It will be used on the next steps.
 
 ### Manually using Keycloak UI
 
@@ -107,7 +109,7 @@ minikube service my-keycloak-http
 
 Add `realm`, `client`, `client-roles` and `user` as explained [`here`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak#manually-using-keycloak-ui)
 
-## Deploy book-service
+## Install book-service
 
 In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following command to
 deploy `book-service`
@@ -255,7 +257,8 @@ HTTP/1.1 201
 
 ## Cleanup
 
-The script below will delete all deployments
+In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart` folder, run the script below to uninstall
+all services and applications.
 ```
 ./cleanup.sh
 ```

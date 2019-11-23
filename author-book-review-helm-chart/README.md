@@ -1,15 +1,16 @@
 # `author-book-review-helm-chart`
 
-The goal of this project is create Helm Charts for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
+The goal of this project is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
 applications [`author-book-api` and `book-review-api`](https://github.com/ivangfr/springboot-graphql-databases). Then,
 we will use the charts to install those applications in [`Kubernetes`](https://kubernetes.io)
 ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)). As `author-book-api` uses `MySQL` as storage
-and `book-review-api` uses `MongoDB`, those databases will also be installed using their Helm Charts available at
+and `book-review-api` uses `MongoDB`, those databases will also be installed using their `Helm Charts` available at
 https://github.com/helm/charts/tree/master/stable.
 
 ## Prerequisites
 
-Clone [`springboot-graphql-databases`](https://github.com/ivangfr/springboot-graphql-databases) project
+Clone [`springboot-graphql-databases`](https://github.com/ivangfr/springboot-graphql-databases) project. For it,
+open a terminal and run
 ```
 git clone https://github.com/ivangfr/springboot-graphql-databases.git
 ```
@@ -30,13 +31,8 @@ eval $(minikube docker-env)
 Then, inside `springboot-graphql-databases` root folder, run the following `./mvnw` commands to build `book-review-api`
 and `author-book-api` docker images
 
-- Build `book-review-api` docker image
 ```
 ./mvnw clean package dockerfile:build -DskipTests --projects book-review-api
-```
-
-- Build `author-book-api` docker image
-```
 ./mvnw clean package dockerfile:build -DskipTests --projects author-book-api
 ```
 
@@ -51,60 +47,56 @@ As `Minikube` host won't be used anymore, you can undo this change by running
 eval $(minikube docker-env -u)
 ```
 
-## Namespaces
+## Create a namespace
+
+Let's create a new namespace called `dev`. For it, in a terminal and inside
+`kubernetes-environment/author-book-review-helm-chart`folder, run the following command
+```
+kubectl apply -f yaml-files/dev-namespace.yaml
+```
 
 To list all namespaces run
 ```
 kubectl get namespaces
 ```
 
-Let's create a new namespace called `dev`. For it, in a terminal and inside `kubernetes-environment/author-book-review-helm-chart`
-folder, run the following command
-```
-kubectl apply -f yaml-files/dev-namespace.yaml
-```
+## Install services
 
-## Deployments
-
-Inside `kubernetes-environment/author-book-review-helm-chart` folder, run the following script
+In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart` folder, run the following script
 ```
 ./install-services.sh
 ```
 
 It will install `MySQL`, `MongoDB` and `Zipkin`. This process can take some time (pulling docker images, starting
-services, etc). You can check the status progress by running
+services, etc). You can check the progress status of the services by running
 ```
 kubectl get pods --namespace dev
 ```
 
-## Deploy book-review-api and author-book-api
+## Install applications
 
-In `kubernetes-environment/author-book-review-helm-chart` folder, run the following commands
-
-- Deploy `book-review-api` using `YAML` file
+In a terminal, in order to install `book-review-api` and `author-book-api`, run the following commands
 ```
-kubectl apply -f yaml-files/book-review-api-deployment.yaml --namespace dev
-```
-
-- Deploy `author-book-api` using `YAML` file
-```
-kubectl apply -f yaml-files/author-book-api-deployment.yaml --namespace dev
+helm install book-review-api --namespace dev ./my-charts/book-review-api
+helm install author-book-api --namespace dev ./my-charts/author-book-api
 ```
 
 ## Applications Urls
 
-To get `author-book-api` and `book-review-api` urls, run the script below
+In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart` folder, run the command below to
+get `zipkin`, `author-book-api` and `book-review-api` URLs
 ```
 ./get-applications-urls.sh
 ```
 
-You should see something similar to
+You should see something like
 ```
-     Application |  API Type |                                           URL |
+     Application |      Type |                                           URL |
 ---------------- + --------- + --------------------------------------------- |
- author-book-api |   Swagger |   http://192.168.99.106:30283/swagger-ui.html |
- author-book-api |  GraphiQL |          http://192.168.99.106:30283/graphiql |
- book-review-api |  GraphiQL |          http://192.168.99.106:31821/graphiql |
+       my-zipkin |   Website |                   http://192.168.99.107:32075 |
+ author-book-api |   Swagger |   http://192.168.99.107:32130/swagger-ui.html |
+ author-book-api |  GraphiQL |          http://192.168.99.107:32130/graphiql |
+ book-review-api |  GraphiQL |          http://192.168.99.107:32583/graphiql |
 ```
 
 For more information about how to use the application's endpoints please refer to
@@ -112,12 +104,8 @@ https://github.com/ivangfr/springboot-graphql-databases#how-to-use-graphiql
 
 ## Cleanup
 
-The script below will delete all deployments
+In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart` folder, run the script below to uninstall
+all services and applications
 ```
 ./cleanup.sh
 ```
-
-## TODO
-
-- Helmfy `Zipkin`, `author-book-api` and `book-review-api`;
-- Understand how namespace in Helm works;

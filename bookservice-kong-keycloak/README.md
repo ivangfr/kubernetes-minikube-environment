@@ -72,10 +72,10 @@ kubectl get pods
 
 > Note. If `Keycloak` is not getting up, run the script below. It will redeploy `MySQL` and `Keycloak`.	
 > ```	
-> ./redinstall-mysql-keycloak.sh	
+> ./reinstall-mysql-keycloak.sh	
 > ```
 
-## Services Urls
+## Services URLs
 
 In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following script. It will
 get the exposed `Kong` and `Keycloak` URLs.
@@ -83,7 +83,7 @@ get the exposed `Kong` and `Keycloak` URLs.
 ./get-services-urls.sh
 ``` 
 
-**IMPORTANT**: Copy the output and run it in a terminal. It will export `Kong` and `Keycloak` urls to environment variables.
+**IMPORTANT**: Copy the output and run it in a terminal. It will export `Kong` and `Keycloak` URLs to environment variables.
 Those environment variables will be used on the next steps.
 
 ## Configure Keycloak
@@ -98,7 +98,7 @@ In a terminal and inside `springboot-testing-mongodb-keycloak` root folder, run 
 ./init-keycloak.sh $KEYCLOAK_URL
 ```
 
-In the end, `BOOKSERVICE_CLIENT_SECRET` will be printed. It will be used on the next steps.
+In the end, `BOOK_SERVICE_CLIENT_SECRET` will be printed. It will be used on the next steps.
 
 ### Manually using Keycloak UI
 
@@ -107,7 +107,7 @@ Open `Keyloak UI`
 minikube service my-keycloak-http
 ```
 
-Add `realm`, `client`, `client-roles` and `user` as explained [`here`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak#manually-using-keycloak-ui)
+Add `realm`, `client`, `client-roles` and `user` as explained [`here`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak#using-keycloak-website)
 
 ## Install book-service
 
@@ -119,141 +119,123 @@ kubectl apply -f yaml-files/bookservice-deployment.yaml
 
 ## Configuring Kong
 
-### Add service book-service
+1. Add service `book-service`
+   ```
+   curl -i -X POST http://$KONG_ADMIN_URL/services/ \
+     -d 'name=book-service' \
+     -d 'protocol=http' \
+     -d 'host=bookservice-service' \
+     -d 'port=8080'
+   ```
 
-```
-curl -i -X POST http://$KONG_ADMIN_URL/services/ \
-  -d 'name=book-service' \
-  -d 'protocol=http' \
-  -d 'host=bookservice-service' \
-  -d 'port=8080'
-```
+1. Add `book-service` route
+   ```
+   curl -i -X POST http://$KONG_ADMIN_URL/services/book-service/routes/ \
+     -d "protocols[]=http" \
+     -d "hosts[]=book-service" \
+     -d "strip_path=false"
+   ```
 
-### Add book-service route
+1. In order to test the added route, we will use `GET /actuator/health`
+   ```
+   curl -i http://$KONG_PROXY_URL/actuator/health -H 'Host: book-service'
+   ```
+   It should return
+   ```
+   HTTP/1.1 200
+   {
+     "status": "UP",
+     "details": {
+       "diskSpace": {
+         "status": "UP",
+         "details": {
+         	...
+         }
+       },
+       "mongo": {
+         "status": "UP",
+         "details": {
+           ...
+         }
+       }
+     }
+   }
+   ```
 
-```
-curl -i -X POST http://$KONG_ADMIN_URL/services/book-service/routes/ \
-  -d "protocols[]=http" \
-  -d "hosts[]=book-service" \
-  -d "strip_path=false"
-```
-
-### Test route
-
-In order to test the route, we will use `GET /actuator/health`
-```
-curl -i http://$KONG_PROXY_URL/actuator/health -H 'Host: book-service'
-```
-
-It should return
-
-```
-HTTP/1.1 200
-{
-  "status": "UP",
-  "details": {
-    "diskSpace": {
-      "status": "UP",
-      "details": {
-      	...
-      }
-    },
-    "mongo": {
-      "status": "UP",
-      "details": {
-        ...
-      }
-    }
-  }
-}
-```
-
-### Add Rate Limiting plugin
-
-Add plugin to `book-service` service
-```
-curl -X POST http://$KONG_ADMIN_URL/services/book-service/plugins \
-  -d "name=rate-limiting"  \
-  -d "config.minute=10"
-```
-
-Make some calls to
-```
-curl -i http://$KONG_PROXY_URL/actuator/health -H 'Host: book-service'
-```
-
-After exceeding 10 calls in a minute, you should see
-```
-HTTP/1.1 429 Too Many Requests
-{"message":"API rate limit exceeded"}
-```
+1. Add Rate Limiting plugin to `book-service` service
+   ```
+   curl -X POST http://$KONG_ADMIN_URL/services/book-service/plugins \
+     -d "name=rate-limiting"  \
+     -d "config.minute=10"
+   ```
+   Make some calls to
+   ```
+   curl -i http://$KONG_PROXY_URL/actuator/health -H 'Host: book-service'
+   ```
+   After exceeding 10 calls in a minute, you should see
+   ```
+   HTTP/1.1 429 Too Many Requests
+   {"message":"API rate limit exceeded"}
+   ```
 
 ## Final test
 
-### Call `GET /api/books` endpoint
-```
-curl -i http://$KONG_PROXY_URL/api/books -H 'Host: book-service'
-```
+1. Call `GET /api/books` endpoint
+   ```
+   curl -i http://$KONG_PROXY_URL/api/books -H 'Host: book-service'
+   ```
+   
+   It should return
+   ```
+   HTTP/1.1 200
+   []
+   ```
 
-It should return
+1. Call `POST /api/books` endpoint without access token
+   ```
+   curl -i -X POST http://$KONG_PROXY_URL/api/books -H 'Host: book-service' \
+     -H "Content-Type: application/json" \
+     -d '{ "authorName": "ivan", "title": "java 8", "price": 10.5 }'
+   ```
+   It should return
+   ```
+   HTTP/1.1 302
+   ```
 
-```
-HTTP/1.1 200
-[]
-```
+1. Get access token from Keycloak
 
-### Call `POST /api/books` endpoint without access token
+   - In a terminal, export the `Client Secret` generated by `Keycloak` to `book-service` at [Configure Keycloak](#configure-keycloak)
+     ```
+     export BOOK_SERVICE_CLIENT_SECRET=...
+     ```
+   
+   - In `kubernetes-environment/bookservice-kong-keycloak` folder, run the script below to get the access token
+     ```
+     BEARER_MY_ACCESS_TOKEN=$(./get-access-token.sh $BOOK_SERVICE_CLIENT_SECRET)
+     ```
+   
+   - To see the access token value run
+     ```
+     echo $BEARER_MY_ACCESS_TOKEN
+     ```
 
-```
-curl -i -X POST http://$KONG_PROXY_URL/api/books -H 'Host: book-service' \
-  -H "Content-Type: application/json" \
-  -d '{ "authorName": "ivan", "title": "java 8", "price": 10.5 }'
-```
-
-It should return
-
-```
-HTTP/1.1 302
-```
-
-### Get access token from Keycloak
-
-In a terminal, export to an environment variable the `Secret` generated by `Keycloak` to `book-service`. See
-[Configure Keycloak](https://github.com/ivangfr/kubernetes-environment/tree/master/bookservice-kong-keycloak#configure-keycloak)
-```
-export BOOKSERVICE_CLIENT_SECRET=...
-```
-
-In `kubernetes-environment/bookservice-kong-keycloak` folder, run the script below to get the access token
-```
-BEARER_MY_ACCESS_TOKEN=$(./get-access-token.sh $BOOKSERVICE_CLIENT_SECRET)
-```
-
-To see the access token value run
-```
-echo $BEARER_MY_ACCESS_TOKEN
-```
-
-### Call `POST /api/books` endpoint informing the access token
-
-```
-curl -i -X POST http://$KONG_PROXY_URL/api/books -H 'Host: book-service' \
-  -H "Authorization: $BEARER_MY_ACCESS_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{ "authorName": "ivan", "title": "java 8", "price": 10.5 }'
-```
-
-It should return
-
-```
-HTTP/1.1 201 
-{
-  "id":"6d1270d5-716f-46b1-9a9d-e152f62464aa",
-  "title":"java 8",
-  "authorName":"ivan",
-  "price":10.5
-}
-```
+1. Call `POST /api/books` endpoint informing the access token
+   ```
+   curl -i -X POST http://$KONG_PROXY_URL/api/books -H 'Host: book-service' \
+     -H "Authorization: $BEARER_MY_ACCESS_TOKEN" \
+     -H "Content-Type: application/json" \
+     -d '{ "authorName": "ivan", "title": "java 8", "price": 10.5 }'
+   ```
+   It should return
+   ```
+   HTTP/1.1 201 
+   {
+     "id":"6d1270d5-716f-46b1-9a9d-e152f62464aa",
+     "title":"java 8",
+     "authorName":"ivan",
+     "price":10.5
+   }
+   ```
 
 ## Cleanup
 

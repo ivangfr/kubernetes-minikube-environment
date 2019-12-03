@@ -75,13 +75,14 @@ kubectl get pods --namespace dev
 
 ## Install applications
 
-In a terminal, in order to install `book-review-api` and `author-book-api`, run the following commands
+In a terminal and inside `kubernetes-environment/author-book-review-helm-chart`, run the following commands to install
+`book-review-api` and `author-book-api`
 ```
 helm install book-review-api --namespace dev ./my-charts/book-review-api
 helm install author-book-api --namespace dev ./my-charts/author-book-api
 ```
 
-## Applications Urls
+## Applications URLs
 
 In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart` folder, run the command below to
 get `zipkin`, `author-book-api` and `book-review-api` URLs

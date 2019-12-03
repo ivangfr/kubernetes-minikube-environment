@@ -5,18 +5,18 @@ if [[ -z "$1" ]]; then
   exit 1
 fi
 
-BOOKSERVICE_CLIENT_SECRET=$1
+BOOK_SERVICE_CLIENT_SECRET=$1
 
-BOOKSERVICE_POD=$(kubectl get pods -l app=bookservice -o go-template='{{(index .items 0).metadata.name}}')
+BOOK_SERVICE_POD=$(kubectl get pods -l app=bookservice -o go-template='{{(index .items 0).metadata.name}}')
 
-ACCESS_TOKEN_FULL=$(kubectl exec ${BOOKSERVICE_POD} -- sh -c '
+ACCESS_TOKEN_FULL=$(kubectl exec ${BOOK_SERVICE_POD} -- sh -c '
   curl -s -X POST \
     http://my-keycloak-http/auth/realms/company-services/protocol/openid-connect/token \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -d "username=ivan.franchin" \
     -d "password=123" \
     -d "grant_type=password" \
-    -d "client_secret='${BOOKSERVICE_CLIENT_SECRET}'" \
+    -d "client_secret='${BOOK_SERVICE_CLIENT_SECRET}'" \
     -d "client_id=book-service"
   ')
 

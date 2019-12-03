@@ -6,8 +6,8 @@ The goal of this project is have some examples using [`Kubernetes`](https://kube
 ## Prerequisites
 
 You must have [`Kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/),
-[`Minikube`](https://kubernetes.io/docs/tasks/tools/install-minikube/#install-minikube) and 
-[`Helm`](https://helm.sh/docs/using_helm/#installing-the-helm-client) installed.
+[`Minikube`](https://kubernetes.io/docs/tasks/tools/install-minikube/) and
+[`Helm`](https://helm.sh/docs/intro/install/) installed.
 
 ## Examples
 
@@ -17,9 +17,10 @@ You must have [`Kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl
 
 ## Start Minikube
 
-Open a terminal and start `Minikube` by running the following command. The properties inside `[]` are optional. 
+Open a terminal and start `Minikube` by running the following command. The properties `--memory` and `--vm-driver` are
+optional. 
 ```
-minikube start [--memory='8000mb' --vm-driver='virtualbox']
+minikube start --memory='8000mb' --vm-driver='virtualbox'
 ```
 
 \[Optional\] Update information of available `Helm` charts locally from chart repositories

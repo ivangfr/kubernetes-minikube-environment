@@ -7,9 +7,9 @@ The goal of this project is to run inside [`Kubernetes`](https://kubernetes.io)
 [`Keycloak`](https://www.keycloak.org) (authentication and authorization service) and
 [`Kong`](https://konghq.com) (gateway service).
 
-## Prerequisites
+## Clone example repository
 
-Clone [`springboot-testing-mongodb-keycloak`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) project.
+Clone [`springboot-testing-mongodb-keycloak`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) repository.
 For it, open a terminal and run
 ```
 git clone https://github.com/ivangfr/springboot-testing-mongodb-keycloak.git
@@ -57,23 +57,39 @@ As `Minikube` host won't be used anymore, you can undo this change by running
 eval $(minikube docker-env -u)
 ```
 
+## Create a namespace
+
+Let's create a new namespace called `dev`. For it, in a terminal and inside
+`kubernetes-environment/bookservice-kong-keycloak`folder, run the following command
+```
+kubectl apply -f yaml-files/dev-namespace.yaml
+```
+> To delete run
+> ```
+> kubectl delete -f yaml-files/dev-namespace.yaml
+> ```
+
+To list all namespaces run
+```
+kubectl get namespaces
+```
+
 ## Install services
 
 In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following script
 ```
 ./install-services.sh
 ```
+> To uninstall run
+> ```
+> ./uninstall-services.sh
+> ```
 
 It will install `MySQL`, `Postgres`, `MongoDB` `Kong` and `Keycloak`. It can take some time (pulling docker images,
 starting services, etc). You can check the status progress by running
 ```
 kubectl get pods
 ```
-
-> Note. If `Keycloak` is not getting up, run the script below. It will redeploy `MySQL` and `Keycloak`.	
-> ```	
-> ./reinstall-mysql-keycloak.sh	
-> ```
 
 ## Services URLs
 
@@ -83,15 +99,20 @@ get the exposed `Kong` and `Keycloak` URLs.
 ./get-services-urls.sh
 ``` 
 
-**IMPORTANT**: Copy the output and run it in a terminal. It will export `Kong` and `Keycloak` URLs to environment variables.
-Those environment variables will be used on the next steps.
+**IMPORTANT**: Copy the output and run it in a terminal. It will export `Kong` and `Keycloak` URLs to environment
+variables. Those environment variables will be used on the next steps.
 
 ## Configure Keycloak
 
-Before start, check if `Keycloak` is ready by running `kubectl get pods`. The column `READY` must show `1/1`. If it is
-showing `0/1`, wait a little bit.
+Before start, check if `Keycloak` is ready by running the command below.
+```
+kubectl get pods --namespace dev
+```
+The column `READY` must show `1/1`. If it is showing `0/1`, wait a little bit.
 
-### Automatically running script
+There are two ways to configure `Keycloak`: running a script or using Keycloak website
+
+### Running script
  
 In a terminal and inside `springboot-testing-mongodb-keycloak` root folder, run the following script
 ```
@@ -100,9 +121,9 @@ In a terminal and inside `springboot-testing-mongodb-keycloak` root folder, run 
 
 In the end, `BOOK_SERVICE_CLIENT_SECRET` will be printed. It will be used on the next steps.
 
-### Manually using Keycloak UI
+### Using Keycloak website
 
-Open `Keyloak UI`
+Open `Keyloak` website
 ```
 minikube service my-keycloak-http
 ```
@@ -114,8 +135,12 @@ Add `realm`, `client`, `client-roles` and `user` as explained [`here`](https://g
 In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following command to
 deploy `book-service`
 ```
-kubectl apply -f yaml-files/bookservice-deployment.yaml
+kubectl apply --namespace dev -f yaml-files/bookservice-deployment.yaml
 ```
+> To delete run
+> ```
+> kubectl delete --namespace dev -f yaml-files/bookservice-deployment.yaml
+> ```
 
 ## Configuring Kong
 
@@ -168,7 +193,8 @@ kubectl apply -f yaml-files/bookservice-deployment.yaml
      -d "name=rate-limiting"  \
      -d "config.minute=10"
    ```
-   Make some calls to
+   
+1. Make some calls to
    ```
    curl -i http://$KONG_PROXY_URL/actuator/health -H 'Host: book-service'
    ```
@@ -184,7 +210,6 @@ kubectl apply -f yaml-files/bookservice-deployment.yaml
    ```
    curl -i http://$KONG_PROXY_URL/api/books -H 'Host: book-service'
    ```
-   
    It should return
    ```
    HTTP/1.1 200
@@ -240,7 +265,7 @@ kubectl apply -f yaml-files/bookservice-deployment.yaml
 ## Cleanup
 
 In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart` folder, run the script below to uninstall
-all services and applications.
+all services, `book-service` application and `dev` namespace.
 ```
 ./cleanup.sh
 ```

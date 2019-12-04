@@ -21,16 +21,12 @@ env:
 livenessProbe:
   httpGet:
     path: /actuator/health
-    port: 9080
   initialDelaySeconds: 80
-  periodSeconds: 10
 
 readinessProbe:
   httpGet:
     path: /actuator/health
-    port: 9080
   initialDelaySeconds: 80
-  periodSeconds: 10
 
 imagePullSecrets: []
 nameOverride: ""

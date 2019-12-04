@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 helm install my-mysql \
+--namespace dev \
 --set imageTag=5.7.28 \
 --set mysqlDatabase=keycloak \
 --set mysqlRootPassword=root-password \
@@ -10,6 +11,7 @@ helm install my-mysql \
 stable/mysql
 
 helm install my-mongodb \
+--namespace dev \
 --set image.tag=4.2.1 \
 --set image.pullPolicy=IfNotPresent \
 --set usePassword=false \
@@ -17,6 +19,7 @@ helm install my-mongodb \
 stable/mongodb
 
 helm install my-postgres \
+--namespace dev \
 --set image.tag=12.1.0 \
 --set image.pullPolicy=IfNotPresent \
 --set postgresqlDatabase=kong \
@@ -28,6 +31,7 @@ stable/postgresql
 sleep 20
 
 helm install my-keycloak \
+--namespace dev \
 --set keycloak.image.tag=6.0.1 \
 --set keycloak.username=admin \
 --set keycloak.password=admin \
@@ -38,9 +42,10 @@ helm install my-keycloak \
 --set keycloak.persistence.dbName=keycloak \
 --set keycloak.persistence.dbUser=keycloak \
 --set keycloak.persistence.dbPassword=keycloak \
-stable/keycloak
+codecentric/keycloak
 
 helm install my-kong \
+--namespace dev \
 --set image.tag=1.4.0 \
 --set env.database=postgres \
 --set env.pg_host=my-postgres-postgresql \

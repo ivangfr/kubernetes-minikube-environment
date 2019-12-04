@@ -10,6 +10,9 @@ spec:
     app: bookservice
   ports:
     - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -30,7 +33,9 @@ spec:
           image: docker.mycompany.com/book-service:1.0.0
           imagePullPolicy: Never
           ports:
-            - containerPort: 8080
+            - name: http
+              containerPort: 8080
+              protocol: TCP
           env:
             - name: MONGODB_HOST
               value: my-mongodb
@@ -41,12 +46,10 @@ spec:
           livenessProbe:
             httpGet:
               path: /actuator/health
-              port: 8080
+              port: http
             initialDelaySeconds: 30
-            periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /actuator/health
-              port: 8080
+              port: http
             initialDelaySeconds: 30
-            periodSeconds: 10

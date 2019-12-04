@@ -5,11 +5,11 @@ applications [`author-book-api` and `book-review-api`](https://github.com/ivangf
 we will use the charts to install those applications in [`Kubernetes`](https://kubernetes.io)
 ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)). As `author-book-api` uses `MySQL` as storage
 and `book-review-api` uses `MongoDB`, those databases will also be installed using their `Helm Charts` available at
-https://github.com/helm/charts/tree/master/stable.
+https://github.com/helm/charts.
 
-## Prerequisites
+## Clone example repository
 
-Clone [`springboot-graphql-databases`](https://github.com/ivangfr/springboot-graphql-databases) project. For it,
+Clone [`springboot-graphql-databases`](https://github.com/ivangfr/springboot-graphql-databases) repository. For it,
 open a terminal and run
 ```
 git clone https://github.com/ivangfr/springboot-graphql-databases.git
@@ -30,7 +30,6 @@ eval $(minikube docker-env)
 
 Then, inside `springboot-graphql-databases` root folder, run the following `./mvnw` commands to build `book-review-api`
 and `author-book-api` docker images
-
 ```
 ./mvnw clean package dockerfile:build -DskipTests --projects book-review-api
 ./mvnw clean package dockerfile:build -DskipTests --projects author-book-api
@@ -54,6 +53,10 @@ Let's create a new namespace called `dev`. For it, in a terminal and inside
 ```
 kubectl apply -f yaml-files/dev-namespace.yaml
 ```
+> To delete run
+> ```
+> kubectl delete -f yaml-files/dev-namespace.yaml
+> ```
 
 To list all namespaces run
 ```
@@ -66,6 +69,10 @@ In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart`
 ```
 ./install-services.sh
 ```
+> To uninstall run
+> ```
+> ./uninstall-services.sh
+> ```
 
 It will install `MySQL`, `MongoDB` and `Zipkin`. This process can take some time (pulling docker images, starting
 services, etc). You can check the progress status of the services by running
@@ -76,11 +83,25 @@ kubectl get pods --namespace dev
 ## Install applications
 
 In a terminal and inside `kubernetes-environment/author-book-review-helm-chart`, run the following commands to install
-`book-review-api` and `author-book-api`
+the `Helm Chart` of `book-review-api` and `author-book-api`.
+
+In order to install `book-review-api` run
 ```
 helm install book-review-api --namespace dev ./my-charts/book-review-api
+```
+> To delete run
+> ```
+> helm delete --namespace dev book-review-api
+> ```
+
+To install `author-book-api` run
+```
 helm install author-book-api --namespace dev ./my-charts/author-book-api
 ```
+> To delete run
+> ```
+> helm delete --namespace dev author-book-api
+> ```
 
 ## Applications URLs
 
@@ -105,8 +126,8 @@ https://github.com/ivangfr/springboot-graphql-databases#how-to-use-graphiql
 
 ## Cleanup
 
-In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart` folder, run the script below to uninstall
-all services and applications
+In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart` folder, run the script below to
+uninstall all services, applications and `dev` namespace
 ```
 ./cleanup.sh
 ```

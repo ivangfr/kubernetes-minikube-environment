@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-helm delete my-mysql
-helm delete my-mongodb
-helm delete my-keycloak
-helm delete my-postgres
-helm delete my-kong
+./uninstall-services.sh
 
-kubectl delete -f yaml-files/bookservice-deployment.yaml
+kubectl delete --namespace dev -f yaml-files/bookservice-deployment.yaml
+
+kubectl delete -f yaml-files/dev-namespace.yaml

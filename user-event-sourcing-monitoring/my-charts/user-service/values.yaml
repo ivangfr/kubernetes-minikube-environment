@@ -1,36 +1,41 @@
-# Default values for author-book-api.
+# Default values for user-service.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: docker.mycompany.com/author-book-api
+  repository: docker.mycompany.com/user-service
   pullPolicy: Never
 
 service:
   type: NodePort
-  port: 8080
+  port: 9080
 
 env:
   - name: MYSQL_HOST
     value: my-mysql
+  - name: SCHEMA_REGISTRY_HOST
+    value: my-schema-registry
+  - name: KAFKA_HOST
+    value: my-kafka
+  - name: KAFKA_PORT
+    value: "9092"
   - name: ZIPKIN_HOST
     value: my-zipkin
-  - name: BOOK_REVIEW_API_HOST
-    value: book-review-api
-  - name: BOOK_REVIEW_API_PORT
-    value: "9080"
 
 livenessProbe:
   httpGet:
     path: /actuator/health
-  initialDelaySeconds: 80
+  initialDelaySeconds: 180
 
 readinessProbe:
   httpGet:
     path: /actuator/health
-  initialDelaySeconds: 80
+  initialDelaySeconds: 180
+
+serviceMonitor:
+  endpoint: /actuator/prometheus
 
 imagePullSecrets: []
 nameOverride: ""

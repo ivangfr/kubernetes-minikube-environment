@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "author-book-api.fullname" . }}
+  name: {{ include "event-service.fullname" . }}
   labels:
-    {{- include "author-book-api.labels" . | nindent 4 }}
+    {{- include "event-service.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "author-book-api.selectorLabels" . | nindent 6 }}
+      {{- include "event-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "author-book-api.selectorLabels" . | nindent 8 }}
+        {{- include "event-service.selectorLabels" . | nindent 8 }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "author-book-api.serviceAccountName" . }}
+      serviceAccountName: {{ include "event-service.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

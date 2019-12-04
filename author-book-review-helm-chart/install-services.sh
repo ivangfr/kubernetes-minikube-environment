@@ -16,4 +16,4 @@ helm install my-mongodb \
 --set persistence.enabled=false \
 stable/mongodb
 
-helm install my-zipkin --namespace dev ./my-charts/zipkin
+helm install my-zipkin --namespace dev ../my-shared-charts/zipkin

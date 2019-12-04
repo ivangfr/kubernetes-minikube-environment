@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "author-book-api.fullname" . }}
+  name: {{ include "zipkin.fullname" . }}
   labels:
-    {{- include "author-book-api.labels" . | nindent 4 }}
+    {{- include "zipkin.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "author-book-api.selectorLabels" . | nindent 6 }}
+      {{- include "zipkin.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "author-book-api.selectorLabels" . | nindent 8 }}
+        {{- include "zipkin.selectorLabels" . | nindent 8 }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "author-book-api.serviceAccountName" . }}
+      serviceAccountName: {{ include "zipkin.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -27,22 +27,20 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            {{- toYaml .Values.env | nindent 12 }}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 9411
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: {{ .Values.livenessProbe.httpGet.path }}
+              path: /health
               port: http
-            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            initialDelaySeconds: 60
           readinessProbe:
             httpGet:
-              path: {{ .Values.readinessProbe.httpGet.path }}
+              path: /health
               port: http
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            initialDelaySeconds: 60
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

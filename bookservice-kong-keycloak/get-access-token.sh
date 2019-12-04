@@ -7,9 +7,9 @@ fi
 
 BOOK_SERVICE_CLIENT_SECRET=$1
 
-BOOK_SERVICE_POD=$(kubectl get pods -l app=bookservice -o go-template='{{(index .items 0).metadata.name}}')
+BOOK_SERVICE_POD=$(kubectl get pods --namespace dev -l app=bookservice -o go-template='{{(index .items 0).metadata.name}}')
 
-ACCESS_TOKEN_FULL=$(kubectl exec ${BOOK_SERVICE_POD} -- sh -c '
+ACCESS_TOKEN_FULL=$(kubectl exec --namespace dev ${BOOK_SERVICE_POD} -- sh -c '
   curl -s -X POST \
     http://my-keycloak-http/auth/realms/company-services/protocol/openid-connect/token \
     -H "Content-Type: application/x-www-form-urlencoded" \

@@ -1,16 +1,41 @@
-# Default values for zipkin.
+# Default values for event-service.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: openzipkin/zipkin
-  pullPolicy: IfNotPresent
+  repository: docker.mycompany.com/event-service
+  pullPolicy: Never
 
 service:
   type: NodePort
-  port: 9411
+  port: 9081
+
+env:
+  - name: CASSANDRA_HOST
+    value: my-cassandra
+  - name: SCHEMA_REGISTRY_HOST
+    value: my-schema-registry
+  - name: KAFKA_HOST
+    value: my-kafka
+  - name: KAFKA_PORT
+    value: "9092"
+  - name: ZIPKIN_HOST
+    value: my-zipkin
+
+livenessProbe:
+  httpGet:
+    path: /actuator/health
+  initialDelaySeconds: 180
+
+readinessProbe:
+  httpGet:
+    path: /actuator/health
+  initialDelaySeconds: 180
+
+serviceMonitor:
+  endpoint: /actuator/prometheus
 
 imagePullSecrets: []
 nameOverride: ""
@@ -18,7 +43,7 @@ fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  create: false
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name:

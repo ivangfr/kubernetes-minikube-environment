@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-helm delete book-review-api --namespace dev
-helm delete author-book-api --namespace dev
+helm delete --namespace dev user-service
+helm delete --namespace dev event-service
 
 ./uninstall-services.sh
 

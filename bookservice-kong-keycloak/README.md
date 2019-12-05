@@ -1,32 +1,19 @@
 # `bookservice-kong-keycloak`
 
-The goal of this project is to run inside [`Kubernetes`](https://kubernetes.io)
-([`Minikube`](https://github.com/kubernetes/minikube)):
-[`book-service`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak)
-([`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application),
-[`Keycloak`](https://www.keycloak.org) (authentication and authorization service) and
-[`Kong`](https://konghq.com) (gateway service).
+The goal of this project is to run inside [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube)): [`book-service`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) ([`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application), [`Keycloak`](https://www.keycloak.org) (authentication and authorization service) and [`Kong`](https://konghq.com) (gateway service).
 
 ## Clone example repository
 
-Clone [`springboot-testing-mongodb-keycloak`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) repository.
-For it, open a terminal and run
+Clone [`springboot-testing-mongodb-keycloak`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) repository. For it, open a terminal and run
 ```
 git clone https://github.com/ivangfr/springboot-testing-mongodb-keycloak.git
 ```
 
 ### book-service
 
-`book-service` is a `Spring Boot` Web Java application that exposes some endpoints to manage books. Once deployed in
-`Kubernetes` cluster, it won't be exposed to outside, i.e, it won't be possible to be accessed directly from the host
-machine. In order to bypass it, we are going to use `Kong` as a gateway service. So, to access `book-service`, you will
-have to call `Kong` REST API and then, `Kong` will redirect the request to `book-service`. Furthermore, the plugin
-`Rate Limiting` will be installed in `Kong`. It will be configured to just allow 5 requests a minute to any
-`book-service` endpoints.
+`book-service` is a `Spring Boot` Web Java application that exposes some endpoints to manage books. Once deployed in `Kubernetes` cluster, it won't be exposed to outside, i.e, it won't be possible to be accessed directly from the host machine. In order to bypass it, we are going to use `Kong` as a gateway service. So, to access `book-service`, you will have to call `Kong` REST API and then, `Kong` will redirect the request to `book-service`. Furthermore, the plugin `Rate Limiting` will be installed in `Kong`. It will be configured to just allow 5 requests a minute to any `book-service` endpoints.
 
-Besides, `book-service` implements `Keycloak` security configuration. The endpoints related to _"managing books"_, like
-create book (`POST /api/books`), update book (`PATCH /api/books/{id}`) and delete book (`DELETE /api/books/{id}`) will
-require a `Bearer JWT Access Token`.
+Besides, `book-service` implements `Keycloak` security configuration. The endpoints related to _"managing books"_, like create book (`POST /api/books`), update book (`PATCH /api/books/{id}`) and delete book (`DELETE /api/books/{id}`) will require a `Bearer JWT Access Token`.
 
 ## Start Minikube
 
@@ -46,8 +33,7 @@ Then, inside `springboot-testing-mongodb-keycloak` root folder, run the followin
 ./gradlew book-service:clean book-service:build docker -x test -x integrationTest
 ``` 
 
-Once it is finished, run the command below to check that the `book-service` docker image was created and is present
-among other `k8s` docker images by running
+Once it is finished, run the command below to check that the `book-service` docker image was created and is present among other `k8s` docker images by running
 ```
 docker images
 ```
@@ -59,8 +45,7 @@ eval $(minikube docker-env -u)
 
 ## Create a namespace
 
-Let's create a new namespace called `dev`. For it, in a terminal and inside
-`kubernetes-environment/bookservice-kong-keycloak`folder, run the following command
+Let's create a new namespace called `dev`. For it, in a terminal and inside `kubernetes-environment/bookservice-kong-keycloak`folder, run the following command
 ```
 kubectl apply -f yaml-files/dev-namespace.yaml
 ```
@@ -85,22 +70,19 @@ In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` fold
 > ./uninstall-services.sh
 > ```
 
-It will install `MySQL`, `Postgres`, `MongoDB` `Kong` and `Keycloak`. It can take some time (pulling docker images,
-starting services, etc). You can check the status progress by running
+It will install `MySQL`, `Postgres`, `MongoDB` `Kong` and `Keycloak`. It can take some time (pulling docker images, starting services, etc). You can check the status progress by running
 ```
 kubectl get pods
 ```
 
 ## Services URLs
 
-In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following script. It will
-get the exposed `Kong` and `Keycloak` URLs.
+In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following script. It will get the exposed `Kong` and `Keycloak` URLs.
 ```
 ./get-services-urls.sh
 ``` 
 
-**IMPORTANT**: Copy the output and run it in a terminal. It will export `Kong` and `Keycloak` URLs to environment
-variables. Those environment variables will be used on the next steps.
+**IMPORTANT**: Copy the output and run it in a terminal. It will export `Kong` and `Keycloak` URLs to environment variables. Those environment variables will be used on the next steps.
 
 ## Configure Keycloak
 
@@ -132,8 +114,7 @@ Add `realm`, `client`, `client-roles` and `user` as explained [`here`](https://g
 
 ## Install book-service
 
-In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following command to
-deploy `book-service`
+In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following command to deploy `book-service`
 ```
 kubectl apply --namespace dev -f yaml-files/bookservice-deployment.yaml
 ```
@@ -264,8 +245,7 @@ kubectl apply --namespace dev -f yaml-files/bookservice-deployment.yaml
 
 ## Cleanup
 
-In a terminal and, inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the script below to uninstall
-all services, `book-service` application and `dev` namespace.
+In a terminal and, inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the script below to uninstall all services, `book-service` application and `dev` namespace.
 ```
 ./cleanup.sh
 ```

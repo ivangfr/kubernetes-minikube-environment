@@ -1,4 +1,4 @@
-# `author-book-review-helm-chart`
+# `author-book-review-graphql`
 
 The goal of this project is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
 applications [`author-book-api` and `book-review-api`](https://github.com/ivangfr/springboot-graphql-databases). Then,
@@ -49,7 +49,7 @@ eval $(minikube docker-env -u)
 ## Create a namespace
 
 Let's create a new namespace called `dev`. For it, in a terminal and inside
-`kubernetes-environment/author-book-review-helm-chart`folder, run the following command
+`kubernetes-environment/author-book-review-graphql`folder, run the following command
 ```
 kubectl apply -f yaml-files/dev-namespace.yaml
 ```
@@ -65,7 +65,7 @@ kubectl get namespaces
 
 ## Install services
 
-In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart` folder, run the following script
+In a terminal and, inside `kubernetes-environment/author-book-review-graphql` folder, run the following script
 ```
 ./install-services.sh
 ```
@@ -82,7 +82,7 @@ kubectl get pods --namespace dev
 
 ## Install applications
 
-In a terminal and inside `kubernetes-environment/author-book-review-helm-chart`, run the following commands to install
+In a terminal and inside `kubernetes-environment/author-book-review-graphql`, run the following commands to install
 the `Helm Chart` of `book-review-api` and `author-book-api`.
 
 In order to install `book-review-api` run
@@ -105,7 +105,7 @@ helm install author-book-api --namespace dev ./my-charts/author-book-api
 
 ## Applications URLs
 
-In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart` folder, run the command below to
+In a terminal and, inside `kubernetes-environment/author-book-review-graphql` folder, run the command below to
 get `zipkin`, `author-book-api` and `book-review-api` URLs
 ```
 ./get-applications-urls.sh
@@ -126,7 +126,7 @@ https://github.com/ivangfr/springboot-graphql-databases#how-to-use-graphiql
 
 ## Cleanup
 
-In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart` folder, run the script below to
+In a terminal and, inside `kubernetes-environment/author-book-review-graphql` folder, run the script below to
 uninstall all services, applications and `dev` namespace
 ```
 ./cleanup.sh

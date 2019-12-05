@@ -35,7 +35,7 @@ helm repo add codecentric https://codecentric.github.io/helm-charts
 
 ## Examples
 
-- ### [author-book-review-helm-chart](https://github.com/ivangfr/kubernetes-environment/tree/master/author-book-review-helm-chart)
+- ### [author-book-review-graphql](https://github.com/ivangfr/kubernetes-environment/tree/master/author-book-review-graphql)
 
 - ### [bookservice-kong-keycloak](https://github.com/ivangfr/kubernetes-environment/tree/master/bookservice-kong-keycloak)
 

@@ -264,7 +264,7 @@ kubectl apply --namespace dev -f yaml-files/bookservice-deployment.yaml
 
 ## Cleanup
 
-In a terminal and, inside `kubernetes-environment/author-book-review-helm-chart` folder, run the script below to uninstall
+In a terminal and, inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the script below to uninstall
 all services, `book-service` application and `dev` namespace.
 ```
 ./cleanup.sh

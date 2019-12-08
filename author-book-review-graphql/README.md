@@ -88,7 +88,7 @@ kubectl create secret --namespace dev generic author-book-api-db \
 ```
 > To delete run
 > ```
-> kubectl delete secrets --namespace dev author-book-api
+> kubectl delete secrets --namespace dev author-book-api-db
 > ```
 
 To list the secrets present in `dev` namespace run

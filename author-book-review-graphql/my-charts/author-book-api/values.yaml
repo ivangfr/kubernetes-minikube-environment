@@ -12,16 +12,6 @@ service:
   type: NodePort
   port: 8080
 
-env:
-  - name: MYSQL_HOST
-    value: my-mysql
-  - name: ZIPKIN_HOST
-    value: my-zipkin
-  - name: BOOK_REVIEW_API_HOST
-    value: book-review-api
-  - name: BOOK_REVIEW_API_PORT
-    value: "9080"
-
 livenessProbe:
   httpGet:
     path: /actuator/health

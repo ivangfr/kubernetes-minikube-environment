@@ -4,13 +4,10 @@ metadata:
   name: {{ include "event-service.fullname" . }}
   labels:
     {{- include "event-service.labels" . | nindent 4 }}
-    release: my-prometheus-operator
 spec:
   selector:
     matchLabels:
       {{- include "event-service.labels" . | nindent 6 }}
-  namespaceSelector:
-    any: true
   endpoints:
     - port: http
       path: {{ .Values.serviceMonitor.endpoint }}

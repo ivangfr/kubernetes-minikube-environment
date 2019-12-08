@@ -12,12 +12,6 @@ service:
   type: NodePort
   port: 9080
 
-env:
-  - name: MONGODB_HOST
-    value: my-mongodb
-  - name: ZIPKIN_HOST
-    value: my-zipkin
-
 livenessProbe:
   httpGet:
     path: /actuator/health

@@ -14,8 +14,8 @@ Besides, you must have the following `repo`'s added in your helm chart repositor
 ```
 NAME            URL                                                      
 stable          https://kubernetes-charts.storage.googleapis.com/        
-incubator       http://storage.googleapis.com/kubernetes-charts-incubator
-codecentric     https://codecentric.github.io/helm-charts
+incubator       http://storage.googleapis.com/kubernetes-charts-incubator/
+codecentric     https://codecentric.github.io/helm-charts/
 ```
 
 In order to check it, run
@@ -27,8 +27,13 @@ If some of them is missing, here are the commands to add
 ```
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
-helm repo add codecentric https://codecentric.github.io/helm-charts
+helm repo add codecentric https://codecentric.github.io/helm-charts/
 ```
+
+Finally, run the command below to get the latest information about charts from the chart repositories
+```
+helm repo update
+``` 
 
 ## Examples
 

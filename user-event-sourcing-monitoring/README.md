@@ -27,7 +27,7 @@ Then, inside `springboot-kafka-mysql-cassandra` root folder, run the following s
 ./build-apps.sh
 ```
 
-Once it is finished, run the command below to check that `user-service` and `user-service` docker images were created and are present among other `k8s` images
+Once it is finished, run the command below to check that `user-service` and `event-service` docker images were created and are present among other `k8s` images
 ```
 docker images
 ```

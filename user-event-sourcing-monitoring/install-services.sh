@@ -40,7 +40,7 @@ stable/kafka-manager
 
 helm install my-prometheus-operator \
 --namespace dev \
---set prometheus.prometheusSpec.serviceMonitorNamespaceSelector.any=true \
+--set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false \
 --set prometheus.service.type=NodePort \
 --set grafana.service.type=NodePort \
 stable/prometheus-operator

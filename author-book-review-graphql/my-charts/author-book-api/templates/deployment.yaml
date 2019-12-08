@@ -28,7 +28,24 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            {{- toYaml .Values.env | nindent 12 }}
+            - name: MYSQL_HOST
+              value: my-mysql
+            - name: ZIPKIN_HOST
+              value: my-zipkin
+            - name: BOOK_REVIEW_API_HOST
+              value: book-review-api
+            - name: BOOK_REVIEW_API_PORT
+              value: "9080"
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: author-book-api-db
+                  key: username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: author-book-api-db
+                  key: password
           ports:
             - name: http
               containerPort: 8080

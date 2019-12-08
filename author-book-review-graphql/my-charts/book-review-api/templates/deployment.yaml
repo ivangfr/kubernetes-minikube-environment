@@ -28,7 +28,20 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            {{- toYaml .Values.env | nindent 12 }}
+            - name: MONGODB_HOST
+              value: my-mongodb
+            - name: ZIPKIN_HOST
+              value: my-zipkin
+            - name: SPRING_DATA_MONGODB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: book-review-api-db
+                  key: username
+            - name: SPRING_DATA_MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: book-review-api-db
+                  key: password
           ports:
             - name: http
               containerPort: 9080

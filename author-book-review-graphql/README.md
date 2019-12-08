@@ -22,10 +22,9 @@ For it, open a terminal and run the command below to set `Minikube` host.
 eval $(minikube docker-env)
 ```
 
-Then, inside `springboot-graphql-databases` root folder, run the following `./mvnw` commands to build `book-review-api` and `author-book-api` docker images
+Then, inside `springboot-graphql-databases` root folder, run the following script
 ```
-./mvnw clean package dockerfile:build -DskipTests --projects book-review-api
-./mvnw clean package dockerfile:build -DskipTests --projects author-book-api
+./build-apps.sh
 ```
 
 Once it is finished, run the command below to check that `book-review-api` and `author-book-api` docker images were created and are present among other `k8s` images
@@ -68,6 +67,20 @@ In a terminal and, inside `kubernetes-environment/author-book-review-graphql` fo
 It will install `MySQL`, `MongoDB` and `Zipkin`. This process can take some time (pulling docker images, starting services, etc). You can check the progress status of the services by running
 ```
 kubectl get pods --namespace dev
+```
+
+## Create application database secrets
+
+In a terminal, run the command below to create a secret used by `book-review-api` to connect to `MongoDB`
+```
+kubectl create secret --namespace dev generic book-review-api-db \
+ --from-literal=username=bookreviewuser --from-literal=password=bookreviewpass
+```
+
+Run the following command to create a secret used by `author-book-api` to connect to `MySQL`
+```
+kubectl create secret --namespace dev generic author-book-api-db \
+ --from-literal=username=authorbookuser --from-literal=password=authorbookpass
 ```
 
 ## Install applications

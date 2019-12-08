@@ -14,7 +14,10 @@ helm install my-mongodb \
 --namespace dev \
 --set image.tag=4.2.1 \
 --set image.pullPolicy=IfNotPresent \
---set usePassword=false \
+--set mongodbDatabase=bookdb \
+--set mongodbUsername=bookuser \
+--set mongodbPassword=bookpass \
+--set mongodbRootPassword=secret \
 --set persistence.enabled=false \
 stable/mongodb
 

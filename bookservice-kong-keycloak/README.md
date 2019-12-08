@@ -45,7 +45,7 @@ eval $(minikube docker-env -u)
 
 ## Create a namespace
 
-Let's create a new namespace called `dev`. For it, in a terminal and inside `kubernetes-environment/bookservice-kong-keycloak`folder, run the following command
+Let's create a new namespace called `dev`. For it, in a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following command
 ```
 kubectl apply -f yaml-files/dev-namespace.yaml
 ```
@@ -111,6 +111,28 @@ minikube service my-keycloak-http
 ```
 
 Add `realm`, `client`, `client-roles` and `user` as explained [`here`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak#using-keycloak-website)
+
+## Create application database secrets
+
+In a terminal, run the command below to create a secret used by `book-service` to connect to `MongoDB`
+```
+kubectl create secret --namespace dev generic book-service-db \
+ --from-literal=username=bookuser --from-literal=password=bookpass
+```
+> To delete run
+> ```
+> kubectl delete secrets --namespace dev book-service-db
+> ```
+
+To list the secrets present in `dev` namespace run
+```
+kubectl get secrets --namespace dev
+```
+
+To get more information about `book-service-db` secret run
+```
+kubectl get secrets --namespace dev book-service-db -o yaml
+```
 
 ## Install book-service
 

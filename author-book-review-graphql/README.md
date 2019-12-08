@@ -76,11 +76,29 @@ In a terminal, run the command below to create a secret used by `book-review-api
 kubectl create secret --namespace dev generic book-review-api-db \
  --from-literal=username=bookreviewuser --from-literal=password=bookreviewpass
 ```
+> To delete run
+> ```
+> kubectl delete secrets --namespace dev book-review-api-db
+> ```
 
 Run the following command to create a secret used by `author-book-api` to connect to `MySQL`
 ```
 kubectl create secret --namespace dev generic author-book-api-db \
  --from-literal=username=authorbookuser --from-literal=password=authorbookpass
+```
+> To delete run
+> ```
+> kubectl delete secrets --namespace dev author-book-api
+> ```
+
+To list the secrets present in `dev` namespace run
+```
+kubectl get secrets --namespace dev
+```
+
+To get more information about a specific secret, for example `book-review-api-db`, run
+```
+kubectl get secrets --namespace dev book-review-api-db -o yaml
 ```
 
 ## Install applications

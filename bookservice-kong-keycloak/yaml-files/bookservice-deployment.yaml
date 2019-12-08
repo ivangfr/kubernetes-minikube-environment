@@ -37,12 +37,22 @@ spec:
               containerPort: 8080
               protocol: TCP
           env:
-            - name: MONGODB_HOST
-              value: my-mongodb
             - name: KEYCLOAK_HOST
               value: my-keycloak-http
             - name: KEYCLOAK_PORT
               value: "80"
+            - name: MONGODB_HOST
+              value: my-mongodb
+            - name: SPRING_DATA_MONGODB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: book-service-db
+                  key: username
+            - name: SPRING_DATA_MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: book-service-db
+                  key: password
           livenessProbe:
             httpGet:
               path: /actuator/health

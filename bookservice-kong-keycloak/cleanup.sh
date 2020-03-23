@@ -2,6 +2,6 @@
 
 ./uninstall-services.sh
 
-kubectl delete --namespace dev -f yaml-files/bookservice-deployment.yaml
+kubectl delete --namespace dev -f deployment-files/bookservice-deployment.yaml
 
-kubectl delete -f yaml-files/dev-namespace.yaml
+kubectl delete namespace dev

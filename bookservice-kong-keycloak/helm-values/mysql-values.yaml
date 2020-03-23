@@ -1,0 +1,7 @@
+imageTag: 5.7.29
+mysqlDatabase: keycloak
+mysqlRootPassword: root-password
+mysqlUser: keycloak
+mysqlPassword: keycloak
+persistence:
+  enabled: false

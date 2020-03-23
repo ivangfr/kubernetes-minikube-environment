@@ -1,0 +1,17 @@
+keycloak:
+  image:
+    tag: 9.0.0
+  username: admin
+  password: admin
+  service:
+    type: NodePort
+  persistence:
+    dbVendor: mysql
+    dbHost: my-mysql
+    dbPort: 3306
+    dbName: keycloak
+    dbUser: keycloak
+    dbPassword: keycloak
+  extraEnv: |
+    - name: JDBC_PARAMS
+      value: useSSL=false

@@ -45,13 +45,13 @@ eval $(minikube docker-env -u)
 
 ## Create a namespace
 
-Let's create a new namespace called `dev`. For it, in a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following command
+In a terminal, run the following command to create a new namespace called `dev`
 ```
-kubectl apply -f yaml-files/dev-namespace.yaml
+kubectl create namespace dev
 ```
 > To delete run
 > ```
-> kubectl delete -f yaml-files/dev-namespace.yaml
+> kubectl delete namespace dev
 > ```
 
 To list all namespaces run
@@ -72,7 +72,7 @@ In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` fold
 
 It will install `MySQL`, `Postgres`, `MongoDB` `Kong` and `Keycloak`. It can take some time (pulling docker images, starting services, etc). You can check the status progress by running
 ```
-kubectl get pods
+kubectl get pods -n dev
 ```
 
 ## Services URLs
@@ -82,13 +82,13 @@ In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` fold
 ./get-services-urls.sh
 ``` 
 
-**IMPORTANT**: Copy the output and run it in a terminal. It will export `Kong` and `Keycloak` URLs to environment variables. Those environment variables will be used on the next steps.
+**IMPORTANT:** Copy the output and run it in a terminal. It will export `Kong` and `Keycloak` URLs to environment variables. Those environment variables will be used on the next steps.
 
 ## Configure Keycloak
 
 Before start, check if `Keycloak` is ready by running the command below.
 ```
-kubectl get pods --namespace dev
+kubectl get pods -n dev
 ```
 The column `READY` must show `1/1`. If it is showing `0/1`, wait a little bit.
 
@@ -116,33 +116,33 @@ Add `realm`, `client`, `client-roles` and `user` as explained [`here`](https://g
 
 In a terminal, run the command below to create a secret used by `book-service` to connect to `MongoDB`
 ```
-kubectl create secret --namespace dev generic book-service-db \
+kubectl create secret -n dev generic book-service-db \
  --from-literal=username=bookuser --from-literal=password=bookpass
 ```
 > To delete run
 > ```
-> kubectl delete secrets --namespace dev book-service-db
+> kubectl delete secrets -n dev book-service-db
 > ```
 
 To list the secrets present in `dev` namespace run
 ```
-kubectl get secrets --namespace dev
+kubectl get secrets -n dev
 ```
 
 To get more information about `book-service-db` secret run
 ```
-kubectl get secrets --namespace dev book-service-db -o yaml
+kubectl get secrets -n dev book-service-db -o yaml
 ```
 
 ## Install book-service
 
 In a terminal and inside `kubernetes-environment/bookservice-kong-keycloak` folder, run the following command to deploy `book-service`
 ```
-kubectl apply --namespace dev -f yaml-files/bookservice-deployment.yaml
+kubectl apply -n dev -f deployment-files/bookservice-deployment.yaml
 ```
 > To delete run
 > ```
-> kubectl delete --namespace dev -f yaml-files/bookservice-deployment.yaml
+> kubectl delete -n dev -f deployment-files/bookservice-deployment.yaml
 > ```
 
 ## Configuring Kong

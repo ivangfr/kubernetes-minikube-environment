@@ -12,10 +12,12 @@ You must have `Kubectl`, `Minikube` and `Helm` installed in your machine. Here a
 
 Besides, you must have the following `repo`'s added in your helm chart repository list.
 ```
-NAME            URL                                                      
-stable          https://kubernetes-charts.storage.googleapis.com/        
-incubator       http://storage.googleapis.com/kubernetes-charts-incubator/
+NAME            URL
+bitnami         https://charts.bitnami.com/bitnami
 codecentric     https://codecentric.github.io/helm-charts/
+kong            https://charts.konghq.com
+stable          https://kubernetes-charts.storage.googleapis.com/
+incubator       http://storage.googleapis.com/kubernetes-charts-incubator/
 ```
 
 In order to check it, run
@@ -25,9 +27,11 @@ helm repo list
 
 If some of them is missing, here are the commands to add
 ```
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add codecentric https://codecentric.github.io/helm-charts/
+helm repo add kong https://charts.konghq.com
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
-helm repo add codecentric https://codecentric.github.io/helm-charts/
 ```
 
 Finally, run the command below to get the latest information about charts from the chart repositories

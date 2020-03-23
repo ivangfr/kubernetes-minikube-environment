@@ -1,0 +1,19 @@
+image:
+  tag: 2.0.2
+env:
+  database: postgres
+  pg_host: my-postgres-postgresql
+  pg_database: kong
+  pg_user: kong
+  pg_password: kong
+admin:
+  enabled: true
+  useTLS: false
+readinessProbe:
+  httpGet:
+    scheme: HTTP
+livenessProbe:
+  httpGet:
+    scheme: HTTP
+ingressController:
+  installCRDs: false

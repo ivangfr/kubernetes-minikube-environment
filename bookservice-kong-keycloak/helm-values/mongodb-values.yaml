@@ -1,0 +1,9 @@
+image:
+  tag: 4.2.4-debian-10-r0
+  pullPolicy: IfNotPresent
+mongodbDatabase: bookdb
+mongodbUsername: bookuser
+mongodbPassword: bookpass
+mongodbRootPassword: secret
+persistence:
+  enabled: false

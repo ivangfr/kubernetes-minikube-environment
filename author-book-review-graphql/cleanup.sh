@@ -8,4 +8,4 @@ kubectl delete secrets --namespace dev book-review-api-db
 
 ./uninstall-services.sh
 
-kubectl delete -f yaml-files/dev-namespace.yaml
+kubectl delete namespace dev

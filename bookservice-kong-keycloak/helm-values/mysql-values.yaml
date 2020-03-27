@@ -1,7 +1,13 @@
-imageTag: 5.7.29
-mysqlDatabase: keycloak
-mysqlRootPassword: root-password
-mysqlUser: keycloak
-mysqlPassword: keycloak
-persistence:
-  enabled: false
+image:
+  tag: 8.0.19-debian-10-r58
+root:
+  password: root-password
+db:
+  user: keycloak
+  password: keycloak
+  name: keycloak
+master:
+  persistence:
+    enabled: false
+slave:
+  replicas: 0

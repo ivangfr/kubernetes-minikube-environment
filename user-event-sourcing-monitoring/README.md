@@ -1,4 +1,5 @@
-# `user-event-sourcing-monitoring`
+# kubernetes-environment
+## `> user-event-sourcing-monitoring`
 
 The goal of this project is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`user-service` and `event-service`](https://github.com/ivangfr/springboot-kafka-mysql-cassandra). Then, we will use the charts to install those applications in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)). As `user-service` uses `MySQL` as storage and `event-service` uses `Cassandra`, those databases will also be installed using their `Helm Charts` available at https://github.com/helm/charts.
 
@@ -11,85 +12,91 @@ git clone https://github.com/ivangfr/springboot-kafka-mysql-cassandra.git
 
 ## Start Minikube
 
-First of all, start `Minikube` as explained at [Start Minikube](https://github.com/ivangfr/kubernetes-environment#start-minikube)
+First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-environment#start-minikube)
 
 ## Build Docker Images
 
-Instead of pushing the docker image to Docker Registry, we will simply build the image using the `Minikube` Docker daemon.
+Instead of pushing the docker image to Docker Registry, we will simply build the image using the `Minikube` Docker daemon. Below are the steps
 
-For it, open a terminal and run the command below to set `Minikube` host.
-```
-eval $(minikube docker-env)
-```
+- In a terminal, navigate to `springboot-kafka-mysql-cassandra` root folder
 
-Then, inside `springboot-kafka-mysql-cassandra` root folder, run the following script
-```
-./build-apps.sh
-```
+- Set `Minikube` host
+  ```
+  eval $(minikube docker-env)
+  ```
 
-Once it is finished, run the command below to check that `user-service` and `event-service` docker images were created and are present among other `k8s` images
-```
-docker images
-```
+- Build application's docker images
+  ```
+  ./build-apps.sh
+  ```
+   
+- \[Optional\] Check whether `user-service` and `event-service` docker images were created
+  ```
+  docker images
+  ```
 
-As `Minikube` host won't be used anymore, you can undo this change by running   
-```
-eval $(minikube docker-env -u)
-```
+- Get back to Host machine Docker Daemon   
+  ```
+  eval $(minikube docker-env -u)
+  ```
 
 ## Create a namespace
 
-Let's create a new namespace called `dev`. For it, in a terminal and inside `kubernetes-environment/user-event-sourcing-monitoring`folder, run the following command
-```
-kubectl apply -f yaml-files/dev-namespace.yaml
-```
-> To delete run
-> ```
-> kubectl delete -f yaml-files/dev-namespace.yaml
-> ```
+- In a terminal, run the following command to create a new namespace called `dev`
+  ```
+  kubectl create namespace dev
+  ```
+  > To delete run
+  > ```
+  > kubectl delete namespace dev
+  > ```
 
-To list all namespaces run
-```
-kubectl get namespaces
-```
+- \[Optional\] To list all namespaces run
+  ```
+  kubectl get namespaces
+  ```
 
 ## Install services
 
-In a terminal and, inside `kubernetes-environment/user-event-sourcing-monitoring` folder, run the following script
-```
-./install-services.sh
-```
-> To uninstall run
-> ```
-> ./uninstall-services.sh
-> ```
+- In a terminal, navigate to `kubernetes-environment/user-event-sourcing-monitoring` folder
 
-It will install a couple of services like `MySQL`, `Cassandra`, `Kafka`, `Prometheus-Operator`, etc. This process can take some time (pulling docker images, starting services, etc). You can check the progress status of the services by running
-```
-kubectl get pods --namespace dev
-```
+- To install the services, run the script below
+  ```
+  ./install-services.sh
+  ```
+  > To uninstall run
+  > ```
+  > ./uninstall-services.sh
+  > ```
+
+  It will install `MySQL`, `Cassandra`, `Kafka`, `Prometheus-Operator`, etc. This process can take some time (pulling docker images, starting services, etc).
+
+- Check the status/progress of the service installation
+  ```
+  kubectl get pods --namespace dev
+  ```
 
 ## Install applications
 
-In a terminal and inside `kubernetes-environment/user-event-sourcing-monitoring`, run the following commands to install the `Helm Chart` of `user-service` and `event-service`.
+- In a terminal, make sure you are in `kubernetes-environment/user-event-sourcing-monitoring` folder
 
-In order to install `user-service` run
-```
-helm install user-service --namespace dev ./my-charts/user-service
-```
-> To delete run
-> ```
-> helm delete --namespace dev user-service
-> ```
+- Install `user-service`
+  ```
+  helm install user-service --namespace dev ./my-charts/user-service
+  ```
+  > To delete run
+  > ```
+  > helm delete --namespace dev user-service
+  > ```
 
-To install `event-service` run
-```
-helm install event-service --namespace dev ./my-charts/event-service
-```
-> To delete run
-> ```
-> kubectl delete --namespace dev -f yaml-files/user-service-servicemonitor.yaml
-> ```
+- Install `event-service`
+  ```
+  helm install event-service --namespace dev ./my-charts/event-service
+  ```
+  > To delete run
+  > ```
+  > helm delete --namespace dev event-service
+  > ```
 
 ## Applications URLs
 
@@ -111,21 +118,33 @@ You should see something like
  schema-registry-ui |                                             |                     |
 ```
 
-For more information about how test the `user-service` and `event-service` application, please refer to https://github.com/ivangfr/springboot-kafka-mysql-cassandra#playing-around-with-the-applications
+For more information about how test the `user-service` and `event-service` application, please refer to https://github.com/ivangfr/springboot-kafka-mysql-cassandra#playing-around
 
-## Monitoring
+## Services Configuration
 
-While installing the `Helms Chart`s of the applications at [Install applications](#install-applications), it was configured, for each application, a `Service Monitor` that calls the `prometheus` endpoint of the application in order to collect some metrics.
+- **Kafka Manager**
 
-We can check whether the `Service Monitor`s are configured correctly by going to `Prometheus` website. Once there, click on `Status` dropdown menu and then on `Targets`. The reference to `user-service` and `event-service` should be displayed and the status must be `UP`.
+  - First, you must create a new cluster. Click on `Cluster` (dropdown button on the header) and then on `Add Cluster`
+  - Type the name of your cluster in `Cluster Name` field, for example: `MyZooCluster`
+  - Type `my-kafka-zookeeper:2181` in `Cluster Zookeeper Hosts` field
+  - Enable checkbox `Poll consumer information (Not recommended for large # of consumers if ZK is used for offsets tracking on older Kafka versions)`
+  - Click on `Save` button at the bottom of the page.
 
-We can build some charts in `Grafana` using `Prometheus` metrics. This way, we can monitor our applications.
+- **Prometheus**
 
-However, how to create a chart in `Grafana` is out of the scope of this README.
+  While installing the `Helms Chart`s of the applications at [Install applications](#install-applications), it was configured, for each application, a `Service Monitor` that calls the `prometheus` endpoint of the application in order to collect some metrics.
+
+  We can check whether the `Service Monitor`s are configured correctly by going to `Prometheus` website. Once there, click on `Status` dropdown menu and then on `Targets`. The reference to `user-service` and `event-service` should be displayed and the status must be `UP`.
+  
+- **Grafana**
+
+  TODO
 
 ## Cleanup
 
-In a terminal and, inside `kubernetes-environment/user-event-sourcing-monitoring` folder, run the script below to uninstall all services, applications and the `dev` namespace
-```
-./cleanup.sh
-```
+- In a terminal, make sure you are in `kubernetes-environment/user-event-sourcing-monitoring` folder
+
+- Run the script below to uninstall all services, `book-service` application and `dev` namespace.
+  ```
+  ./cleanup.sh
+  ```

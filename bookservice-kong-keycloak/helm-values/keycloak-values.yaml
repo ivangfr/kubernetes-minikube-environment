@@ -1,6 +1,6 @@
 keycloak:
   image:
-    tag: 9.0.0
+    tag: 9.0.2
   username: admin
   password: admin
   service:

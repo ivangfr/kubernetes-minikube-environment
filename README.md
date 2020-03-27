@@ -1,6 +1,6 @@
-# `kubernetes-environment`
+# kubernetes-environment
 
-The goal of this project is have some examples using [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube))
+The goal of this project is to have some examples using [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube))
 
 ## Prerequisites
 
@@ -47,15 +47,15 @@ helm repo update
 
 ## Start Minikube
 
-Open a terminal and start `Minikube` by running the following command. The properties `--memory` and `--vm-driver` are optional. 
-```
-minikube start --memory='8000mb' --vm-driver='virtualbox'
-```
+- Open a terminal and start `Minikube` by running the following command. The properties `--memory` and `--vm-driver` are optional
+  ```
+  minikube start --memory='8000mb' --vm-driver='virtualbox'
+  ```
 
-\[Optional\] Update information of available `Helm` charts locally from chart repositories
-```
-helm repo update
-```
+- \[Optional\] Update information of available `Helm` charts locally from chart repositories
+  ```
+  helm repo update
+  ```
 
 ## Shutdown Minikube
 

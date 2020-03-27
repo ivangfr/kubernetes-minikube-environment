@@ -5,4 +5,4 @@ helm delete --namespace dev event-service
 
 ./uninstall-services.sh
 
-kubectl delete -f yaml-files/dev-namespace.yaml
+kubectl delete namespace dev

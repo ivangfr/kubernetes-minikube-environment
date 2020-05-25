@@ -41,9 +41,9 @@ helm repo update
 
 ## Examples
 
-- ### [author-book-review-graphql](https://github.com/ivangfr/kubernetes-environment/tree/master/author-book-review-graphql)
-- ### [bookservice-kong-keycloak](https://github.com/ivangfr/kubernetes-environment/tree/master/bookservice-kong-keycloak)
-- ### [user-event-sourcing-monitoring](https://github.com/ivangfr/kubernetes-environment/tree/master/user-event-sourcing-monitoring)
+- ### [author-book-review-graphql](https://github.com/ivangfr/kubernetes-environment/tree/master/author-book-review-graphql#kubernetes-environment)
+- ### [bookservice-kong-keycloak](https://github.com/ivangfr/kubernetes-environment/tree/master/bookservice-kong-keycloak#kubernetes-environment)
+- ### [user-event-sourcing-monitoring](https://github.com/ivangfr/kubernetes-environment/tree/master/user-event-sourcing-monitoring#kubernetes-environment)
 
 ## Start Minikube
 

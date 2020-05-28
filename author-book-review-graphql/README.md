@@ -132,22 +132,24 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
 
 ## Applications URLs
 
-In a terminal and, inside `kubernetes-environment/author-book-review-graphql` folder, run the command below to get `zipkin`, `author-book-api` and `book-review-api` URLs
-```
-./get-applications-urls.sh
-```
+- In a terminal, make sure you are inside `kubernetes-environment/author-book-review-graphql` folder
 
-You should see something like
-```
-     Application |      Type |                                           URL |
----------------- + --------- + --------------------------------------------- |
-       my-zipkin |   Website |                   http://192.168.99.107:32075 |
- author-book-api |   Swagger |   http://192.168.99.107:32130/swagger-ui.html |
- author-book-api |  GraphiQL |          http://192.168.99.107:32130/graphiql |
- book-review-api |  GraphiQL |          http://192.168.99.107:32583/graphiql |
-```
+- Run the command below to get `zipkin`, `author-book-api` and `book-review-api` URLs
+  ```
+  ./get-applications-urls.sh
+  ```
 
-For more information about how to use the application's endpoints please refer to https://github.com/ivangfr/springboot-graphql-databases#how-to-use-graphiql
+  You should see something like
+  ```
+       Application |      Type |                                           URL |
+  ---------------- + --------- + --------------------------------------------- |
+         my-zipkin |   Website |                   http://192.168.99.107:32075 |
+   author-book-api |   Swagger |   http://192.168.99.107:32130/swagger-ui.html |
+   author-book-api |  GraphiQL |          http://192.168.99.107:32130/graphiql |
+   book-review-api |  GraphiQL |          http://192.168.99.107:32583/graphiql |
+  ```
+
+- For more information about how to use the application's endpoints please refer to https://github.com/ivangfr/springboot-graphql-databases#how-to-use-graphiql
 
 ## Cleanup
 

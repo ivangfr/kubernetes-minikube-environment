@@ -2,7 +2,7 @@
 
 helm install my-mysql \
 --namespace dev \
---set image.tag=8.0.19-debian-10-r58 \
+--set image.tag=8.0.20-debian-10-r29 \
 --set root.password=secret \
 --set db.name=userdb \
 --set master.persistence.enabled=false \

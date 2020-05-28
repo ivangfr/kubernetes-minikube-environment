@@ -59,7 +59,7 @@ helm repo update
 
 ## Shutdown Minikube
 
-The following command shuts down the `Minikube Virtual Machine`, but preserves all cluster state and data. Starting the cluster again will restore it to it’s previous state.
+The following command shuts down the `Minikube Virtual Machine`, but preserves all cluster state and data. Starting the cluster again will restore it to its previous state.
 ```
 minikube stop
 ```

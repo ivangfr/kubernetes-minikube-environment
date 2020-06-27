@@ -33,7 +33,7 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
 
 - Build `book-service` docker image
   ```
-  ./gradlew book-service:clean book-service:build docker -x test -x integrationTest
+  ./gradlew book-service:clean book-service:jibDockerBuild -x test -x integrationTest
   ```
    
 - \[Optional\] To check whether `book-service` docker image was created
@@ -88,7 +88,7 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
   ```
   kubectl get pods --namespace dev
   ```
-  The column `READY` must show `1/1`. If it is showing `0/1`, wait a little bit
+  The column `READY` must show `1/1`. Wait a bit If it's showing `0/1`.
 
 - There are two ways to configure `Keycloak`
 
@@ -112,7 +112,7 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
   
     - Run the command below to open `Keyloak` website in a browser
       ```
-      minikube service my-keycloak-http --namespace dev 
+      minikube service my-keycloak-http --namespace dev
       ```
       
     - Add `realm`, `client`, `client-roles` and `user` as explained in [`ivangfr/springboot-testing-mongodb-keycloak`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak#using-keycloak-website)
@@ -162,19 +162,21 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
 
 - Add service `book-service`
   ```
-  curl -i -X POST http://$KONG_ADMIN_URL/services/ \
+  curl -i -X POST https://$KONG_ADMIN_URL/services/ \
     -d 'name=book-service' \
     -d 'protocol=http' \
     -d 'host=bookservice-service' \
-    -d 'port=8080'
+    -d 'port=8080' \
+    --insecure
   ```
 
 - Add `book-service` route
   ```
-  curl -i -X POST http://$KONG_ADMIN_URL/services/book-service/routes/ \
+  curl -i -X POST https://$KONG_ADMIN_URL/services/book-service/routes/ \
     -d "protocols[]=http" \
     -d "hosts[]=book-service" \
-    -d "strip_path=false"
+    -d "strip_path=false" \
+    --insecure
   ```
 
 - In order to test the added route, we will use `GET /actuator/health`
@@ -206,9 +208,10 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
 
 - Add Rate Limiting plugin to `book-service` service
   ```
-  curl -X POST http://$KONG_ADMIN_URL/services/book-service/plugins \
+  curl -X POST https://$KONG_ADMIN_URL/services/book-service/plugins \
     -d "name=rate-limiting"  \
-    -d "config.minute=10"
+    -d "config.minute=10" \
+    --insecure
   ```
    
 - Make some calls to
@@ -261,11 +264,8 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
 - Get access token from Keycloak
   ```
   BEARER_MY_ACCESS_TOKEN=$(./get-access-token.sh $BOOK_SERVICE_CLIENT_SECRET)
+  echo $BEARER_MY_ACCESS_TOKEN
   ```
-  > To see the access token value run
-  > ```
-  > echo $BEARER_MY_ACCESS_TOKEN
-  > ```
 
 - Call `POST /api/books` endpoint informing the access token
   ```

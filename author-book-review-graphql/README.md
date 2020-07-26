@@ -1,7 +1,7 @@
 # kubernetes-environment
 ## `> author-book-review-graphql`
 
-The goal of this project is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`author-book-api` and `book-review-api`](https://github.com/ivangfr/springboot-graphql-databases). Then, we will use the charts to install those applications in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)). As `author-book-api` uses `MySQL` as storage and `book-review-api` uses `MongoDB`, those databases will also be installed using their `Helm Charts` available at https://github.com/helm/charts.
+The goal of this project is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`author-book-api` and `book-review-api`](https://github.com/ivangfr/springboot-graphql-databases). Then, we will use the charts to install those applications in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)). As `author-book-api` uses `MySQL` as storage and `book-review-api` uses `MongoDB`, those databases will also be installed using their `Helm Charts`.
 
 ## Clone example repository
 
@@ -114,7 +114,7 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
 
 - Install `book-review-api`
   ```
-  helm install book-review-api --namespace dev ./my-charts/book-review-api
+  helm install book-review-api --namespace dev my-charts/book-review-api
   ```
   > To delete run
   > ```
@@ -123,7 +123,7 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
 
 - Install `author-book-api`
   ```
-  helm install author-book-api --namespace dev ./my-charts/author-book-api
+  helm install author-book-api --namespace dev my-charts/author-book-api
   ```
   > To delete run
   > ```

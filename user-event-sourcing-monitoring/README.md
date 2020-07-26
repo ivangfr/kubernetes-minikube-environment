@@ -1,13 +1,13 @@
 # kubernetes-environment
 ## `> user-event-sourcing-monitoring`
 
-The goal of this project is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`user-service` and `event-service`](https://github.com/ivangfr/springboot-kafka-mysql-cassandra). Then, we will use the charts to install those applications in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)). As `user-service` uses `MySQL` as storage and `event-service` uses `Cassandra`, those databases will also be installed using their `Helm Charts` available at https://github.com/helm/charts.
+The goal of this project is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`user-service` and `event-service`](https://github.com/ivangfr/spring-cloud-stream-event-sourcing-testcontainers#applications). Then, we will use the charts to install those applications in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)). As `user-service` uses `MySQL` as storage and `event-service` uses `Cassandra`, those databases will also be installed using their `Helm Charts`.
 
 ## Clone example repository
 
-Clone [`springboot-kafka-mysql-cassandra`](https://github.com/ivangfr/springboot-kafka-mysql-cassandra) repository. For it, open a terminal and run
+Clone [`spring-cloud-stream-event-sourcing-testcontainers`](https://github.com/ivangfr/spring-cloud-stream-event-sourcing-testcontainers) repository. For it, open a terminal and run
 ```
-git clone https://github.com/ivangfr/springboot-kafka-mysql-cassandra.git
+git clone https://github.com/ivangfr/spring-cloud-stream-event-sourcing-testcontainers.git
 ```
 
 ## Start Minikube
@@ -18,7 +18,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 Instead of pushing the docker image to Docker Registry, we will simply build the image using the `Minikube` Docker daemon. Below are the steps
 
-- In a terminal, navigate to `springboot-kafka-mysql-cassandra` root folder
+- In a terminal, navigate to `spring-cloud-stream-event-sourcing-testcontainers` root folder
 
 - Set `Minikube` host
   ```
@@ -82,7 +82,7 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
 
 - Install `user-service`
   ```
-  helm install user-service --namespace dev ./my-charts/user-service
+  helm install user-service --namespace dev my-charts/user-service
   ```
   > To delete run
   > ```
@@ -91,7 +91,7 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
 
 - Install `event-service`
   ```
-  helm install event-service --namespace dev ./my-charts/event-service
+  helm install event-service --namespace dev my-charts/event-service
   ```
   > To delete run
   > ```
@@ -118,16 +118,17 @@ You should see something like
  schema-registry-ui |                                             |                     |
 ```
 
-For more information about how test the `user-service` and `event-service` application, please refer to https://github.com/ivangfr/springboot-kafka-mysql-cassandra#playing-around
+For more information about how test the `user-service` and `event-service` application, please refer to https://github.com/ivangfr/spring-cloud-stream-event-sourcing-testcontainers#playing-around
 
 ## Services Configuration
 
 - **Kafka Manager**
 
   - First, you must create a new cluster. Click on `Cluster` (dropdown button on the header) and then on `Add Cluster`
-  - Type the name of your cluster in `Cluster Name` field, for example: `MyZooCluster`
+  - Type the name of your cluster in `Cluster Name` field, for example: `MyCluster`
   - Type `my-kafka-zookeeper:2181` in `Cluster Zookeeper Hosts` field
   - Enable checkbox `Poll consumer information (Not recommended for large # of consumers if ZK is used for offsets tracking on older Kafka versions)`
+  - Set value `2` to fields `brokerViewThreadPoolSize`, `offsetCacheThreadPoolSize` and `kafkaAdminClientThreadPoolSize`
   - Click on `Save` button at the bottom of the page.
 
 - **Prometheus**

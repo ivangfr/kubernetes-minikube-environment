@@ -1,0 +1,6 @@
+image:
+  repository: hlebalbau/kafka-manager
+  tag: 3.0.0.5
+service:
+  type: NodePort
+zkHosts: my-kafka-zookeeper:2181

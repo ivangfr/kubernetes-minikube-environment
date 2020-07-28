@@ -1,0 +1,11 @@
+image:
+  tag: 8.0.21-debian-10-r9
+root:
+  password: secret
+db:
+  name: moviesdb
+master:
+  persistence:
+    enabled: false
+slave:
+  replicas: 0

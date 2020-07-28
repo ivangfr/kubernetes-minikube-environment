@@ -1,0 +1,8 @@
+image:
+  tag: 3.11.6-debian-10-r153
+dbUser:
+  forcePassword: true
+  user: cassandra
+  password: secret
+persistence:
+  enabled: false

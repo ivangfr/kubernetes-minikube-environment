@@ -1,0 +1,10 @@
+imageTag: 7.8.0
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+replicas: 1
+persistence:
+  enabled: false
+service:
+  type: NodePort

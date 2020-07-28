@@ -1,22 +1,24 @@
 # kubernetes-environment
 ## `> author-book-review-graphql`
 
-The goal of this project is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`author-book-api` and `book-review-api`](https://github.com/ivangfr/springboot-graphql-databases). Then, we will use the charts to install those applications in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)). As `author-book-api` uses `MySQL` as storage and `book-review-api` uses `MongoDB`, those databases will also be installed using their `Helm Charts`.
+The goal of this example is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`author-book-api` and `book-review-api`](https://github.com/ivangfr/springboot-graphql-databases). Then, those charts will be used to install `author-book-api` and `book-review-api` in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)).
+
+As `author-book-api` uses `MySQL` as storage and `book-review-api` uses `MongoDB`, those databases will also be installed using their `Helm Charts`.
 
 ## Clone example repository
 
-Clone [`springboot-graphql-databases`](https://github.com/ivangfr/springboot-graphql-databases) repository. For it, open a terminal and run
-```
-git clone https://github.com/ivangfr/springboot-graphql-databases.git
-```
+- Open a terminal
+
+- Run the following command to clone [`springboot-graphql-databases`](https://github.com/ivangfr/springboot-graphql-databases)
+  ```
+  git clone https://github.com/ivangfr/springboot-graphql-databases.git
+  ```
 
 ## Start Minikube
 
 First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-environment#start-minikube)
 
 ## Build Docker Images
-
-Instead of pushing the docker image to Docker Registry, we will simply build the image using the `Minikube` Docker daemon. Below are the steps
 
 - In a terminal, navigate to `springboot-graphql-databases` root folder
 
@@ -25,14 +27,9 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
   eval $(minikube docker-env)
   ```
 
-- Build application's docker images
+- Build `author-book-api` and `book-review-api` Docker images so that we don't need to push them to Docker Registry. To do it, run the following script
   ```
   ./build-apps.sh
-  ```
-
-- \[Optional\] Check whether `book-review-api` and `author-book-api` docker images were created
-  ```
-  docker images
   ```
 
 - Get back to Host machine Docker Daemon   
@@ -69,7 +66,7 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
   > ./uninstall-services.sh
   > ```
 
-  It will install `MySQL`, `MongoDB` and `Zipkin`. This process can take some time (pulling docker images, starting services, etc).
+  It will install `MySQL`, `MongoDB` and `Zipkin`. This process can take time because it involves pulling service's docker images and starting them.
   
 - Check the status/progress of the service installation
   ```
@@ -137,16 +134,6 @@ Instead of pushing the docker image to Docker Registry, we will simply build the
 - Run the command below to get `zipkin`, `author-book-api` and `book-review-api` URLs
   ```
   ./get-applications-urls.sh
-  ```
-
-  You should see something like
-  ```
-       Application |      Type |                                           URL |
-  ---------------- + --------- + --------------------------------------------- |
-         my-zipkin |   Website |                   http://192.168.99.107:32075 |
-   author-book-api |   Swagger |   http://192.168.99.107:32130/swagger-ui.html |
-   author-book-api |  GraphiQL |          http://192.168.99.107:32130/graphiql |
-   book-review-api |  GraphiQL |          http://192.168.99.107:32583/graphiql |
   ```
 
 - For more information about how to use the application's endpoints please refer to https://github.com/ivangfr/springboot-graphql-databases#how-to-use-graphiql

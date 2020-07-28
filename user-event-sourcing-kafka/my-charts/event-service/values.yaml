@@ -1,22 +1,24 @@
-# Default values for user-service.
+# Default values for event-service.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: docker.mycompany.com/user-service
+  repository: docker.mycompany.com/event-service
   pullPolicy: Never
 
 service:
   type: NodePort
-  port: 9080
+  port: 9081
 
 env:
-  - name: MYSQL_HOST
-    value: my-mysql
-  - name: SCHEMA_REGISTRY_HOST
-    value: my-schema-registry
+  - name: CASSANDRA_HOST
+    value: my-cassandra
+  - name: SPRING_DATA_CASSANDRA_USERNAME
+    value: cassandra
+  - name: SPRING_DATA_CASSANDRA_PASSWORD
+    value: secret
   - name: KAFKA_HOST
     value: my-kafka
   - name: KAFKA_PORT
@@ -27,15 +29,12 @@ env:
 livenessProbe:
   httpGet:
     path: /actuator/health
-  initialDelaySeconds: 180
+  initialDelaySeconds: 80
 
 readinessProbe:
   httpGet:
     path: /actuator/health
-  initialDelaySeconds: 180
-
-serviceMonitor:
-  endpoint: /actuator/prometheus
+  initialDelaySeconds: 80
 
 imagePullSecrets: []
 nameOverride: ""

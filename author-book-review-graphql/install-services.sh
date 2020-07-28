@@ -2,7 +2,7 @@
 
 helm install my-mysql \
 --namespace dev \
---set image.tag=8.0.20-debian-10-r29 \
+--set image.tag=8.0.21-debian-10-r9 \
 --set db.name=authorbookdb \
 --set db.user=authorbookuser \
 --set db.password=authorbookpass \

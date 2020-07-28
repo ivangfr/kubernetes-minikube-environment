@@ -1,13 +1,13 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "event-service.fullname" . }}
+  name: {{ include "movies-api.fullname" . }}
   labels:
-    {{- include "event-service.labels" . | nindent 4 }}
+    {{- include "movies-api.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      {{- include "event-service.labels" . | nindent 6 }}
+      {{- include "movies-api.selectorLabels" . | nindent 6 }}
   endpoints:
     - port: http
       path: {{ .Values.serviceMonitor.endpoint }}

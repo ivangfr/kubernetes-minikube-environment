@@ -134,4 +134,4 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## TODO
 
-- Try [Dynamic Configuration Discovery in Grafana](https://johnharris.io/2019/03/dynamic-configuration-discovery-in-grafana/)
+- It would be nice to have `Prometheus` automatically set as data source in `Grafana`, also predefined Dashboards. Waiting for this issue to be solved, https://github.com/bitnami/charts/issues/2797

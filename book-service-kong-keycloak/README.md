@@ -1,4 +1,4 @@
-# kubernetes-environment
+# kubernetes-minikube-environment
 ## `> book-service-kong-keycloak`
 
 The goal of this example is to run inside [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube)): [`book-service`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) ([`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application), [`Keycloak`](https://www.keycloak.org) (authentication and authorization service) and [`Kong`](https://konghq.com) (gateway service).
@@ -24,7 +24,7 @@ Furthermore, `book-service` implements `Keycloak` security configuration. The en
 
 ## Start Minikube
 
-First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-environment#start-minikube)
+First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-minikube-environment#start-minikube)
 
 ## Build Docker Image
 
@@ -63,7 +63,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Install services
 
-- In a terminal, navigate to `kubernetes-environment/book-service-kong-keycloak` folder
+- In a terminal, navigate to `kubernetes-minikube-environment/book-service-kong-keycloak` folder
 
 - To install the services, run the script below
   ```
@@ -139,7 +139,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Install book-service
 
-- In a terminal, make sure you are in `kubernetes-environment/book-service-kong-keycloak` folder
+- In a terminal, make sure you are in `kubernetes-minikube-environment/book-service-kong-keycloak` folder
 
 - Install `book-service`
   ```
@@ -209,7 +209,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Testing
 
-- In a terminal, make sure you are in `kubernetes-environment/book-service-kong-keycloak` folder
+- In a terminal, make sure you are in `kubernetes-minikube-environment/book-service-kong-keycloak` folder
 
 - Get `KONG_PROXY_URL` environment variable
   ```
@@ -270,7 +270,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Cleanup
 
-- In a terminal, make sure you are in `kubernetes-environment/book-service-kong-keycloak` folder
+- In a terminal, make sure you are in `kubernetes-minikube-environment/book-service-kong-keycloak` folder
 
 - Run the script below to uninstall all services, `book-service` application and `dev` namespace.
   ```

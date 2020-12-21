@@ -1,4 +1,4 @@
-# kubernetes-environment
+# kubernetes-minikube-environment
 ## `> user-event-sourcing-kafka`
 
 The goal of this example is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`user-service` and `event-service`](https://github.com/ivangfr/spring-cloud-stream-event-sourcing-testcontainers#applications). Then, these charts will be used to install `user-service` and `event-service` in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)).
@@ -16,7 +16,7 @@ As `user-service` uses `MySQL` as storage and `event-service` uses `Cassandra`, 
 
 ## Start Minikube
 
-First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-environment#start-minikube)
+First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-minikube-environment#start-minikube)
 
 ## Build Docker Images
 
@@ -55,7 +55,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Install services
 
-- In a terminal, navigate to `kubernetes-environment/user-event-sourcing-kafka` folder
+- In a terminal, navigate to `kubernetes-minikube-environment/user-event-sourcing-kafka` folder
 
 - To install the services, run the script below
   ```
@@ -75,7 +75,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Install applications
 
-- In a terminal, make sure you are in `kubernetes-environment/user-event-sourcing-kafka` folder
+- In a terminal, make sure you are in `kubernetes-minikube-environment/user-event-sourcing-kafka` folder
 
 - Install `user-service`
   ```
@@ -97,7 +97,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Applications & Services URLs
 
-- In a terminal, make sure you are inside `kubernetes-environment/user-event-sourcing-kafka` folder
+- In a terminal, make sure you are inside `kubernetes-minikube-environment/user-event-sourcing-kafka` folder
 
 - Run the command below to get applications and services URLs
   ```
@@ -138,7 +138,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Cleanup
 
-- In a terminal, make sure you are in `kubernetes-environment/user-event-sourcing-kafka` folder
+- In a terminal, make sure you are in `kubernetes-minikube-environment/user-event-sourcing-kafka` folder
 
 - Run the script below to uninstall all services, `user-service` and `event-service` applications and `dev` namespace.
   ```

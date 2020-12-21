@@ -1,4 +1,4 @@
-# kubernetes-environment
+# kubernetes-minikube-environment
 ## `> author-book-review-graphql`
 
 The goal of this example is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`author-book-api` and `book-review-api`](https://github.com/ivangfr/springboot-graphql-databases). Then, these charts will be used to install `author-book-api` and `book-review-api` in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)).
@@ -16,7 +16,7 @@ As `author-book-api` uses `MySQL` as storage and `book-review-api` uses `MongoDB
 
 ## Start Minikube
 
-First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-environment#start-minikube)
+First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-minikube-environment#start-minikube)
 
 ## Build Docker Images
 
@@ -55,7 +55,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Install services
 
-- In a terminal, navigate to `kubernetes-environment/author-book-review-graphql` folder
+- In a terminal, navigate to `kubernetes-minikube-environment/author-book-review-graphql` folder
 
 - To install the services, run the script below
   ```
@@ -107,7 +107,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Install applications
 
-- In a terminal, make sure you are in `kubernetes-environment/author-book-review-graphql` folder
+- In a terminal, make sure you are in `kubernetes-minikube-environment/author-book-review-graphql` folder
 
 - Install `book-review-api`
   ```
@@ -129,7 +129,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Applications URLs
 
-- In a terminal, make sure you are inside `kubernetes-environment/author-book-review-graphql` folder
+- In a terminal, make sure you are inside `kubernetes-minikube-environment/author-book-review-graphql` folder
 
 - Run the command below to get `zipkin`, `author-book-api` and `book-review-api` URLs
   ```
@@ -140,7 +140,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Cleanup
 
-- In a terminal, make sure you are in `kubernetes-environment/author-book-review-graphql` folder
+- In a terminal, make sure you are in `kubernetes-minikube-environment/author-book-review-graphql` folder
 
 - Run the script below to uninstall all services, applications and `dev` namespace.
   ```

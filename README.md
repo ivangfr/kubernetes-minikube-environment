@@ -1,4 +1,4 @@
-# kubernetes-environment
+# kubernetes-minikube-environment
 
 The goal of this project is to have some examples using [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube)) 
 
@@ -55,10 +55,10 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
 
 ## Examples
 
-- ### [author-book-review-graphql](https://github.com/ivangfr/kubernetes-environment/tree/master/author-book-review-graphql#kubernetes-environment)
-- ### [book-service-kong-keycloak](https://github.com/ivangfr/kubernetes-environment/tree/master/book-service-kong-keycloak#kubernetes-environment)
-- ### [user-event-sourcing-kafka](https://github.com/ivangfr/kubernetes-environment/tree/master/user-event-sourcing-kafka#kubernetes-environment)
-- ### [movies-api-elk-prometheus-grafana](https://github.com/ivangfr/kubernetes-environment/tree/master/movies-api-elk-prometheus-grafana#kubernetes-environment)
+- ### [author-book-review-graphql](https://github.com/ivangfr/kubernetes-minikube-environment/tree/master/author-book-review-graphql#kubernetes-minikube-environment)
+- ### [book-service-kong-keycloak](https://github.com/ivangfr/kubernetes-minikube-environment/tree/master/book-service-kong-keycloak#kubernetes-minikube-environment)
+- ### [user-event-sourcing-kafka](https://github.com/ivangfr/kubernetes-minikube-environment/tree/master/user-event-sourcing-kafka#kubernetes-minikube-environment)
+- ### [movies-api-elk-prometheus-grafana](https://github.com/ivangfr/kubernetes-minikube-environment/tree/master/movies-api-elk-prometheus-grafana#kubernetes-minikube-environment)
 
 ## Start Minikube
 

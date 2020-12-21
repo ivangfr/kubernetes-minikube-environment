@@ -1,4 +1,4 @@
-# kubernetes-environment
+# kubernetes-minikube-environment
 ## `> movies-api-elk-prometheus-grafana`
 
 The goal of this example is to create a `Helm Chart` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application [`movies-api`](https://github.com/ivangfr/springboot-elk-prometheus-grafana#application). Then, the chart will be used to install the application in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)).
@@ -16,7 +16,7 @@ As `movies-api` uses `MySQL` as storage, this database will also be installed us
 
 ## Start Minikube
 
-First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-environment#start-minikube)
+First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-minikube-environment#start-minikube)
 
 ## Build Docker Image
 
@@ -55,7 +55,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Install services
 
-- In a terminal, navigate to `kubernetes-environment/movies-api-elk-prometheus-grafana` folder
+- In a terminal, navigate to `kubernetes-minikube-environment/movies-api-elk-prometheus-grafana` folder
 
 - To install the services, run the script below
   ```
@@ -75,7 +75,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Install application
 
-- In a terminal, make sure you are in `kubernetes-environment/movies-api-elk-prometheus-grafana` folder
+- In a terminal, make sure you are in `kubernetes-minikube-environment/movies-api-elk-prometheus-grafana` folder
 
 - Install `movies-api`
   ```
@@ -88,7 +88,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Application & Services URLs
 
-- In a terminal, make sure you are inside `kubernetes-environment/movies-api-elk-prometheus-grafana` folder
+- In a terminal, make sure you are inside `kubernetes-minikube-environment/movies-api-elk-prometheus-grafana` folder
 
 - Run the command below to get application and services URLs
   ```
@@ -129,7 +129,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Cleanup
 
-- In a terminal, make sure you are in `kubernetes-environment/movies-api-elk-prometheus-grafana` folder
+- In a terminal, make sure you are in `kubernetes-minikube-environment/movies-api-elk-prometheus-grafana` folder
 
 - Run the script below to uninstall all services, `movies-api` application and `dev` namespace.
   ```

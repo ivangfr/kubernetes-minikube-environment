@@ -14,13 +14,13 @@ service:
 
 livenessProbe:
   httpGet:
-    path: /actuator/health
-  initialDelaySeconds: 80
+    path: /actuator/health/liveness
+  initialDelaySeconds: 50
 
 readinessProbe:
   httpGet:
-    path: /actuator/health
-  initialDelaySeconds: 80
+    path: /actuator/health/readiness
+  initialDelaySeconds: 70
 
 imagePullSecrets: []
 nameOverride: ""

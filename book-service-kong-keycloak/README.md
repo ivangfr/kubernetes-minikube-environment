@@ -18,9 +18,9 @@ The goal of this example is to run inside [`Kubernetes`](https://kubernetes.io) 
 
 In order to bypass it, we are going to use `Kong` as a gateway service. So, to access `book-service`, you will have to call `Kong` REST API and then, `Kong` will redirect the request to `book-service`.
 
-Furthermore, the plugin `Rate Limiting` will be installed in `Kong`. It will be configured to just allow 5 requests a minute to any `book-service` endpoints.
+Besides, the plugin `Rate Limiting` will be installed in `Kong`. It will be configured to just allow 5 requests a minute to any `book-service` endpoints.
 
-Besides, `book-service` implements `Keycloak` security configuration. The endpoints related to _"managing books"_, like create book (`POST /api/books`), update book (`PATCH /api/books/{id}`) and delete book (`DELETE /api/books/{id}`) will require a `Bearer JWT Access Token`.
+Furthermore, `book-service` implements `Keycloak` security configuration. The endpoints related to _"managing books"_, like create book (`POST /api/books`), update book (`PATCH /api/books/{id}`) and delete book (`DELETE /api/books/{id}`) will require a `Bearer JWT Access Token`.
 
 ## Start Minikube
 
@@ -76,9 +76,9 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
   It will install `MySQL`, `Postgres`, `MongoDB` `Kong` and `Keycloak`. It can take some time (pulling docker images, starting services, etc).
   
-- Check the status/progress of the service installation
+- Watch the status/progress of the service's installation
   ```
-  kubectl get pods --namespace dev
+  kubectl get pods --namespace dev --watch
   ```
 
 ## Configure Keycloak
@@ -120,8 +120,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 - In a terminal, run the command below to create a secret used by `book-service` to connect to `MongoDB`
   ```
-  kubectl create secret --namespace dev generic book-service-db \
-   --from-literal=username=bookuser --from-literal=password=bookpass
+  kubectl create secret --namespace dev generic book-service-db --from-literal=username=bookuser --from-literal=password=bookpass
   ```
   > To delete run
   > ```
@@ -186,23 +185,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   It should return
   ```
   HTTP/1.1 200
-  {
-    "status": "UP",
-    "details": {
-      "diskSpace": {
-        "status": "UP",
-        "details": {
-        	...
-        }
-      },
-      "mongo": {
-        "status": "UP",
-        "details": {
-          ...
-        }
-      }
-    }
-  }
+  {"status":"UP","components":{"diskSpace":{"status":"UP","details":{...}},"livenessState":{"status":"UP"},"mongo":{"status":"UP","details":{...}},"ping":{"status":"UP"},"readinessState":{"status":"UP"}},"groups":["liveness","readiness"]}
   ```
 
 - Add Rate Limiting plugin to `book-service` service
@@ -224,7 +207,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   {"message":"API rate limit exceeded"}
   ```
 
-## Final test
+## Testing
 
 - In a terminal, make sure you are in `kubernetes-environment/book-service-kong-keycloak` folder
 

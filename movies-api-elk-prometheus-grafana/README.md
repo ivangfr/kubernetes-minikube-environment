@@ -27,7 +27,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   eval $(minikube docker-env)
   ```
 
-- Build `moveis-api` Docker image so that we don't need to push it to Docker Registry. To do it, run the following command
+- Build `movies-api` Docker image so that we don't need to push it to Docker Registry. To do it, run the following command
   ```
   ./mvnw clean compile jib:dockerBuild --projects movies-api
   ```
@@ -66,11 +66,11 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   > ./uninstall-services.sh
   > ```
 
-  It will install `MySQL`, `Elasticsearch`, `Logstash`, `Kibana`, `Filebeat`, `Prometheus-Operator` and `Grafana`. This process can take time because it involves pulling service's docker images and starting them.
+  It will install `MySQL`, `Elasticsearch`, `Logstash`, `Kibana`, `Filebeat`, `Prometheus-Operator` and `Grafana`. This process will take time because it involves pulling service's docker images and starting them.
 
-- Check the status/progress of the service installation
+- Watch the status/progress of the service's installation
   ```
-  kubectl get pods --namespace dev
+  kubectl get pods --namespace dev --watch
   ```
 
 ## Install application
@@ -102,24 +102,28 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   - Access `Kibana` website
   - Click on `Explore on my own`
   - In the main Kibana page, click on "burger" menu icon and then on `Discover`
-  - In the `Index pattern` field, set `filebeat-*` and click on `> Next Step` button
-  - In the `Time Filter field name` combo-box, select `@Timestamp` and click on `Create index pattern`
+  - Click on `Create index pattern` button
+  - In the `Index pattern name` field, set `filebeat-*` and click on `> Next Step` button
+  - In the `Time field` combo-box, select `@Timestamp` and click on `Create index pattern`
   - Click on "burger" menu icon again and then on `Discover` to start performing searches
 
 - **Prometheus**
 
   While installing `movies-api` Helms Chart at [Install application](#install-application), a `Service Monitor` is configured. It calls application's `prometheus` endpoint in order to collect some metrics.
 
-  We can check whether the `Service Monitor` is configured correctly by going to `Prometheus` website. Once there, click on `Status` dropdown menu and then on `Targets`. The `movies-api` reference should be displayed and its status must be `UP`.
+  We can check whether the `Service Monitor` is configured correctly by
+  - Access `Prometheus` website
+  - Click on `Status` dropdown menu and then on `Targets`
+  - The `movies-api` reference should be displayed and its status must be `UP`
   
 - **Grafana**
 
   - Access `Grafana` website
   - Login using username `admin` and password `admin`
   - Skip the next screen in case you don't want to change the credentials
-  - In the main Grafana page, click on the `Gear` icon and then click on `Add data source` button
+  - In the main Grafana page, click on the `Gear` icon and then on `Add data source` button
   - Select `Prometheus`
-  - In the `HTTP` section, set `my-prometheus-operator-prometheus:9090`
+  - In the `HTTP` section, set `my-prometheus-operator-prometheus:9090` in the URL field
   - Click on `Save & Test` button. A green message saying `Data source is working` should appear
   - Click on `+` icon on the menu and start creating a new dashboard 
 

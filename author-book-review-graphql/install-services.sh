@@ -2,23 +2,22 @@
 
 helm install my-mysql \
 --namespace dev \
---set image.tag=8.0.21-debian-10-r9 \
---set db.name=authorbookdb \
---set db.user=authorbookuser \
---set db.password=authorbookpass \
---set root.password=root-password \
---set master.persistence.enabled=false \
---set slave.replicas=0 \
+--set image.tag=8.0.22-debian-10-r44 \
+--set auth.database=authorbookdb \
+--set auth.username=authorbookuser \
+--set auth.password=authorbookpass \
+--set auth.rootPassword=root-password \
+--set primary.persistence.enabled=false \
+--set secondary.replicaCount=0 \
 bitnami/mysql
 
 helm install my-mongodb \
 --namespace dev \
---set image.tag=4.2.7-debian-10-r7 \
---set image.pullPolicy=IfNotPresent \
---set mongodbDatabase=bookreviewdb \
---set mongodbUsername=bookreviewuser \
---set mongodbPassword=bookreviewpass \
---set mongodbRootPassword=secret \
+--set image.tag=4.4.2-debian-10-r27 \
+--set auth.database=bookreviewdb \
+--set auth.username=bookreviewuser \
+--set auth.password=bookreviewpass \
+--set auth.rootPassword=secret \
 --set persistence.enabled=false \
 bitnami/mongodb
 

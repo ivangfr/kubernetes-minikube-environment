@@ -1,6 +1,5 @@
 image:
-  tag: 11.7.0-debian-10-r9
-  pullPolicy: IfNotPresent
+  tag: 11.10.0-debian-10-r24
 postgresqlDatabase: kong
 postgresqlUsername: kong
 postgresqlPassword: kong

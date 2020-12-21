@@ -1,9 +1,9 @@
 # kubernetes-environment
 ## `> user-event-sourcing-kafka`
 
-The goal of this example is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`user-service` and `event-service`](https://github.com/ivangfr/spring-cloud-stream-event-sourcing-testcontainers#applications). Then, those charts will be used to install `user-service` and `event-service` in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)).
+The goal of this example is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`user-service` and `event-service`](https://github.com/ivangfr/spring-cloud-stream-event-sourcing-testcontainers#applications). Then, these charts will be used to install `user-service` and `event-service` in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)).
 
-As `user-service` uses `MySQL` as storage and `event-service` uses `Cassandra`, those databases will also be installed using their `Helm Charts`. Besides, other services used in this example like `Kafka`, `Zipkin`, etc, will be installed by using their respective `Helm Charts`.
+As `user-service` uses `MySQL` as storage and `event-service` uses `Cassandra`, these databases will also be installed using their `Helm Charts`. Besides, other services used in this example like `Kafka`, `Zipkin`, etc, will be installed by using their respective `Helm Charts`.
 
 ## Clone example repository
 
@@ -66,11 +66,11 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   > ./uninstall-services.sh
   > ```
 
-  It will install `MySQL`, `Cassandra`, `Zookeeper`, `Kafka`, etc. This process can take time because it involves pulling service's docker images and starting them.
+  It will install `MySQL`, `Cassandra`, `Zookeeper`, `Kafka`, etc. This process will take time because it involves pulling service's docker images and starting them.
 
-- Check the status/progress of the service installation
+- Watch the status/progress of the service's installation
   ```
-  kubectl get pods --namespace dev
+  kubectl get pods --namespace dev --watch
   ```
 
 ## Install applications
@@ -104,7 +104,27 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   ./get-applications-services-urls.sh
   ```
   
-- For more information about how test the `user-service` and `event-service` application, please refer to https://github.com/ivangfr/spring-cloud-stream-event-sourcing-testcontainers#playing-around
+## Testing
+
+- Get `user-service` address
+  ```
+  USER_SERVICE_ADDR="$(minikube ip):$(kubectl get svc -n dev user-service -o go-template='{{(index .spec.ports 0).nodePort}}')"
+  ```
+
+- Get `event-service` address
+  ```
+  EVENT_SERVICE_ADDR="$(minikube ip):$(kubectl get svc -n dev event-service -o go-template='{{(index .spec.ports 0).nodePort}}')"
+  ```
+
+- Create a user
+  ```
+  curl -i -X POST "http://$USER_SERVICE_ADDR/api/users" -H  "Content-Type: application/json" -d '{"email":"ivan.franchin@test.com","fullName":"Ivan Franchin","active":true}'
+  ```
+
+- Check whether the event related to the user creation was received by `event-service`
+  ```
+  curl -i "http://$EVENT_SERVICE_ADDR/api/events/users/1"
+  ```
 
 ## Services Configuration
 
@@ -113,8 +133,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   - First, you must create a new cluster. Click on `Cluster` (dropdown button on the header) and then on `Add Cluster`
   - Type the name of your cluster in `Cluster Name` field, for example: `MyCluster`
   - Type `my-kafka-zookeeper:2181` in `Cluster Zookeeper Hosts` field
-  - Enable checkbox `Poll consumer information (Not recommended for large # of consumers if ZK is used for offsets tracking on older Kafka versions)`
-  - Set value `2` to fields `brokerViewThreadPoolSize`, `offsetCacheThreadPoolSize` and `kafkaAdminClientThreadPoolSize`
+  - Enable checkbox `Poll consumer information (Not recommended for large # of consumers)`
   - Click on `Save` button at the bottom of the page.
 
 ## Cleanup

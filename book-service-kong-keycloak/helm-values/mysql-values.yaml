@@ -1,13 +1,12 @@
 image:
-  tag: 8.0.21-debian-10-r9
-root:
-  password: root-password
-db:
-  user: keycloak
+  tag: 8.0.22-debian-10-r44
+auth:
+  rootPassword: root-password
+  username: keycloak
   password: keycloak
-  name: keycloak
-master:
+  database: keycloak
+primary:
   persistence:
     enabled: false
-slave:
-  replicas: 0
+secondary:
+  replicaCount: 0

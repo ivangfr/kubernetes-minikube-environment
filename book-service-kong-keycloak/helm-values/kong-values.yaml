@@ -1,5 +1,5 @@
 image:
-  tag: 2.0.4
+  tag: 2.2
 env:
   database: postgres
   pg_host: my-postgres-postgresql

@@ -1,9 +1,9 @@
 # kubernetes-environment
 ## `> author-book-review-graphql`
 
-The goal of this example is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`author-book-api` and `book-review-api`](https://github.com/ivangfr/springboot-graphql-databases). Then, those charts will be used to install `author-book-api` and `book-review-api` in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)).
+The goal of this example is to create `Helm Charts` for the [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) applications [`author-book-api` and `book-review-api`](https://github.com/ivangfr/springboot-graphql-databases). Then, these charts will be used to install `author-book-api` and `book-review-api` in [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://kubernetes.io/docs/getting-started-guides/minikube)).
 
-As `author-book-api` uses `MySQL` as storage and `book-review-api` uses `MongoDB`, those databases will also be installed using their `Helm Charts`.
+As `author-book-api` uses `MySQL` as storage and `book-review-api` uses `MongoDB`, these databases will also be installed using their `Helm Charts`.
 
 ## Clone example repository
 
@@ -66,11 +66,11 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   > ./uninstall-services.sh
   > ```
 
-  It will install `MySQL`, `MongoDB` and `Zipkin`. This process can take time because it involves pulling service's docker images and starting them.
+  It will install `MySQL`, `MongoDB` and `Zipkin`. This process will take time because it involves pulling service's docker images and starting them.
   
-- Check the status/progress of the service installation
+- Watch the status/progress of the service's installation
   ```
-  kubectl get pods --namespace dev
+  kubectl get pods --namespace dev --watch
   ```
 
 ## Create application database secrets
@@ -136,7 +136,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   ./get-applications-urls.sh
   ```
 
-- For more information about how to use the application's endpoints please refer to https://github.com/ivangfr/springboot-graphql-databases#how-to-use-graphiql
+- For more information about how to use the application's endpoints, refer to https://github.com/ivangfr/springboot-graphql-databases#how-to-use-graphiql
 
 ## Cleanup
 

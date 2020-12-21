@@ -18,13 +18,13 @@ env:
 
 livenessProbe:
   httpGet:
-    path: /actuator/health
+    path: /actuator/health/liveness
   initialDelaySeconds: 30
 
 readinessProbe:
   httpGet:
-    path: /actuator/health
-  initialDelaySeconds: 30
+    path: /actuator/health/readiness
+  initialDelaySeconds: 50
 
 serviceMonitor:
   endpoint: /actuator/prometheus

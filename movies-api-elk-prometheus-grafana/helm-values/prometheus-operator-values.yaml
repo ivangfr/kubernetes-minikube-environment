@@ -1,5 +1,5 @@
 image:
-  tag: 0.40.0-debian-10-r32
+  tag: 0.41.0-debian-10-r5
 prometheus:
   service:
     type: NodePort

@@ -8,13 +8,13 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
 
   You must have the following tools installed
 
-  | Tool            | Version I used in the last commit     | Command to check   |
-  | --------------- | ------------------------------------- | ------------------ |
-  | [`Kubectl`][1]  | Client: `v1.18.6`; Server: `v1.18.3`  | `kubectl version`  |
-  | [`Minikube`][2] | `v1.12.1`                             | `minikube version` |
-  | [`Helm`][3]     | `v3.2.4`                              | `helm version`     |
-  | [`Java 11+`][4] | `11.0.7`                              | `java --version`   |
-  | [`Docker`][5]   | Client: `19.03.12`; Server: `19.03.12`| `docker version`   |
+  | Tool            | Version I used in the last commit    | Command to check   |
+  | --------------- | ------------------------------------ | ------------------ |
+  | [`Kubectl`][1]  | Client: `v1.20.1`; Server: `v1.20.0` | `kubectl version`  |
+  | [`Minikube`][2] | `v1.16.0`                            | `minikube version` |
+  | [`Helm`][3]     | `v3.4.2`                             | `helm version`     |
+  | [`Java 11+`][4] | `11.0.9.1`                           | `java --version`   |
+  | [`Docker`][5]   | Client: `20.10.0`; Server: `20.10.0` | `docker version`   |
   
   [1]:https://kubernetes.io/docs/tasks/tools/install-kubectl/
   [2]:https://kubernetes.io/docs/tasks/tools/install-minikube/
@@ -27,7 +27,7 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
   You must have the following `repo`'s added in your helm chart repository list.
   ```
   NAME        	URL
-  stable      	https://kubernetes-charts.storage.googleapis.com/
+  stable      	https://charts.helm.sh/stable
   codecentric 	https://codecentric.github.io/helm-charts/
   kong        	https://charts.konghq.com
   bitnami     	https://charts.bitnami.com/bitnami
@@ -41,7 +41,7 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
 
   If some of them is missing, here are the commands to add
   ```
-  helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+  helm repo add stable https://charts.helm.sh/stable
   helm repo add codecentric https://codecentric.github.io/helm-charts/
   helm repo add kong https://charts.konghq.com
   helm repo add bitnami https://charts.bitnami.com/bitnami

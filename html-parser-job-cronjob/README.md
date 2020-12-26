@@ -112,7 +112,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 - Call `game-score-api` endpoint that retrieves all games
   ```
-  curl -i http://$GAME_SCORE_API_URL//api/games
+  curl -i http:/$GAME_SCORE_API_URL/api/games
   ```
 
 ## Cleanup

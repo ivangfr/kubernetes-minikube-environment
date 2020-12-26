@@ -30,7 +30,7 @@ livenessProbe:
 readinessProbe:
   httpGet:
     path: /actuator/health/readiness
-  initialDelaySeconds: 100
+  initialDelaySeconds: 80
 
 imagePullSecrets: []
 nameOverride: ""

@@ -24,7 +24,7 @@ livenessProbe:
 readinessProbe:
   httpGet:
     path: /actuator/health/readiness
-  initialDelaySeconds: 50
+  initialDelaySeconds: 30
 
 serviceMonitor:
   endpoint: /actuator/prometheus

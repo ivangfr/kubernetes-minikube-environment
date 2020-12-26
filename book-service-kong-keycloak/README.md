@@ -74,7 +74,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   > ./uninstall-services.sh
   > ```
 
-  It will install `MySQL`, `Postgres`, `MongoDB` `Kong` and `Keycloak`. It can take some time (pulling docker images, starting services, etc).
+  It will install `MySQL`, `Postgres`, `MongoDB`, `Kong` and `Keycloak`. It can take some time (pulling docker images, starting services, etc).
   
 - Watch the status/progress of the service's installation
   ```

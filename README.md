@@ -57,8 +57,9 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
 
 - ### [author-book-review-graphql](https://github.com/ivangfr/kubernetes-minikube-environment/tree/master/author-book-review-graphql#kubernetes-minikube-environment)
 - ### [book-service-kong-keycloak](https://github.com/ivangfr/kubernetes-minikube-environment/tree/master/book-service-kong-keycloak#kubernetes-minikube-environment)
-- ### [user-event-sourcing-kafka](https://github.com/ivangfr/kubernetes-minikube-environment/tree/master/user-event-sourcing-kafka#kubernetes-minikube-environment)
+- ### [html-parser-job-cronjob](https://github.com/ivangfr/kubernetes-minikube-environment/tree/master/html-parser-job-cronjob#kubernetes-minikube-environment)
 - ### [movies-api-elk-prometheus-grafana](https://github.com/ivangfr/kubernetes-minikube-environment/tree/master/movies-api-elk-prometheus-grafana#kubernetes-minikube-environment)
+- ### [user-event-sourcing-kafka](https://github.com/ivangfr/kubernetes-minikube-environment/tree/master/user-event-sourcing-kafka#kubernetes-minikube-environment)
 
 ## Start Minikube
 

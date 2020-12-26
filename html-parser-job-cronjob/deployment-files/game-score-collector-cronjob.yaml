@@ -1,0 +1,24 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: game-score-collector-cronjob
+  labels:
+    app: game-score-collector
+spec:
+  schedule: "*/10 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: game-score-collector-cronjob
+              image: docker.mycompany.com/game-score-collector:1.0.0
+              imagePullPolicy: Never
+              env:
+                - name: MONGODB_HOST
+                  value: "my-mongodb"
+                - name: SPRING_DATA_MONGODB_USERNAME
+                  value: gamescoreuser
+                - name: SPRING_DATA_MONGODB_PASSWORD
+                  value: gamescorepass
+          restartPolicy: OnFailure

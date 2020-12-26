@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: game-score-collector-job
+  labels:
+    app: game-score-collector
+spec:
+  template:
+    metadata:
+      name: game-score-collector-job
+    spec:
+      containers:
+        - name: game-score-collector-job
+          image: docker.mycompany.com/game-score-collector:1.0.0
+          imagePullPolicy: Never
+          env:
+            - name: MONGODB_HOST
+              value: "my-mongodb"
+            - name: SPRING_DATA_MONGODB_USERNAME
+              value: gamescoreuser
+            - name: SPRING_DATA_MONGODB_PASSWORD
+              value: gamescorepass
+      restartPolicy: Never

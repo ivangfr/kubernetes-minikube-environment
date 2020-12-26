@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: game-score-api-service
+  labels:
+    app: game-score-api
+    tier: frontend
+spec:
+  selector:
+    app: game-score-api
+  ports:
+    - port: 8080
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-score-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: game-score-api
+  template:
+    metadata:
+      labels:
+        app: game-score-api
+    spec:
+      containers:
+        - name: game-score-api
+          image: docker.mycompany.com/game-score-api:1.0.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGODB_HOST
+              value: my-mongodb
+            - name: SPRING_DATA_MONGODB_USERNAME
+              value: gamescoreuser
+            - name: SPRING_DATA_MONGODB_PASSWORD
+              value: gamescorepass
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10

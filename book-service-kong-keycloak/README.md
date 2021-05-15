@@ -1,15 +1,15 @@
 # kubernetes-minikube-environment
 ## `> book-service-kong-keycloak`
 
-The goal of this example is to run inside [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube)): [`book-service`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak) ([`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application), [`Keycloak`](https://www.keycloak.org) (authentication and authorization service) and [`Kong`](https://konghq.com) (gateway service).
+The goal of this example is to run inside [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube)): [`book-service`](https://github.com/ivangfr/springboot-keycloak-mongodb-testcontainers) ([`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application), [`Keycloak`](https://www.keycloak.org) (authentication and authorization service) and [`Kong`](https://konghq.com) (gateway service).
 
 ## Clone example repository
 
 - Open a terminal
 
-- Run the following command to clone [`springboot-testing-mongodb-keycloak`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak)
+- Run the following command to clone [`springboot-keycloak-mongodb-testcontainers`](https://github.com/ivangfr/springboot-keycloak-mongodb-testcontainers)
   ```
-  git clone https://github.com/ivangfr/springboot-testing-mongodb-keycloak.git
+  git clone https://github.com/ivangfr/springboot-keycloak-mongodb-testcontainers.git
   ```
 
 ### book-service
@@ -28,7 +28,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## Build Docker Image
 
-- In a terminal, navigate to `springboot-testing-mongodb-keycloak` root folder
+- In a terminal, navigate to `springboot-keycloak-mongodb-testcontainers` root folder
 
 - Set `Minikube` host
   ```
@@ -80,6 +80,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   ```
   kubectl get pods --namespace dev --watch
   ```
+  > To stop watch, press `Ctrl+C`
 
 ## Configure Keycloak
 
@@ -87,13 +88,13 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   ```
   kubectl get pods --namespace dev
   ```
-  The column `READY` must show `1/1`. Wait a bit If it's showing `0/1`.
+  The column `READY` must show `1/1`. Wait a bit if it's showing `0/1`.
 
 - There are two ways to configure `Keycloak`
 
   - **Running a script**
    
-    - In a terminal, make sure you are in `springboot-testing-mongodb-keycloak` root folder
+    - In a terminal, make sure you are in `springboot-keycloak-mongodb-testcontainers` root folder
     
     - Get `KEYCLOAK_URL` environment variable
       ```
@@ -114,7 +115,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
       minikube service my-keycloak-http --namespace dev
       ```
       
-    - Add `realm`, `client`, `client-roles` and `user` as explained in [`ivangfr/springboot-testing-mongodb-keycloak`](https://github.com/ivangfr/springboot-testing-mongodb-keycloak#using-keycloak-website)
+    - Add `realm`, `client`, `client-roles` and `user` as explained in [`ivangfr/springboot-keycloak-mongodb-testcontainers`](https://github.com/ivangfr/springboot-keycloak-mongodb-testcontainers#using-keycloak-website)
 
 ## Create application database secrets
 
@@ -190,7 +191,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 - Add Rate Limiting plugin to `book-service` service
   ```
-  curl -X POST https://$KONG_ADMIN_URL/services/book-service/plugins \
+  curl -i -X POST https://$KONG_ADMIN_URL/services/book-service/plugins \
     -d "name=rate-limiting"  \
     -d "config.minute=10" \
     --insecure
@@ -260,12 +261,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   It should return
   ```
   HTTP/1.1 201 
-  {
-    "id":"6d1270d5-716f-46b1-9a9d-e152f62464aa",
-    "title":"java 8",
-    "authorName":"ivan",
-    "price":10.5
-  }
+  { "id":"6d1270d5-716f-46b1-9a9d-e152f62464aa", "title":"java 8", "authorName":"ivan", "price":10.5 }
   ```
 
 ## Cleanup

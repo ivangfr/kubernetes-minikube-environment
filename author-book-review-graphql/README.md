@@ -72,6 +72,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   ```
   kubectl get pods --namespace dev --watch
   ```
+  > To stop watching, press `Ctrl+C`
 
 ## Create application database secrets
 

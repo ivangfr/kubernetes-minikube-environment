@@ -29,7 +29,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 - Build `movies-api` Docker image so that we don't need to push it to Docker Registry. To do it, run the following command
   ```
-  ./mvnw clean compile jib:dockerBuild --projects movies-api
+  ./docker-build.sh
   ```
 
 - Get back to Host machine Docker Daemon   
@@ -72,6 +72,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   ```
   kubectl get pods --namespace dev --watch
   ```
+  > To stop watching, press `Ctrl+C`
 
 ## Install application
 
@@ -100,12 +101,12 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 - **Kibana**
 
   - Access `Kibana` website
-  - Click on `Explore on my own`
-  - In the main Kibana page, click on "burger" menu icon and then on `Discover`
-  - Click on `Create index pattern` button
-  - In the `Index pattern name` field, set `filebeat-*` and click on `> Next Step` button
-  - In the `Time field` combo-box, select `@Timestamp` and click on `Create index pattern`
-  - Click on "burger" menu icon again and then on `Discover` to start performing searches
+  - Click `Explore on my own`
+  - In the main Kibana page, click the _"burger"_ menu icon and, then click `Discover`
+  - Click `Create index pattern` button
+  - In the `Index pattern name` field, set `filebeat-*` and click `> Next Step` button
+  - In the `Time field` combo-box, select `@Timestamp` and click `Create index pattern`
+  - Click the _"burger"_ menu icon again and, then click `Discover` to start performing searches
 
 - **Prometheus**
 
@@ -113,7 +114,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
   We can check whether the `Service Monitor` is configured correctly by
   - Access `Prometheus` website
-  - Click on `Status` dropdown menu and then on `Targets`
+  - Click `Status` dropdown menu and, then click `Targets`
   - The `movies-api` reference should be displayed and its status must be `UP`
   
 - **Grafana**
@@ -121,11 +122,12 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   - Access `Grafana` website
   - Login using username `admin` and password `admin`
   - Skip the next screen in case you don't want to change the credentials
-  - In the main Grafana page, click on the `Gear` icon and then on `Add data source` button
+  - In the main Grafana page, hover mouse over the `Gear` icon and click `Data source` submenu
+  - Click `Add data source` button
   - Select `Prometheus`
-  - In the `HTTP` section, set `my-prometheus-operator-prometheus:9090` in the URL field
-  - Click on `Save & Test` button. A green message saying `Data source is working` should appear
-  - Click on `+` icon on the menu and start creating a new dashboard 
+  - In the `HTTP` section, set `my-prometheus-operator-prometheus:9090` to the `URL` field
+  - Click `Save & Test` button. A green message saying `Data source is working` should appear
+  - Click `+` icon on the menu and start creating a new dashboard 
 
 ## Cleanup
 

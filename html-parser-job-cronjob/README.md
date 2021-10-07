@@ -14,7 +14,7 @@ The goal of this example is to run, inside [`Kubernetes`](https://kubernetes.io)
 
 ## Start Minikube
 
-First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-minikube-environment#start-minikube)
+First, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-minikube-environment#start-minikube)
 
 ## Build Docker Images
 
@@ -28,11 +28,11 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 - Build `game-score-api` and `game-score-collector` Docker images so that we don't need to push them to Docker Registry.
   - JVM
     ```
-    ./build-apps.sh
+    ./docker-build.sh
     ```
   - Native
     ```
-    ./build-apps.sh native
+    ./docker-build.sh native
     ```
 
 - Get back to Host machine Docker Daemon   
@@ -62,7 +62,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   ```
   helm install my-mongodb \
   --namespace dev \
-  --set image.tag=4.4.2-debian-10-r27 \
+  --set image.tag=4.4.9-debian-10-r15 \
   --set auth.rootPassword=secret \
   --set auth.database=gamescoredb \
   --set auth.username=gamescoreuser \
@@ -94,11 +94,19 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   ```
   kubectl apply --namespace dev -f deployment-files/game-score-api-deployment.yaml
   ```
-
+  > To delete run
+  > ```
+  > kubectl delete --namespace dev -f deployment-files/game-score-api-deployment.yaml
+  > ```
+ 
 - Deploy the cronjob `game-score-collector-cronjob` that will run every `hh:00, hh:10, hh:20, hh:30, hh:40 and hh:50` to get updated data from website.
   ```
   kubectl apply --namespace dev -f deployment-files/game-score-collector-cronjob.yaml
   ```
+  > To delete run
+  > ```
+  > kubectl delete --namespace dev -f deployment-files/game-score-collector-cronjob.yaml
+  > ```
 
 - To check the progress of the deployments run
   ```

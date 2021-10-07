@@ -1,0 +1,6 @@
+operator:
+  image:
+    tag: 0.51.2-debian-10-r2
+prometheus:
+  service:
+    type: NodePort

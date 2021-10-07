@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: game-score-collector-job
-          image: docker.mycompany.com/game-score-collector:1.0.0
+          image: ivanfranchin/game-score-collector:1.0.0
           imagePullPolicy: Never
           env:
             - name: MONGODB_HOST

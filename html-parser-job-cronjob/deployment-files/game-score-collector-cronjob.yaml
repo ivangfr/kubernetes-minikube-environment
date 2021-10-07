@@ -1,4 +1,4 @@
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: game-score-collector-cronjob
@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
             - name: game-score-collector-cronjob
-              image: docker.mycompany.com/game-score-collector:1.0.0
+              image: ivanfranchin/game-score-collector:1.0.0
               imagePullPolicy: Never
               env:
                 - name: MONGODB_HOST

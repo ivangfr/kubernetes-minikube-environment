@@ -16,7 +16,7 @@ As `user-service` uses `MySQL` as storage and `event-service` uses `Cassandra`, 
 
 ## Start Minikube
 
-First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-minikube-environment#start-minikube)
+First, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-minikube-environment#start-minikube)
 
 ## Build Docker Images
 
@@ -29,7 +29,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 - Build `user-service` and `event-service` Docker images so that we don't need to push them to Docker Registry. To do it, run the following script
   ```
-  ./build-apps.sh
+  ./docker-build.sh
   ```
 
 - Get back to Host machine Docker Daemon   
@@ -124,7 +124,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 - Check whether the event related to the user creation was received by `event-service`
   ```
-  curl -i "http://$EVENT_SERVICE_ADDR/api/events/users/1"
+  curl -i "http://$EVENT_SERVICE_ADDR/api/events?userId=1"
   ```
 
 ## Services Configuration

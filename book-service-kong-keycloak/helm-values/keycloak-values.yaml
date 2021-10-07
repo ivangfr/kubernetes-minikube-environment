@@ -1,5 +1,5 @@
 image:
-  tag: 12.0.4
+  tag: 15.0.2
 service:
   type: NodePort
 postgresql:

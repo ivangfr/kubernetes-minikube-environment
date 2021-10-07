@@ -1,5 +1,5 @@
 image:
-  tag: 11.12.0-debian-10-r1
+  tag: 11.13.0-debian-10-r52
 postgresqlDatabase: kong
 postgresqlUsername: kong
 postgresqlPassword: kong

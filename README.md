@@ -10,11 +10,11 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
 
   | Tool            | Version I used in the last commit    | Command to check   |
   | --------------- | ------------------------------------ | ------------------ |
-  | [`Kubectl`][1]  | Client: `v1.19.7`; Server: `v1.20.2` | `kubectl version`  |
-  | [`Minikube`][2] | `v1.20.0`                            | `minikube version` |
-  | [`Helm`][3]     | `v3.5.4`                             | `helm version`     |
+  | [`Kubectl`][1]  | Client: `v1.21.4`; Server: `v1.22.2` | `kubectl version`  |
+  | [`Minikube`][2] | `v1.23.2`                            | `minikube version` |
+  | [`Helm`][3]     | `v3.7.0`                             | `helm version`     |
   | [`Java 11+`][4] | `11.0.11`                            | `java --version`   |
-  | [`Docker`][5]   | Client: `20.10.6`; Server: `20.10.6` | `docker version`   |
+  | [`Docker`][5]   | Client: `20.10.8`; Server: `20.10.8` | `docker version`   |
   
   [1]:https://kubernetes.io/docs/tasks/tools/install-kubectl/
   [2]:https://kubernetes.io/docs/tasks/tools/install-minikube/

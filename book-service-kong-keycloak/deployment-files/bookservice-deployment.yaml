@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: bookservice
-          image: docker.mycompany.com/book-service:1.0.0
+          image: ivanfranchin/book-service:1.0.0
           imagePullPolicy: Never
           ports:
             - name: http

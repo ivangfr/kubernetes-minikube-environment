@@ -16,7 +16,7 @@ As `movies-api` uses `MySQL` as storage, this database will also be installed us
 
 ## Start Minikube
 
-First of all, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-minikube-environment#start-minikube)
+First, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-minikube-environment#start-minikube)
 
 ## Build Docker Image
 
@@ -105,8 +105,8 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   - In the main Kibana page, click the _"burger"_ menu icon and, then click `Discover`
   - Click `Create index pattern` button
   - In the `Index pattern name` field, set `filebeat-*` and click `> Next Step` button
-  - In the `Time field` combo-box, select `@Timestamp` and click `Create index pattern`
-  - Click the _"burger"_ menu icon again and, then click `Discover` to start performing searches
+  - In the `Time field` combo-box, select `@timestamp` and click `Create index pattern`
+  - Click the _"burger"_ menu icon again and then, click `Discover` to start performing searches
 
 - **Prometheus**
 
@@ -125,7 +125,7 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
   - In the main Grafana page, hover mouse over the `Gear` icon and click `Data source` submenu
   - Click `Add data source` button
   - Select `Prometheus`
-  - In the `HTTP` section, set `my-prometheus-operator-prometheus:9090` to the `URL` field
+  - In the `HTTP` section, set `my-kube-prometheus-operator:9090` to the `URL` field
   - Click `Save & Test` button. A green message saying `Data source is working` should appear
   - Click `+` icon on the menu and start creating a new dashboard 
 
@@ -140,4 +140,4 @@ First of all, start `Minikube` as explained in [Start Minikube](https://github.c
 
 ## TODO
 
-- It would be nice to have `Prometheus` automatically set as data source in `Grafana`, also predefined Dashboards. Waiting for this issue to be solved, https://github.com/bitnami/charts/issues/2797
+- It would be nice to have `Prometheus` automatically set as data source in `Grafana`. Also predefined Dashboards. Waiting for this issue to be solved, https://github.com/bitnami/charts/issues/7680

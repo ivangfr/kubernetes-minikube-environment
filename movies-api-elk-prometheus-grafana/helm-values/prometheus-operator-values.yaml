@@ -1,5 +1,0 @@
-image:
-  tag: 0.47.1-debian-10-r7
-prometheus:
-  service:
-    type: NodePort

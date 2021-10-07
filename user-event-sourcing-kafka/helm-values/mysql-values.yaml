@@ -1,5 +1,5 @@
 image:
-  tag: 8.0.22-debian-10-r44
+  tag: 8.0.26-debian-10-r70
 auth:
   rootPassword: secret
   database: userdb

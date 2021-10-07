@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: docker.mycompany.com/user-service
+  repository: ivanfranchin/user-service
   pullPolicy: Never
 
 service:
@@ -44,7 +44,7 @@ serviceAccount:
   name:
 
 podSecurityContext: {}
-# fsGroup: 2000
+  # fsGroup: 2000
 
 securityContext: {}
   # capabilities:
@@ -52,13 +52,13 @@ securityContext: {}
   #   - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
-# runAsUser: 1000
+  # runAsUser: 1000
 
 ingress:
   enabled: false
   annotations: {}
     # kubernetes.io/ingress.class: nginx
-  # kubernetes.io/tls-acme: "true"
+    # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
       paths: []
@@ -77,7 +77,7 @@ resources: {}
   #   memory: 128Mi
   # requests:
   #   cpu: 100m
-#   memory: 128Mi
+  #   memory: 128Mi
 
 nodeSelector: {}
 

@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: game-score-api
-          image: docker.mycompany.com/game-score-api:1.0.0
+          image: ivanfranchin/game-score-api:1.0.0
           imagePullPolicy: Never
           ports:
             - containerPort: 8080

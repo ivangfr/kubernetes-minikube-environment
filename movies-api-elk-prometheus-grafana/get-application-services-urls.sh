@@ -5,7 +5,7 @@ MINIKUBE_IP=$(minikube ip)
 MOVIES_API_PORT=$(kubectl get services --namespace dev movies-api -o go-template='{{(index .spec.ports 0).nodePort}}')
 ELASTICSEARCH_PORT=$(kubectl get services --namespace dev elasticsearch-master -o go-template='{{(index .spec.ports 0).nodePort}}')
 KIBANA_PORT=$(kubectl get services --namespace dev my-kibana-kibana -o go-template='{{(index .spec.ports 0).nodePort}}')
-PROMETHEUS_PORT=$(kubectl get services --namespace dev my-prometheus-operator-prometheus -o go-template='{{(index .spec.ports 0).nodePort}}')
+PROMETHEUS_PORT=$(kubectl get services --namespace dev my-kube-prometheus-prometheus -o go-template='{{(index .spec.ports 0).nodePort}}')
 GRAFANA_PORT=$(kubectl get services --namespace dev my-grafana -o go-template='{{(index .spec.ports 0).nodePort}}')
 
 MOVIES_API_URL="$MINIKUBE_IP:$MOVIES_API_PORT"

@@ -1,19 +1,13 @@
 image:
-  tag: 2.6.0
+  tag: 2.6.0-centos-oidc
 env:
   database: postgres
   pg_host: my-postgres-postgresql
   pg_database: kong
   pg_user: kong
   pg_password: kong
+  plugins: bundled,oidc
 admin:
   enabled: true
-  useTLS: false
-readinessProbe:
-  httpGet:
-    scheme: HTTP
-livenessProbe:
-  httpGet:
-    scheme: HTTP
-ingressController:
-  installCRDs: false
+  http:
+    enabled: true

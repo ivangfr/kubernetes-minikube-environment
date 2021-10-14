@@ -27,7 +27,7 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   eval $(minikube docker-env)
   ```
 
-- Build `movies-api` Docker image so that we don't need to push it to Docker Registry. To do it, run the following command
+- Build `movies-api` Docker image. For it, run the following command
   ```
   ./docker-build.sh
   ```

@@ -9,7 +9,7 @@ spec:
   selector:
     app: bookservice
   ports:
-    - port: 8080
+    - port: 9080
       targetPort: http
       protocol: TCP
       name: http
@@ -34,13 +34,9 @@ spec:
           imagePullPolicy: Never
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 9080
               protocol: TCP
           env:
-            - name: KEYCLOAK_HOST
-              value: my-keycloak-http
-            - name: KEYCLOAK_PORT
-              value: "80"
             - name: MONGODB_HOST
               value: my-mongodb
             - name: SPRING_DATA_MONGODB_USERNAME

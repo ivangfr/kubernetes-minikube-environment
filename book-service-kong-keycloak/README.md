@@ -1,45 +1,48 @@
 # kubernetes-minikube-environment
 ## `> book-service-kong-keycloak`
 
-The goal of this example is to run inside [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube)): [`book-service`](https://github.com/ivangfr/springboot-keycloak-mongodb-testcontainers) ([`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application), [`Keycloak`](https://www.keycloak.org) (authentication and authorization service) and [`Kong`](https://konghq.com) (gateway service).
+The goal of this example is to run inside [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube)): [`book-service`](https://github.com/ivangfr/springboot-kong-keycloak) [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application, [`Kong`](https://konghq.com) API Gateway and [`Keycloak`](https://www.keycloak.org) OpenID Connect Provider.
+
+Once deployed in `Kubernetes` cluster, `book-service` will only be reachable through [`Kong`](https://konghq.com/kong/) API gateway.
+
+In `Kong`, it's installed [`kong-oidc`](https://github.com/nokia/kong-oidc) plugin that will enable the communication between `Kong` and [`Keycloak`](https://www.keycloak.org) OpenID Connect Provider.
+
+This way, when `Kong` receives a request to `book-service`, it will validate together with `Keycloak` whether it's a valid request.
+
+Also, before redirecting to the request to the upstream service, a `Serverless Function (post-function)` will get the access token present in the `X-Userinfo` header provided by `kong-oidc` plugin, decoded it, extracts the `username` and `preferred_username`, and enriches the request with these two information before sending to `book-service`
 
 ## Clone example repository
 
 - Open a terminal
 
-- Run the following command to clone [`springboot-keycloak-mongodb-testcontainers`](https://github.com/ivangfr/springboot-keycloak-mongodb-testcontainers)
+- Run the following command to clone [`springboot-kong-keycloak`](https://github.com/ivangfr/springboot-kong-keycloak)
   ```
-  git clone https://github.com/ivangfr/springboot-keycloak-mongodb-testcontainers.git
+  git clone https://github.com/ivangfr/springboot-kong-keycloak.git
   ```
-
-### book-service
-
-`book-service` is a `Spring Boot` Web Java application that exposes some endpoints to manage books. Once deployed in `Kubernetes` cluster, it won't be exposed to outside, i.e, it won't be possible to be accessed directly from the host machine.
-
-In order to bypass it, we are going to use `Kong` as a gateway service. So, to access `book-service`, you will have to call `Kong` REST API and then, `Kong` will redirect the request to `book-service`.
-
-Besides, the plugin `Rate Limiting` will be installed in `Kong`. It will be configured to just allow 5 requests a minute to any `book-service` endpoints.
-
-Furthermore, `book-service` implements `Keycloak` security configuration. The endpoints related to _"managing books"_, like create book (`POST /api/books`), update book (`PATCH /api/books/{id}`) and delete book (`DELETE /api/books/{id}`) will require a `Bearer JWT Access Token`.
 
 ## Start Minikube
 
 First, start `Minikube` as explained in [Start Minikube](https://github.com/ivangfr/kubernetes-minikube-environment#start-minikube)
 
-## Build Docker Image
+## Build Docker Images
 
-- In a terminal, navigate to `springboot-keycloak-mongodb-testcontainers` root folder
+- In a terminal, navigate to `springboot-kong-keycloak` root folder
 
 - Set `Minikube` host
   ```
   eval $(minikube docker-env)
   ```
 
-- Build `book-service` Docker image so that we don't need to push it to Docker Registry. To do it, run the following command
+- Build `book-service` Docker image. Foro it, run the following command
   ```
-  ./gradlew book-service:clean book-service:jibDockerBuild -x test -x integrationTest
+  ./docker-build.sh
   ```
 
+- Build `Kong` Docker Image with `kong-oidc` plugin by running the command below
+  ```
+  docker build -t kong:2.6.0-centos-oidc docker/kong
+  ```
+  
 - Get back to Host machine Docker Daemon   
   ```
   eval $(minikube docker-env -u)
@@ -63,7 +66,7 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 
 ## Install services
 
-- In a terminal, navigate to `kubernetes-minikube-environment/book-service-kong-keycloak` folder
+- In a terminal, make sure you are in `kubernetes-minikube-environment/book-service-kong-keycloak` folder
 
 - To install the services, run the script below
   ```
@@ -82,44 +85,11 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   ```
   > To stop watching, press `Ctrl+C`
 
-## Configure Keycloak
+## Install book-service
 
-- Before start, check if `Keycloak` is ready
-  ```
-  kubectl get pods --namespace dev
-  ```
-  The column `READY` must show `1/1`. Wait a bit if it's showing `0/1`.
+- In a terminal, make sure you are in `kubernetes-minikube-environment/book-service-kong-keycloak` folder
 
-- There are two ways to configure `Keycloak`
-
-  - **Running a script**
-   
-    - In a terminal, make sure you are in `springboot-keycloak-mongodb-testcontainers` root folder
-    
-    - Get `KEYCLOAK_URL` environment variable
-      ```
-      KEYCLOAK_URL="$(minikube ip):$(kubectl get services --namespace dev my-keycloak-http -o go-template='{{(index .spec.ports 0).nodePort}}')"
-      ```
-    
-    - Run the following script to configure `Keycloak` for `book-service` application
-      ```
-      ./init-keycloak.sh $KEYCLOAK_URL
-      ```
-      
-    - Copy the `BOOK_SERVICE_CLIENT_SECRET` value printed at the end. It will be used on the next steps
-  
-  - **Using Keycloak website**
-  
-    - Run the command below to open `Keyloak` website in a browser
-      ```
-      minikube service my-keycloak-http --namespace dev
-      ```
-      
-    - Add `realm`, `client`, `client-roles` and `user` as explained in [`ivangfr/springboot-keycloak-mongodb-testcontainers`](https://github.com/ivangfr/springboot-keycloak-mongodb-testcontainers#using-keycloak-website)
-
-## Create application database secrets
-
-- In a terminal, run the command below to create a secret used by `book-service` to connect to `MongoDB`
+- Run the command below to create a secret used by `book-service` to connect to `MongoDB`
   ```
   kubectl create secret --namespace dev generic book-service-db --from-literal=username=bookuser --from-literal=password=bookpass
   ```
@@ -128,19 +98,10 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   > kubectl delete secrets --namespace dev book-service-db
   > ```
 
-- \[Optional\] To list the secrets present in `dev` namespace run
-  ```
-  kubectl get secrets --namespace dev
-  ```
-
 - \[Optional\] To get more information about `book-service-db` secret run
   ```
   kubectl get secrets --namespace dev book-service-db -o yaml
   ```
-
-## Install book-service
-
-- In a terminal, make sure you are in `kubernetes-minikube-environment/book-service-kong-keycloak` folder
 
 - Install `book-service`
   ```
@@ -151,70 +112,60 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   > kubectl delete --namespace dev -f deployment-files/bookservice-deployment.yaml
   > ```
 
-## Configuring Kong
+## Configure Keycloak
 
-- Get `KONG_ADMIN_URL` and `KONG_PROXY_URL` environment variables
-  ```
-  KONG_ADMIN_URL="$(minikube ip):$(kubectl get services --namespace dev my-kong-kong-admin -o go-template='{{(index .spec.ports 0).nodePort}}')"
-  KONG_PROXY_URL="$(minikube ip):$(kubectl get services --namespace dev my-kong-kong-proxy -o go-template='{{(index .spec.ports 0).nodePort}}')"
-  ```
+- In a terminal, make sure you are in `springboot-kong-keycloak` root folder
 
-- Add service `book-service`
+- Create `KEYCLOAK_HOST_PORT` environment variable
   ```
-  curl -i -X POST https://$KONG_ADMIN_URL/services/ \
-    -d 'name=book-service' \
-    -d 'protocol=http' \
-    -d 'host=bookservice-service' \
-    -d 'port=8080' \
-    --insecure
+  KEYCLOAK_HOST_PORT="$(minikube ip):$(kubectl get services --namespace dev my-keycloak-http -o go-template='{{(index .spec.ports 0).nodePort}}')"
+  ```
+    
+- Run the following script to configure `Keycloak` for `book-service` application
+  ```
+  ./init-keycloak.sh $KEYCLOAK_HOST_PORT
   ```
 
-- Add `book-service` route
+  This script creates:
+  - `company-services` realm
+  - `book-service` client
+  - user with _username_ `ivan.franchin` and _password_ `123`
+
+- The `book-service` client secret (`BOOK_SERVICE_CLIENT_SECRET`) is shown at the end of the execution. It will be used in the next step
+
+## Configure Kong
+
+- In a terminal, make sure you are in `springboot-kong-keycloak` root folder
+
+- Create an environment variable that contains the `Client Secret` generated by `Keycloak` to `book-service` at [Configure Keycloak](#Configure Keycloak) step
   ```
-  curl -i -X POST https://$KONG_ADMIN_URL/services/book-service/routes/ \
-    -d "protocols[]=http" \
-    -d "hosts[]=book-service" \
-    -d "strip_path=false" \
-    --insecure
+  BOOK_SERVICE_CLIENT_SECRET=...
   ```
 
-- In order to test the added route, we will use `GET /actuator/health`
+- Create `KONG_ADMIN_HOST_PORT` environment variable
   ```
-  curl -i http://$KONG_PROXY_URL/actuator/health -H 'Host: book-service'
-  ```
-  
-  It should return
-  ```
-  HTTP/1.1 200
-  {"status":"UP","components":{"diskSpace":{"status":"UP","details":{...}},"livenessState":{"status":"UP"},"mongo":{"status":"UP","details":{...}},"ping":{"status":"UP"},"readinessState":{"status":"UP"}},"groups":["liveness","readiness"]}
+  KONG_ADMIN_HOST_PORT="$(minikube ip):$(kubectl get services --namespace dev my-kong-kong-admin -o go-template='{{(index .spec.ports 0).nodePort}}')"
   ```
 
-- Add Rate Limiting plugin to `book-service` service
+- Run the following script to configure `Kong` for `book-service` application
   ```
-  curl -i -X POST https://$KONG_ADMIN_URL/services/book-service/plugins \
-    -d "name=rate-limiting"  \
-    -d "config.minute=10" \
-    --insecure
+  ./init-kong.sh $BOOK_SERVICE_CLIENT_SECRET $KONG_ADMIN_HOST_PORT "my-keycloak-http" "bookservice-service:9080"
   ```
-   
-- Make some calls to
-  ```
-  curl -i http://$KONG_PROXY_URL/actuator/health -H 'Host: book-service'
-  ```
-  
-  After exceeding 10 calls in one minute, you should see
-  ```
-  HTTP/1.1 429 Too Many Requests
-  {"message":"API rate limit exceeded"}
-  ```
+
+  This script creates:
+  - service to `book-service`
+  - route to `/actuator` path
+  - route to `/api` path
+  - add `kong-oidc` plugin to route of `/api` path. It will authenticate users against `Keycloak` OpenID Connect Provider
+  - add `serverless function (post-function)` plugin to route of `/api` path. It gets the access token present in the `X-Userinfo` header provided by `kong-oidc` plugin, decoded it, extracts the `username` and `preferred_username`, and enriches the request with these two information before sending to `book-service`
 
 ## Testing
 
 - In a terminal, make sure you are in `kubernetes-minikube-environment/book-service-kong-keycloak` folder
 
-- Get `KONG_PROXY_URL` environment variable
+- Create `KONG_PROXY_HOST_PORT` environment variable
   ```
-  KONG_PROXY_URL="$(minikube ip):$(kubectl get services --namespace dev my-kong-kong-proxy -o go-template='{{(index .spec.ports 0).nodePort}}')"
+  KONG_PROXY_HOST_PORT="$(minikube ip):$(kubectl get services --namespace dev my-kong-kong-proxy -o go-template='{{(index .spec.ports 0).nodePort}}')"
   ```
   
 - Create `BOOK_SERVICE_CLIENT_SECRET` environment variable that contains the `Client Secret` generated by `Keycloak` to `book-service` at [Configure Keycloak](#configure-keycloak)
@@ -222,9 +173,35 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   BOOK_SERVICE_CLIENT_SECRET=...
   ```
 
-- Call `GET /api/books` endpoint
+- Call `GET /actuator/health` endpoint
   ```
-  curl -i http://$KONG_PROXY_URL/api/books -H 'Host: book-service'
+  curl -i http://$KONG_PROXY_HOST_PORT/actuator/health -H 'Host: book-service'
+  ```
+  
+  It should return
+  ```
+  {"status":"UP","groups":["liveness","readiness"]}
+  ```
+
+- Call `GET /api/books` endpoint without access token
+  ```
+  curl -i http://$KONG_PROXY_HOST_PORT/api/books -H 'Host: book-service'
+  ```
+  It should return
+  ```
+  HTTP/1.1 401 Unauthorized
+  no Authorization header found
+  ```
+
+- Get `ivan.franchin` access token
+  ```
+  ACCESS_TOKEN=$(./get-access-token.sh $BOOK_SERVICE_CLIENT_SECRET)
+  echo $ACCESS_TOKEN
+  ```
+
+- Call `GET /api/books` endpoint informing the access token
+  ```
+  curl -i http://$KONG_PROXY_HOST_PORT/api/books -H 'Host: book-service' -H "Authorization: Bearer $ACCESS_TOKEN"
   ```
   
   It should return
@@ -233,35 +210,23 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   []
   ```
 
-- Call `POST /api/books` endpoint without access token
+- You can try other endpoints using access token
+
+  Create book
   ```
-  curl -i -X POST http://$KONG_PROXY_URL/api/books -H 'Host: book-service' \
-    -H "Content-Type: application/json" \
-    -d '{ "authorName": "ivan", "title": "java 8", "price": 10.5 }'
-  ```
-  It should return
-  ```
-  HTTP/1.1 302
+  curl -i -X POST http://$KONG_PROXY_HOST_PORT/api/books -H 'Host: book-service' \
+    -H "Authorization: Bearer $ACCESS_TOKEN" \
+    -H "Content-Type: application/json" -d '{"isbn": "123", "title": "Kong & Keycloak"}'
   ```
 
-- Get access token from Keycloak
+  Get book
   ```
-  BEARER_MY_ACCESS_TOKEN=$(./get-access-token.sh $BOOK_SERVICE_CLIENT_SECRET)
-  echo $BEARER_MY_ACCESS_TOKEN
+  curl -i http://$KONG_PROXY_HOST_PORT/api/books/123 -H 'Host: book-service' -H "Authorization: Bearer $ACCESS_TOKEN"
   ```
 
-- Call `POST /api/books` endpoint informing the access token
+  Delete book
   ```
-  curl -i -X POST http://$KONG_PROXY_URL/api/books -H 'Host: book-service' \
-    -H "Authorization: $BEARER_MY_ACCESS_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d '{ "authorName": "ivan", "title": "java 8", "price": 10.5 }'
-  ```
-  
-  It should return
-  ```
-  HTTP/1.1 201 
-  { "id":"6d1270d5-716f-46b1-9a9d-e152f62464aa", "title":"java 8", "authorName":"ivan", "price":10.5 }
+  curl -i -X DELETE http://$KONG_PROXY_HOST_PORT/api/books/123 -H 'Host: book-service' -H "Authorization: Bearer $ACCESS_TOKEN"
   ```
 
 ## Cleanup

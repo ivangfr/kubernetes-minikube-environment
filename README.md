@@ -19,7 +19,7 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
   [1]:https://kubernetes.io/docs/tasks/tools/install-kubectl/
   [2]:https://kubernetes.io/docs/tasks/tools/install-minikube/
   [3]:https://helm.sh/docs/intro/install/
-  [4]:https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
+  [4]:https://www.oracle.com/java/technologies/downloads/#java11
   [5]:https://www.docker.com/
 
 - **Helm Chart Repositories**

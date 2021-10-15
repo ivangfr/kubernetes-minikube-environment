@@ -3,9 +3,9 @@
 
 The goal of this example is to run inside [`Kubernetes`](https://kubernetes.io) ([`Minikube`](https://github.com/kubernetes/minikube)): [`book-service`](https://github.com/ivangfr/springboot-kong-keycloak) [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application, [`Kong`](https://konghq.com) API Gateway and [`Keycloak`](https://www.keycloak.org) OpenID Connect Provider.
 
-Once deployed in `Kubernetes` cluster, `book-service` will only be reachable through [`Kong`](https://konghq.com/kong/) API gateway.
+Once deployed in `Kubernetes` cluster, `book-service` will only be reachable through `Kong` API gateway.
 
-In `Kong`, it's installed [`kong-oidc`](https://github.com/nokia/kong-oidc) plugin that will enable the communication between `Kong` and [`Keycloak`](https://www.keycloak.org) OpenID Connect Provider.
+In `Kong`, it's installed [`kong-oidc`](https://github.com/nokia/kong-oidc) plugin that will enable the communication between `Kong` and `Keycloak` OpenID Connect Provider.
 
 This way, when `Kong` receives a request to `book-service`, it will validate together with `Keycloak` whether it's a valid request.
 
@@ -127,9 +127,9 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   ```
 
   This script creates:
-  - `company-services` realm
-  - `book-service` client
-  - user with _username_ `ivan.franchin` and _password_ `123`
+  - `company-services` realm;
+  - `book-service` client;
+  - user with _username_ `ivan.franchin` and _password_ `123`.
 
 - The `book-service` client secret (`BOOK_SERVICE_CLIENT_SECRET`) is shown at the end of the execution. It will be used in the next step
 
@@ -153,11 +153,11 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   ```
 
   This script creates:
-  - service to `book-service`
-  - route to `/actuator` path
-  - route to `/api` path
-  - add `kong-oidc` plugin to route of `/api` path. It will authenticate users against `Keycloak` OpenID Connect Provider
-  - add `serverless function (post-function)` plugin to route of `/api` path. It gets the access token present in the `X-Userinfo` header provided by `kong-oidc` plugin, decoded it, extracts the `username` and `preferred_username`, and enriches the request with these two information before sending to `book-service`
+  - service to `book-service`;
+  - route to `/actuator` path;
+  - route to `/api` path;
+  - add `kong-oidc` plugin to route of `/api` path. It will authenticate users against `Keycloak` OpenID Connect Provider;
+  - add `serverless function (post-function)` plugin to route of `/api` path. It gets the access token present in the `X-Userinfo` header provided by `kong-oidc` plugin, decoded it, extracts the `username` and `preferred_username`, and enriches the request with these two information before sending to `book-service`.
 
 ## Testing
 
@@ -177,7 +177,6 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   ```
   curl -i http://$KONG_PROXY_HOST_PORT/actuator/health -H 'Host: book-service'
   ```
-  
   It should return
   ```
   {"status":"UP","groups":["liveness","readiness"]}
@@ -195,15 +194,14 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 
 - Get `ivan.franchin` access token
   ```
-  ACCESS_TOKEN=$(./get-access-token.sh $BOOK_SERVICE_CLIENT_SECRET)
-  echo $ACCESS_TOKEN
+  ACCESS_TOKEN=$(./get-access-token.sh $BOOK_SERVICE_CLIENT_SECRET) && echo $ACCESS_TOKEN
   ```
 
 - Call `GET /api/books` endpoint informing the access token
   ```
-  curl -i http://$KONG_PROXY_HOST_PORT/api/books -H 'Host: book-service' -H "Authorization: Bearer $ACCESS_TOKEN"
+  curl -i http://$KONG_PROXY_HOST_PORT/api/books -H 'Host: book-service' \
+    -H "Authorization: Bearer $ACCESS_TOKEN"
   ```
-  
   It should return
   ```
   HTTP/1.1 200
@@ -221,12 +219,14 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 
   Get book
   ```
-  curl -i http://$KONG_PROXY_HOST_PORT/api/books/123 -H 'Host: book-service' -H "Authorization: Bearer $ACCESS_TOKEN"
+  curl -i http://$KONG_PROXY_HOST_PORT/api/books/123 -H 'Host: book-service' \
+    -H "Authorization: Bearer $ACCESS_TOKEN"
   ```
 
   Delete book
   ```
-  curl -i -X DELETE http://$KONG_PROXY_HOST_PORT/api/books/123 -H 'Host: book-service' -H "Authorization: Bearer $ACCESS_TOKEN"
+  curl -i -X DELETE http://$KONG_PROXY_HOST_PORT/api/books/123 -H 'Host: book-service' \
+    -H "Authorization: Bearer $ACCESS_TOKEN"
   ```
 
 ## Cleanup

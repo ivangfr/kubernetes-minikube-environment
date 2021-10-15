@@ -115,13 +115,13 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 
 ## Testing
 
-- In a terminal, get `GAME_SCORE_API_URL` environment variable
+- In a terminal, get `GAME_SCORE_API_HOST_PORT` environment variable
   ```
-  GAME_SCORE_API_URL="$(minikube ip):$(kubectl get services --namespace dev game-score-api-service -o go-template='{{(index .spec.ports 0).nodePort}}')"
+  GAME_SCORE_API_HOST_PORT="$(minikube ip):$(kubectl get services --namespace dev game-score-api-service -o go-template='{{(index .spec.ports 0).nodePort}}')"
 
 - Call `game-score-api` endpoint that retrieves all games
   ```
-  curl -i http:/$GAME_SCORE_API_URL/api/games
+  curl -i http:/$GAME_SCORE_API_HOST_PORT/api/games
   ```
 
 ## Cleanup

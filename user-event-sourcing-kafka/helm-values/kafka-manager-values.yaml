@@ -1,5 +1,0 @@
-image:
-  tag: 1.3.3.22
-service:
-  type: NodePort
-zkHosts: my-kafka-zookeeper:2181

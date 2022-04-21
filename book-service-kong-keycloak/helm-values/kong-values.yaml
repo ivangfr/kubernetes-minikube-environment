@@ -1,5 +1,5 @@
 image:
-  tag: 2.6.0-centos-oidc
+  tag: 2.8.1-oidc
 env:
   database: postgres
   pg_host: my-postgres-postgresql
@@ -11,3 +11,5 @@ admin:
   enabled: true
   http:
     enabled: true
+ingressController:
+  enabled: false

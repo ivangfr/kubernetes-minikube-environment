@@ -7,12 +7,10 @@ As `user-service` uses `MySQL` as storage and `event-service` uses `Cassandra`, 
 
 ## Clone example repository
 
-- Open a terminal
-
-- Run the following command to clone [`spring-cloud-stream-event-sourcing-testcontainers`](https://github.com/ivangfr/spring-cloud-stream-event-sourcing-testcontainers)
-  ```
-  git clone https://github.com/ivangfr/spring-cloud-stream-event-sourcing-testcontainers.git
-  ```
+In a terminal, run the following command to clone [`spring-cloud-stream-event-sourcing-testcontainers`](https://github.com/ivangfr/spring-cloud-stream-event-sourcing-testcontainers)
+```
+git clone https://github.com/ivangfr/spring-cloud-stream-event-sourcing-testcontainers.git
+```
 
 ## Start Minikube
 
@@ -109,12 +107,12 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 
 - Get `user-service` address
   ```
-  USER_SERVICE_ADDR="$(minikube ip):$(kubectl get svc -n dev user-service -o go-template='{{(index .spec.ports 0).nodePort}}')"
+  USER_SERVICE_ADDR="$(minikube ip):$(kubectl get svc --namespace dev user-service -o go-template='{{(index .spec.ports 0).nodePort}}')"
   ```
 
 - Get `event-service` address
   ```
-  EVENT_SERVICE_ADDR="$(minikube ip):$(kubectl get svc -n dev event-service -o go-template='{{(index .spec.ports 0).nodePort}}')"
+  EVENT_SERVICE_ADDR="$(minikube ip):$(kubectl get svc --namespace dev event-service -o go-template='{{(index .spec.ports 0).nodePort}}')"
   ```
 
 - Create a user
@@ -127,16 +125,6 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   curl -i "http://$EVENT_SERVICE_ADDR/api/events?userId=1"
   ```
 
-## Services Configuration
-
-- **Kafka Manager**
-
-  - First, you must create a new cluster. Click on `Cluster` (dropdown button on the header) and then on `Add Cluster`
-  - Type the name of your cluster in `Cluster Name` field, for example: `MyCluster`
-  - Type `my-kafka-zookeeper:2181` in `Cluster Zookeeper Hosts` field
-  - Enable checkbox `Poll consumer information (Not recommended for large # of consumers)`
-  - Click on `Save` button at the bottom of the page.
-
 ## Cleanup
 
 - In a terminal, make sure you are in `kubernetes-minikube-environment/user-event-sourcing-kafka` folder
@@ -148,4 +136,4 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 
 ## TODO
 
-- Add Schema Registry so that we can run `user-service` and `event-service` using `avro` spring profile
+- Add `Schema Registry` so that we can run `user-service` and `event-service` using `avro` spring profile

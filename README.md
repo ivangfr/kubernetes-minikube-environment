@@ -8,13 +8,13 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
 
   You must have the following tools installed
 
-  | Tool            | Version I used in the last commit    | Command to check   |
-  | --------------- | ------------------------------------ | ------------------ |
-  | [`Kubectl`][1]  | Client: `v1.21.4`; Server: `v1.22.2` | `kubectl version`  |
-  | [`Minikube`][2] | `v1.23.2`                            | `minikube version` |
-  | [`Helm`][3]     | `v3.7.0`                             | `helm version`     |
-  | [`Java 11+`][4] | `11.0.11`                            | `java --version`   |
-  | [`Docker`][5]   | Client: `20.10.8`; Server: `20.10.8` | `docker version`   |
+  | Tool            | Version I used in the last commit      | Command to check   |
+  |-----------------|----------------------------------------|--------------------|
+  | [`Kubectl`][1]  | Client: `v1.22.5`; Server: `v1.23.3`   | `kubectl version`  |
+  | [`Minikube`][2] | `v1.25.2`                              | `minikube version` |
+  | [`Helm`][3]     | `v3.8.2`                               | `helm version`     |
+  | [`Java 11+`][4] | `11.0.11`                              | `java --version`   |
+  | [`Docker`][5]   | Client: `20.10.13`; Server: `20.10.13` | `docker version`   |
   
   [1]:https://kubernetes.io/docs/tasks/tools/install-kubectl/
   [2]:https://kubernetes.io/docs/tasks/tools/install-minikube/
@@ -27,7 +27,6 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
   You must have the following `repo`'s added in your helm chart repository list.
   ```
   NAME        	URL
-  stable      	https://charts.helm.sh/stable
   codecentric 	https://codecentric.github.io/helm-charts/
   kong        	https://charts.konghq.com
   bitnami     	https://charts.bitnami.com/bitnami
@@ -41,7 +40,6 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
 
   If some of them is missing, here are the commands to add
   ```
-  helm repo add stable https://charts.helm.sh/stable
   helm repo add codecentric https://codecentric.github.io/helm-charts/
   helm repo add kong https://charts.konghq.com
   helm repo add bitnami https://charts.bitnami.com/bitnami

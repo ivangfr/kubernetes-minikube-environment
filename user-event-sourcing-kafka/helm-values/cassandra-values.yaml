@@ -1,5 +1,5 @@
 image:
-  tag: 4.0.1-debian-10-r26
+  tag: 4.0.3-debian-10-r59
 dbUser:
   forcePassword: true
   user: cassandra

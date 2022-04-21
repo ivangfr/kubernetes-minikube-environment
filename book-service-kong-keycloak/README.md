@@ -13,12 +13,10 @@ Also, before redirecting to the request to the upstream service, a `Serverless F
 
 ## Clone example repository
 
-- Open a terminal
-
-- Run the following command to clone [`springboot-kong-keycloak`](https://github.com/ivangfr/springboot-kong-keycloak)
-  ```
-  git clone https://github.com/ivangfr/springboot-kong-keycloak.git
-  ```
+In a terminal, run the following command to clone [`springboot-kong-keycloak`](https://github.com/ivangfr/springboot-kong-keycloak)
+```
+git clone https://github.com/ivangfr/springboot-kong-keycloak.git
+```
 
 ## Start Minikube
 
@@ -33,14 +31,14 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   eval $(minikube docker-env)
   ```
 
-- Build `book-service` Docker image. Foro it, run the following command
+- Build `book-service` Docker image. For it, run the following command
   ```
   ./docker-build.sh
   ```
 
 - Build `Kong` Docker Image with `kong-oidc` plugin by running the command below
   ```
-  docker build -t kong:2.6.0-centos-oidc docker/kong
+  docker build -t kong:2.8.1-oidc docker/kong
   ```
   
 - Get back to Host machine Docker Daemon   
@@ -105,11 +103,11 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 
 - Install `book-service`
   ```
-  kubectl apply --namespace dev -f deployment-files/bookservice-deployment.yaml
+  kubectl apply --namespace dev --filename deployment-files/bookservice-deployment.yaml
   ```
   > To delete run
   > ```
-  > kubectl delete --namespace dev -f deployment-files/bookservice-deployment.yaml
+  > kubectl delete --namespace dev --filename deployment-files/bookservice-deployment.yaml
   > ```
 
 ## Configure Keycloak
@@ -118,7 +116,7 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 
 - Create `KEYCLOAK_HOST_PORT` environment variable
   ```
-  KEYCLOAK_HOST_PORT="$(minikube ip):$(kubectl get services --namespace dev my-keycloak-http -o go-template='{{(index .spec.ports 0).nodePort}}')"
+  KEYCLOAK_HOST_PORT="$(minikube ip):$(kubectl get services --namespace dev my-keycloak-keycloakx-http -o go-template='{{(index .spec.ports 0).nodePort}}')"
   ```
     
 - Run the following script to configure `Keycloak` for `book-service` application
@@ -149,7 +147,7 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 
 - Run the following script to configure `Kong` for `book-service` application
   ```
-  ./init-kong.sh $BOOK_SERVICE_CLIENT_SECRET $KONG_ADMIN_HOST_PORT "my-keycloak-http" "bookservice-service:9080"
+  ./init-kong.sh $BOOK_SERVICE_CLIENT_SECRET $KONG_ADMIN_HOST_PORT "my-keycloak-keycloakx-http" "bookservice-service:9080"
   ```
 
   This script creates:
@@ -196,6 +194,7 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   ```
   ACCESS_TOKEN=$(./get-access-token.sh $BOOK_SERVICE_CLIENT_SECRET) && echo $ACCESS_TOKEN
   ```
+  > **Tip:** In jwt.io, you can decode and verify the `JWT` access token
 
 - Call `GET /api/books` endpoint informing the access token
   ```

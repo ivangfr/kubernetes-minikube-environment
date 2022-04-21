@@ -1,5 +1,5 @@
 image:
-  tag: 8.1.5-debian-10-r13
+  tag: 8.4.6-debian-10-r7
 admin:
   password: admin
 service:
@@ -8,3 +8,10 @@ persistence:
   enabled: false
 metrics:
   enabled: true
+dashboardsProvider:
+  enabled: true
+dashboardsConfigMaps:
+  - configMapName: movies-api-dashboard
+    fileName: movies-api-dashboard.json
+datasources:
+  secretName: grafana-datasource-secret

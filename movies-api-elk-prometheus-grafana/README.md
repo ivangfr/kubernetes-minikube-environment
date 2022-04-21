@@ -7,12 +7,10 @@ As `movies-api` uses `MySQL` as storage, this database will also be installed us
 
 ## Clone example repository
 
-- Open a terminal
-
-- Run the following command to clone [`springboot-elk-prometheus-grafana`](https://github.com/ivangfr/springboot-elk-prometheus-grafana)
-  ```
-  git clone https://github.com/ivangfr/springboot-elk-prometheus-grafana.git
-  ```
+In a terminal, run the following command to clone [`springboot-elk-prometheus-grafana`](https://github.com/ivangfr/springboot-elk-prometheus-grafana)
+```
+git clone https://github.com/ivangfr/springboot-elk-prometheus-grafana.git
+```
 
 ## Start Minikube
 
@@ -122,12 +120,9 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   - Access `Grafana` website
   - Login using username `admin` and password `admin`
   - Skip the next screen in case you don't want to change the credentials
-  - In the main Grafana page, hover mouse over the `Gear` icon and click `Data source` submenu
-  - Click `Add data source` button
-  - Select `Prometheus`
-  - In the `HTTP` section, set `my-kube-prometheus-operator:9090` to the `URL` field
-  - Click `Save & Test` button. A green message saying `Data source is working` should appear
-  - Click `+` icon on the menu and start creating a new dashboard 
+  - To see `movies-api` dashboard
+    - Click `General / Home`
+    - Select `dashboards` > `movies-api-dashboard`
 
 ## Cleanup
 

@@ -1,7 +1,9 @@
 image:
-  tag: 11.13.0-debian-10-r52
-postgresqlDatabase: kong
-postgresqlUsername: kong
-postgresqlPassword: kong
-persistence:
-  enabled: false
+  tag: 13.6.0-debian-10-r67
+auth:
+  database: kong
+  username: kong
+  password: kong
+primary:
+  persistence:
+    enabled: false

@@ -5,12 +5,10 @@ The goal of this example is to run, inside [`Kubernetes`](https://kubernetes.io)
 
 ## Clone example repository
 
-- Open a terminal
-
-- Run the following command to clone [`springboot-jsoup-html-parser`](https://github.com/ivangfr/springboot-jsoup-html-parser)
-  ```
-  git clone https://github.com/ivangfr/springboot-jsoup-html-parser.git
-  ```
+In a terminal, run the following command to clone [`springboot-jsoup-html-parser`](https://github.com/ivangfr/springboot-jsoup-html-parser)
+```
+git clone https://github.com/ivangfr/springboot-jsoup-html-parser.git
+```
 
 ## Start Minikube
 
@@ -61,14 +59,14 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 - In a terminal, to install run
   ```
   helm install my-mongodb \
-  --namespace dev \
-  --set image.tag=4.4.9-debian-10-r15 \
-  --set auth.rootPassword=secret \
-  --set auth.database=gamescoredb \
-  --set auth.username=gamescoreuser \
-  --set auth.password=gamescorepass \
-  --set persistence.enabled=false \
-  bitnami/mongodb
+    --namespace dev \
+    --set image.tag=5.0.7-debian-10-r4 \
+    --set auth.rootPassword=secret \
+    --set auth.database=gamescoredb \
+    --set auth.username=gamescoreuser \
+    --set auth.password=gamescorepass \
+    --set persistence.enabled=false \
+    bitnami/mongodb
   ```
   > To uninstall run
   > ```
@@ -87,25 +85,25 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 
 - Run the job `game-score-collector-job`. It will get data from website for the first time
   ```
-  kubectl apply --namespace dev -f deployment-files/game-score-collector-job.yaml
+  kubectl apply --namespace dev --filename deployment-files/game-score-collector-job.yaml
   ```
 
 - Deploy `game-score-api`
   ```
-  kubectl apply --namespace dev -f deployment-files/game-score-api-deployment.yaml
+  kubectl apply --namespace dev --filename deployment-files/game-score-api-deployment.yaml
   ```
   > To delete run
   > ```
-  > kubectl delete --namespace dev -f deployment-files/game-score-api-deployment.yaml
+  > kubectl delete --namespace dev --filename deployment-files/game-score-api-deployment.yaml
   > ```
  
 - Deploy the cronjob `game-score-collector-cronjob` that will run every `hh:00, hh:10, hh:20, hh:30, hh:40 and hh:50` to get updated data from website.
   ```
-  kubectl apply --namespace dev -f deployment-files/game-score-collector-cronjob.yaml
+  kubectl apply --namespace dev --filename deployment-files/game-score-collector-cronjob.yaml
   ```
   > To delete run
   > ```
-  > kubectl delete --namespace dev -f deployment-files/game-score-collector-cronjob.yaml
+  > kubectl delete --namespace dev --filename deployment-files/game-score-collector-cronjob.yaml
   > ```
 
 - To check the progress of the deployments run

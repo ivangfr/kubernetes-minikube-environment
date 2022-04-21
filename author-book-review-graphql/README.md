@@ -7,12 +7,10 @@ As `author-book-api` uses `MySQL` as storage and `book-review-api` uses `MongoDB
 
 ## Clone example repository
 
-- Open a terminal
-
-- Run the following command to clone [`springboot-graphql-databases`](https://github.com/ivangfr/springboot-graphql-databases)
-  ```
-  git clone https://github.com/ivangfr/springboot-graphql-databases.git
-  ```
+In a terminal, run the following command to clone [`springboot-graphql-databases`](https://github.com/ivangfr/springboot-graphql-databases)
+```
+git clone https://github.com/ivangfr/springboot-graphql-databases.git
+```
 
 ## Start Minikube
 

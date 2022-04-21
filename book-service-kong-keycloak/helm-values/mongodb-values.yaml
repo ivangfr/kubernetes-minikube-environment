@@ -1,5 +1,5 @@
 image:
-  tag: 4.4.9-debian-10-r15
+  tag: 5.0.7-debian-10-r4
 auth:
   rootPassword: secret
   database: bookdb

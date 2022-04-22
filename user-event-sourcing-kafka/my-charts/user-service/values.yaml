@@ -16,21 +16,25 @@ env:
   - name: MYSQL_HOST
     value: my-mysql
   - name: KAFKA_HOST
-    value: my-kafka
+    value: my-confluent-cp-kafka
   - name: KAFKA_PORT
     value: "9092"
+  - name: SCHEMA_REGISTRY_HOST
+    value: my-confluent-cp-schema-registry
   - name: ZIPKIN_HOST
     value: my-zipkin
+  - name: SPRING_PROFILES_ACTIVE
+    value: avro
 
 livenessProbe:
   httpGet:
     path: /actuator/health/liveness
-  initialDelaySeconds: 80
+  initialDelaySeconds: 30
 
 readinessProbe:
   httpGet:
     path: /actuator/health/readiness
-  initialDelaySeconds: 80
+  initialDelaySeconds: 30
 
 imagePullSecrets: []
 nameOverride: ""

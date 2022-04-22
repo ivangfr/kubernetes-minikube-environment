@@ -133,7 +133,3 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   ```
   ./cleanup.sh
   ```
-
-## TODO
-
-- Add `Schema Registry` so that we can run `user-service` and `event-service` using `avro` spring profile

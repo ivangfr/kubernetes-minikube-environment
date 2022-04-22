@@ -1,0 +1,18 @@
+cp-zookeeper:
+  imageTag: 7.0.1
+  persistence:
+    enabled: false
+cp-kafka:
+  imageTag: 7.0.1
+  persistence:
+    enabled: false
+cp-schema-registry:
+  imageTag: 7.0.1
+cp-kafka-rest:
+  enabled: false
+cp-kafka-connect:
+  enabled: false
+cp-ksql-server:
+  enabled: false
+cp-control-center:
+  enabled: false

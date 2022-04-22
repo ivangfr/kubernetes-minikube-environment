@@ -132,7 +132,3 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   ```
   ./cleanup.sh
   ```
-
-## TODO
-
-- It would be nice to have `Prometheus` automatically set as data source in `Grafana`. Also predefined Dashboards. Waiting for this issue to be solved, https://github.com/bitnami/charts/issues/7680

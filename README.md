@@ -31,6 +31,7 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
   kong        	https://charts.konghq.com
   bitnami     	https://charts.bitnami.com/bitnami
   elastic     	https://helm.elastic.co
+  confluentinc	https://confluentinc.github.io/cp-helm-charts/
   ```
 
   In order to check it, run
@@ -44,6 +45,7 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
   helm repo add kong https://charts.konghq.com
   helm repo add bitnami https://charts.bitnami.com/bitnami
   helm repo add elastic https://helm.elastic.co
+  helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/
   ```
   
   Run the command below to get the latest information about charts from the chart repositories
@@ -69,7 +71,7 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
 - Run the command below to get the latest information about charts from the chart repositories
   ```
   helm repo update
-  ``` 
+  ```
 
 ## Shutdown Minikube
 

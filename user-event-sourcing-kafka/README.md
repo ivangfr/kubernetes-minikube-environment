@@ -25,7 +25,7 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   eval $(minikube docker-env)
   ```
 
-- Build `user-service` and `event-service` Docker images so that we don't need to push them to Docker Registry. To do it, run the following script
+- Build `user-service` and `event-service` Docker images
   ```
   ./docker-build.sh
   ```

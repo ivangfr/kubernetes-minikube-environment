@@ -1,5 +1,5 @@
 image:
-  tag: 2.8.1-oidc
+  tag: 2.8.3-oidc
 env:
   database: postgres
   pg_host: my-postgres-postgresql

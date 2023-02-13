@@ -23,7 +23,7 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   eval $(minikube docker-env)
   ```
 
-- Build `game-score-api` and `game-score-collector` Docker images so that we don't need to push them to Docker Registry.
+- Build `game-score-api` and `game-score-collector` Docker images
   - JVM
     ```
     ./docker-build.sh
@@ -60,7 +60,7 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   ```
   helm install my-mongodb \
     --namespace dev \
-    --set image.tag=5.0.7-debian-10-r4 \
+    --set image.tag=6.0.4-debian-11-r8 \
     --set auth.rootPassword=secret \
     --set auth.database=gamescoredb \
     --set auth.username=gamescoreuser \
@@ -108,7 +108,7 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 
 - To check the progress of the deployments run
   ```
-  kubectl get --namespace dev pods,cronjobs,jobs
+  kubectl get pods,cronjobs,jobs --namespace dev
   ```
 
 ## Testing

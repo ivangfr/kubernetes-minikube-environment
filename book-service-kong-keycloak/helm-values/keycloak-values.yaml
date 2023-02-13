@@ -1,5 +1,5 @@
 image:
-  tag: 17.0.1
+  tag: 20.0.3
 service:
   type: NodePort
 postgresql:
@@ -7,7 +7,7 @@ postgresql:
 cache:
   stack: kubernetes
 http:
-  relativePath: ""
+  relativePath: "/"
 extraEnv: |
   - name: KEYCLOAK_ADMIN
     value: admin

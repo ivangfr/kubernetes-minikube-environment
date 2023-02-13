@@ -8,19 +8,21 @@ The goal of this project is to have some examples using [`Kubernetes`](https://k
 
   You must have the following tools installed
 
-  | Tool            | Version I used in the last commit      | Command to check   |
-  |-----------------|----------------------------------------|--------------------|
-  | [`Kubectl`][1]  | Client: `v1.22.5`; Server: `v1.23.3`   | `kubectl version`  |
-  | [`Minikube`][2] | `v1.25.2`                              | `minikube version` |
-  | [`Helm`][3]     | `v3.8.2`                               | `helm version`     |
-  | [`Java 11+`][4] | `11.0.11`                              | `java --version`   |
-  | [`Docker`][5]   | Client: `20.10.13`; Server: `20.10.13` | `docker version`   |
-  
-  [1]:https://kubernetes.io/docs/tasks/tools/install-kubectl/
-  [2]:https://kubernetes.io/docs/tasks/tools/install-minikube/
-  [3]:https://helm.sh/docs/intro/install/
-  [4]:https://www.oracle.com/java/technologies/downloads/#java11
-  [5]:https://www.docker.com/
+  | Tool              | Version I used in the last commit      | Command to check          |
+  |-------------------|----------------------------------------|---------------------------|
+  | [`Java 17+`][1]   | `17.0.6`                               | `java --version`          |
+  | [`Docker`][2]     | Client: `20.10.22`; Server: `20.10.22` | `docker version`          |
+  | [`VirtualBox`][3] | `6.1.42r155177`                        | `VBoxManage -version`     |
+  | [`Helm`][4]       | `v3.11.1`                              | `helm version`            |
+  | [`Minikube`][5]   | `v1.29.0`                              | `minikube version`        |
+  | [`Kubectl`][6]    | Client: `v1.22.5`; Server: `v1.23.3`   | `kubectl version --short` |
+
+  [1]:https://www.oracle.com/java/technologies/downloads/#java17
+  [2]:https://www.docker.com/
+  [3]:https://www.virtualbox.org/
+  [4]:https://helm.sh/docs/intro/install/
+  [5]:https://kubernetes.io/docs/tasks/tools/install-minikube/
+  [6]:https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
 - **Helm Chart Repositories**
 

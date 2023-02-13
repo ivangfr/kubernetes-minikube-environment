@@ -25,7 +25,7 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   eval $(minikube docker-env)
   ```
 
-- Build `author-book-api` and `book-review-api` Docker images so that we don't need to push them to Docker Registry. To do it, run the following script
+- Build `author-book-api` and `book-review-api` Docker images
   ```
   ./docker-build.sh
   ```

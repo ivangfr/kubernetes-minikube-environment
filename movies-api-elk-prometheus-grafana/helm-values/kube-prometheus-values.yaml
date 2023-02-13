@@ -1,6 +1,6 @@
 operator:
   image:
-    tag: 0.55.1-debian-10-r22
+    tag: 0.63.0-debian-11-r1
 prometheus:
   service:
     type: NodePort

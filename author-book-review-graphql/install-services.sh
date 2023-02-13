@@ -2,7 +2,7 @@
 
 helm install my-mysql \
 --namespace dev \
---set image.tag=8.0.28-debian-10-r72 \
+--set image.tag=8.0.32-debian-11-r6 \
 --set auth.database=authorbookdb \
 --set auth.username=authorbookuser \
 --set auth.password=authorbookpass \
@@ -13,7 +13,7 @@ bitnami/mysql
 
 helm install my-mongodb \
 --namespace dev \
---set image.tag=5.0.7-debian-10-r4 \
+--set image.tag=6.0.4-debian-11-r8 \
 --set auth.database=bookreviewdb \
 --set auth.username=bookreviewuser \
 --set auth.password=bookreviewpass \

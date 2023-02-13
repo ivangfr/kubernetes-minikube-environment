@@ -25,10 +25,15 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
   eval $(minikube docker-env)
   ```
 
-- Build `movies-api` Docker image. For it, run the following command
-  ```
-  ./docker-build.sh
-  ```
+- Build `movies-api` Docker image
+  - JVM
+    ```
+    ./docker-build.sh
+    ```
+  - Native
+    ```
+    ./docker-build.sh native
+    ```
 
 - Get back to Host machine Docker Daemon   
   ```
@@ -99,11 +104,15 @@ First, start `Minikube` as explained in [Start Minikube](https://github.com/ivan
 - **Kibana**
 
   - Access `Kibana` website
+  - Inform `elastic` for username and password to login 
   - Click `Explore on my own`
   - In the main Kibana page, click the _"burger"_ menu icon and, then click `Discover`
-  - Click `Create index pattern` button
-  - In the `Index pattern name` field, set `filebeat-*` and click `> Next Step` button
-  - In the `Time field` combo-box, select `@timestamp` and click `Create index pattern`
+  - Click `Create data view` button
+  - In the `Create data view` form
+    - Set `Filebeat Data View` for `Name` field
+    - Set `filebeat-*` for `Index pattern name` field
+    - Select `@timestamp` for `Timestamp field` combo-box
+    - Click `Save data view to Kibana`
   - Click the _"burger"_ menu icon again and then, click `Discover` to start performing searches
 
 - **Prometheus**

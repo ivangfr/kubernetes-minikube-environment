@@ -1,5 +1,5 @@
 image:
-  tag: 8.4.6-debian-10-r7
+  tag: 9.3.6-debian-11-r5
 admin:
   password: admin
 service:

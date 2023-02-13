@@ -1,4 +1,4 @@
-imageTag: 7.17.2
+imageTag: 8.5.3
 resources:
   requests:
     cpu: 100m

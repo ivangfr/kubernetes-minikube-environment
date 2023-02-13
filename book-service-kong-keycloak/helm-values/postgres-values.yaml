@@ -1,5 +1,5 @@
 image:
-  tag: 13.6.0-debian-10-r67
+  tag: 13.10.0-debian-11-r0
 auth:
   database: kong
   username: kong

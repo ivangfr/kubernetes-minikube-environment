@@ -1,5 +1,5 @@
 image:
-  tag: 8.0.28-debian-10-r72
+  tag: 8.0.32-debian-11-r6
 auth:
   rootPassword: root-password
   username: keycloak
